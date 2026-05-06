@@ -7,7 +7,8 @@
     "format": "oxfmt --check",
     "format:fix": "oxfmt",
     "lint": "oxlint",
-    "lint:fix": "oxlint --fix"
+    "lint:fix": "oxlint --fix",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "oxfmt": "^0.47.0",
