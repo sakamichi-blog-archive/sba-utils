@@ -21,7 +21,11 @@ importers:
         specifier: 'catalog:'
         version: 6.0.3
 
-  packages/members: {}
+  packages/members:
+    devDependencies:
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
 
 packages:
 

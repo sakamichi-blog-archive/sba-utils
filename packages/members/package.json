@@ -5,5 +5,8 @@
   "license": "ISC",
   "type": "module",
   "main": "index.js",
-  "scripts": {}
+  "scripts": {},
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
 }
