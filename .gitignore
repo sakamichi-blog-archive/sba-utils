@@ -5,6 +5,7 @@ node_modules/
 !.vscode/
 !.gitignore
 !.oxfmtrc.jsonc
+!.oxlintrc.jsonc
 
 !.claude/
 .claude/worktrees/
