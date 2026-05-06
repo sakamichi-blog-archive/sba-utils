@@ -1,6 +1,8 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": ["*.toml"],
+  "ignorePatterns": [
+    "*.toml" // Ignore because VS Code doesn't recognize TOML natively
+  ],
   "semi": false,
   "sortImports": true,
   "trailingComma": "none"
