@@ -2,6 +2,7 @@
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["oxc", "typescript", "unicorn"],
   "categories": {
+    // https://oxc.rs/docs/guide/usage/linter/config.html#enable-groups-of-rules-with-categories
     "correctness": "error",
     "suspicious": "warn",
     "pedantic": "off",
