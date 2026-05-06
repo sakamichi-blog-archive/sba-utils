@@ -7,7 +7,7 @@
     "suspicious": "warn",
     "pedantic": "off",
     "perf": "warn",
-    "style": "warn",
+    "style": "off",
     "restriction": "off",
     "nursery": "off"
   },
