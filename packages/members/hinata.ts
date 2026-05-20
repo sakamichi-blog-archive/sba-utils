@@ -19,7 +19,7 @@ export const members: Member[] = [
   {
     birthdate: "1995-11-10",
     generation: generation1,
-    graduatedAt: "2020-03-31T03:00:00",
+    graduatedAt: "2020-03-31T03:00:00Z",
     name: "井口眞緒",
     nameSpaced: "井口 眞緒",
     uid: "1"
@@ -27,7 +27,7 @@ export const members: Member[] = [
   {
     birthdate: "1997-12-26",
     generation: generation1,
-    graduatedAt: "2024-01-31T03:00:00",
+    graduatedAt: "2024-01-31T03:00:00Z",
     name: "潮紗理菜",
     nameSpaced: "潮 紗理菜",
     uid: "2"
@@ -35,7 +35,7 @@ export const members: Member[] = [
   {
     birthdate: "2001-12-02",
     generation: generation1,
-    graduatedAt: "2019-08-31T03:00:00",
+    graduatedAt: "2019-08-31T03:00:00Z",
     name: "柿崎芽実",
     nameSpaced: "柿崎 芽実",
     uid: "3"
@@ -43,7 +43,7 @@ export const members: Member[] = [
   {
     birthdate: "2001-05-08",
     generation: generation1,
-    graduatedAt: "2023-08-31T03:00:00",
+    graduatedAt: "2023-08-31T03:00:00Z",
     name: "影山優佳",
     nameSpaced: "影山 優佳",
     uid: "4"
@@ -51,7 +51,7 @@ export const members: Member[] = [
   {
     birthdate: "1998-02-02",
     generation: generation1,
-    graduatedAt: "2025-01-31T03:00:00",
+    graduatedAt: "2025-01-31T03:00:00Z",
     name: "加藤史帆",
     nameSpaced: "加藤 史帆",
     uid: "5"
@@ -59,7 +59,7 @@ export const members: Member[] = [
   {
     birthdate: "1997-09-05",
     generation: generation1,
-    graduatedAt: "2024-04-30T03:00:00",
+    graduatedAt: "2024-04-30T03:00:00Z",
     name: "齊藤京子",
     nameSpaced: "齊藤 京子",
     uid: "6"
@@ -67,7 +67,7 @@ export const members: Member[] = [
   {
     birthdate: "1996-01-22",
     generation: generation1,
-    graduatedAt: "2025-05-31T03:00:00",
+    graduatedAt: "2025-05-31T03:00:00Z",
     name: "佐々木久美",
     nameSpaced: "佐々木 久美",
     uid: "7"
@@ -75,7 +75,7 @@ export const members: Member[] = [
   {
     birthdate: "1999-12-17",
     generation: generation1,
-    graduatedAt: "2025-05-31T03:00:00",
+    graduatedAt: "2025-05-31T03:00:00Z",
     name: "佐々木美玲",
     nameSpaced: "佐々木 美玲",
     uid: "8"
@@ -83,7 +83,7 @@ export const members: Member[] = [
   {
     birthdate: "1998-09-20",
     generation: generation1,
-    graduatedAt: "2025-05-31T03:00:00",
+    graduatedAt: "2025-05-31T03:00:00Z",
     name: "高瀬愛奈",
     nameSpaced: "高瀬 愛奈",
     uid: "9"
@@ -91,7 +91,7 @@ export const members: Member[] = [
   {
     birthdate: "1998-11-02",
     generation: generation1,
-    graduatedAt: "2024-08-31T03:00:00",
+    graduatedAt: "2024-08-31T03:00:00Z",
     name: "高本彩花",
     nameSpaced: "高本 彩花",
     uid: "10"
@@ -99,7 +99,7 @@ export const members: Member[] = [
   {
     birthdate: "1998-08-23",
     generation: generation1,
-    graduatedAt: "2025-02-28T03:00:00",
+    graduatedAt: "2025-02-28T03:00:00Z",
     name: "東村芽依",
     nameSpaced: "東村 芽依",
     uid: "11"
@@ -116,7 +116,7 @@ export const members: Member[] = [
   {
     birthdate: "2001-07-23",
     generation: generation2,
-    graduatedAt: "2026-01-31T03:00:00",
+    graduatedAt: "2026-01-31T03:00:00Z",
     name: "河田陽菜",
     nameSpaced: "河田 陽菜",
     uid: "13"
@@ -131,7 +131,7 @@ export const members: Member[] = [
   {
     birthdate: "2001-01-18",
     generation: generation2,
-    graduatedAt: "2025-09-30T03:00:00",
+    graduatedAt: "2025-09-30T03:00:00Z",
     name: "富田鈴花",
     nameSpaced: "富田 鈴花",
     uid: "15"
@@ -139,7 +139,7 @@ export const members: Member[] = [
   {
     birthdate: "2001-02-15",
     generation: generation2,
-    graduatedAt: "2025-02-28T03:00:00",
+    graduatedAt: "2025-02-28T03:00:00Z",
     name: "丹生明里",
     nameSpaced: "丹生 明里",
     uid: "16"
@@ -147,7 +147,7 @@ export const members: Member[] = [
   {
     birthdate: "2002-09-28",
     generation: generation2,
-    graduatedAt: "2025-01-31T03:00:00",
+    graduatedAt: "2025-01-31T03:00:00Z",
     name: "濱岸ひより",
     nameSpaced: "濱岸 ひより",
     uid: "17"
@@ -162,7 +162,7 @@ export const members: Member[] = [
   {
     birthdate: "1998-04-28",
     generation: generation2,
-    graduatedAt: "2023-01-31T03:00:00",
+    graduatedAt: "2023-01-31T03:00:00Z",
     name: "宮田愛萌",
     nameSpaced: "宮田 愛萌",
     uid: "19"
@@ -170,7 +170,7 @@ export const members: Member[] = [
   {
     birthdate: "2000-02-24",
     generation: generation2,
-    graduatedAt: "2022-08-31T03:00:00",
+    graduatedAt: "2022-08-31T03:00:00Z",
     name: "渡邉美穂",
     nameSpaced: "渡邉 美穂",
     uid: "20"
@@ -217,7 +217,7 @@ export const members: Member[] = [
   {
     birthdate: "2004-08-15",
     generation: generation4,
-    graduatedAt: "2024-02-29T03:00:00",
+    graduatedAt: "2024-02-29T03:00:00Z",
     name: "岸帆夏",
     nameSpaced: "岸 帆夏",
     uid: "26"
