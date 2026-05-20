@@ -37,5 +37,5 @@
     "skipLibCheck": true,
     "moduleResolution": "bundler"
   },
-  "include": ["packages/"]
+  "include": ["src/"]
 }
