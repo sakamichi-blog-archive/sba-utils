@@ -4,12 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-catalogs:
-  default:
-    typescript:
-      specifier: ^6.0.3
-      version: 6.0.3
-
 importers:
 
   .:
@@ -21,7 +15,7 @@ importers:
         specifier: ^1.62.0
         version: 1.62.0
       typescript:
-        specifier: 'catalog:'
+        specifier: ^6.0.3
         version: 6.0.3
 
 packages:
