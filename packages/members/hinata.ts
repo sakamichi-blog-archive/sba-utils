@@ -6,14 +6,6 @@ const generation3: Generation = { key: "hinata-3", seq: 3, name: "3期生" }
 const generation4: Generation = { key: "hinata-4", seq: 4, name: "4期生" }
 const generation5: Generation = { key: "hinata-5", seq: 5, name: "5期生" }
 
-export const generations: Generation[] = [
-  generation1,
-  generation2,
-  generation3,
-  generation4,
-  generation5
-]
-
 export const members: Member[] = [
   // 1st generation
   {

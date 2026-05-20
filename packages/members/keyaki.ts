@@ -6,14 +6,6 @@ const hiraganaGeneration2: Generation = { key: "hiragana-2", name: "けやき坂
 const generation2: Generation = { key: "keyaki-2", name: "2期生", seq: 4 }
 const hiraganaGeneration3: Generation = { key: "hiragana-3", name: "けやき坂46 3期生", seq: 5 }
 
-export const generations: Generation[] = [
-  generation1,
-  hiraganaGeneration1,
-  hiraganaGeneration2,
-  generation2,
-  hiraganaGeneration3
-]
-
 export const members: Member[] = [
   // 1st generation
   {
