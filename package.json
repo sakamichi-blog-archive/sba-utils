@@ -5,8 +5,7 @@
   "description": "Utils written in JavaScript",
   "type": "module",
   "exports": {
-    ".": "./src/index.js",
-    "./members": "./src/members/index.js"
+    "./members": "./dist/members/index.js"
   },
   "scripts": {
     "format": "oxfmt --check",
