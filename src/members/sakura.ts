@@ -1,4 +1,4 @@
-import type { Generation, Member } from "./common.js"
+import type { Generation, Member } from "./types"
 
 const generation1: Generation = { key: "sakura-1", seq: 1, name: "1期生" }
 const generation2: Generation = { key: "sakura-2", seq: 2, name: "2期生" }

@@ -1,8 +1,6 @@
-// Members data exports
-export { members as hinataMembers } from "./hinata.js"
-export { members as keyakiMembers } from "./keyaki.js"
-export { members as nogiMembers } from "./nogi.js"
-export { members as sakuraMembers } from "./sakura.js"
+export type { Generation, Member } from "./types"
 
-// Re-export types
-export type { Generation, Member } from "./common.js"
+export { members as hinataMembers } from "./hinata"
+export { members as keyakiMembers } from "./keyaki"
+export { members as nogiMembers } from "./nogi"
+export { members as sakuraMembers } from "./sakura"
