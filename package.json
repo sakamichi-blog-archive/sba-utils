@@ -2,7 +2,12 @@
   "name": "@sakamichi-blog-archive/utils",
   "version": "0.0.1",
   "private": true,
-  "description": "",
+  "description": "Utils written in JavaScript",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./members": "./src/members/index.js"
+  },
   "scripts": {
     "format": "oxfmt --check",
     "format:fix": "oxfmt",
