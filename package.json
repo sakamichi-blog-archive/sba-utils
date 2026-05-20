@@ -8,6 +8,7 @@
     "./members": "./dist/members/index.js"
   },
   "scripts": {
+    "build": "tsc",
     "format": "oxfmt --check",
     "format:fix": "oxfmt",
     "lint": "oxlint",
