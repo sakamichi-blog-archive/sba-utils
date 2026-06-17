@@ -1,8 +1,12 @@
 {
   "name": "@sakamichi-blog-archive/utils",
   "version": "0.0.1",
-  "private": true,
   "description": "Utils written in JavaScript",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sakamichi-blog-archive/sba-utils.git"
+  },
   "files": [
     "dist/"
   ],
@@ -12,6 +16,10 @@
       "types": "./dist/members.d.mts",
       "import": "./dist/members.mjs"
     }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "build": "tsdown",
@@ -37,6 +45,9 @@
       "name": "node",
       "version": "^24.16.0"
     }
+  },
+  "engines": {
+    "node": "^24.16.0"
   },
   "packageManager": "pnpm@11.7.0+sha512.19cc852c120c7125760f2443ee6be0ca5b40f9f50598de1a09a1f177503e010e57c23c77646e01e761de59bf874fb22a3398c33ab9691fc13eb946b6f0f4d620"
 }
