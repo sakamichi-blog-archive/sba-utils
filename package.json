@@ -3,9 +3,15 @@
   "version": "0.0.1",
   "private": true,
   "description": "Utils written in JavaScript",
+  "files": [
+    "dist/"
+  ],
   "type": "module",
   "exports": {
-    "./members": "./dist/members/index.js"
+    "./members": {
+      "types": "./dist/members.d.mts",
+      "import": "./dist/members.mjs"
+    }
   },
   "scripts": {
     "build": "tsc",
