@@ -1,6 +1,9 @@
+[settings]
+install_before = "3d"
+lockfile = true
+pin = true
+
 [tools]
 node = "24"
-
-[settings]
 
 [tasks]
