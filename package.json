@@ -16,8 +16,10 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.3",
     "oxfmt": "^0.47.0",
     "oxlint": "^1.62.0",
+    "publint": "^0.3.21",
     "typescript": "^6.0.3",
     "vite-plus": "^0.1.24"
   },
