@@ -1,0 +1,28 @@
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    commit-message:
+      prefix: chore(github)
+    cooldown:
+      default-days: 3
+    groups:
+      all-non-major:
+        patterns: ["*"]
+        update-types: [minor, patch]
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: backend
+    commit-message:
+      prefix: chore
+    cooldown:
+      default-days: 3
+    groups:
+      all-non-major:
+        patterns: ["*"]
+        update-types: [minor, patch]
+    schedule:
+      interval: daily
