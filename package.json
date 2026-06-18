@@ -12,6 +12,10 @@
   ],
   "type": "module",
   "exports": {
+    "./blogs": {
+      "types": "./dist/blogs.d.mts",
+      "import": "./dist/blogs.mjs"
+    },
     "./members": {
       "types": "./dist/members.d.mts",
       "import": "./dist/members.mjs"
