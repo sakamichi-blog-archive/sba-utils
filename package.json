@@ -33,6 +33,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "cheerio": "^1.2.0",
     "esprima": "^4.0.1",
     "static-eval": "^2.1.1"
   },
