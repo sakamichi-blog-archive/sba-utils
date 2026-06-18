@@ -32,6 +32,10 @@
     "prepack": "pnpm run build",
     "typecheck": "tsc --noEmit"
   },
+  "dependencies": {
+    "esprima": "^4.0.1",
+    "static-eval": "^2.1.1"
+  },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.3",
     "oxfmt": "^0.54.0",
