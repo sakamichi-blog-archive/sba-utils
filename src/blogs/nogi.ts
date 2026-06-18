@@ -2,7 +2,7 @@ import * as z from "zod"
 
 import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getIma, parseDatetimeJst } from "../shared/datetime"
-import { FetchStatusError } from "../shared/errors"
+import { FetchStatusError, ParseError } from "../shared/errors"
 import { castStringToIntegerSchema } from "../shared/schemas"
 import type { BlogWithHtml } from "./_types"
 import { findImagesInHtml, getJavaScriptArgument, normalizeFullWidthNumbers } from "./_utils"
@@ -61,7 +61,7 @@ export function getNogiBlogUrl(uid: number): string {
 export function parseNogiBlogsJs(js: string): BlogWithHtml[] {
   const functionArgument = getJavaScriptArgument(js, "res")
   if (functionArgument === undefined) {
-    throw new Error("Failed to find JavaScript function argument")
+    throw new ParseError("Failed to find JavaScript function argument")
   }
 
   const { data } = getBlogsFunctionArgumentSchema.parse(functionArgument)
