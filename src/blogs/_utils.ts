@@ -76,6 +76,14 @@ export function getJavaScriptArgument<T>(js: string, functionName: string): T | 
   }
 }
 
+/** Extract the numeric UID from a diary detail URL, e.g. `.../diary/detail/104660?...` → `104660` */
+export function getUidFromUrl(url: string | URL): number | undefined {
+  const { pathname } = url instanceof URL ? url : new URL(url)
+  const match = pathname.match(/\/diary\/detail\/(\d+)/)
+  if (match === null) return undefined
+  return Number(match[1])
+}
+
 /**
  * Convert full-width numbers to half-width
  * @see {@link https://www.yoheim.net/blog.php?q=20191101}
