@@ -1,19 +1,11 @@
 import * as cheerio from "cheerio"
-import dayjs from "dayjs"
-import customParseFormat from "dayjs/plugin/customParseFormat"
-import timezone from "dayjs/plugin/timezone"
-import utc from "dayjs/plugin/utc"
 
-import { TIMEZONE_JAPAN, USER_AGENT_DESKTOP } from "../shared/constants"
+import { USER_AGENT_DESKTOP } from "../shared/constants"
+import { getIma, parseDatetimeJst } from "../shared/datetime"
 import type { BlogWithHtml } from "./_types"
 import { findImagesInHtml, getUidFromUrl } from "./_utils"
 
-dayjs.extend(customParseFormat)
-dayjs.extend(timezone)
-dayjs.extend(utc)
-
 const BLOGS_PAGE_URL = "https://www.hinatazaka46.com/s/official/diary/member/list"
-const DATETIME_FORMAT = "YYYY.M.D HH:mm"
 
 export async function fetchHinataBlogs(): Promise<BlogWithHtml[]> {
   const html = await fetchHinataBlogsHtml()
@@ -21,7 +13,7 @@ export async function fetchHinataBlogs(): Promise<BlogWithHtml[]> {
 }
 
 export async function fetchHinataBlogsHtml(): Promise<string> {
-  const response = await fetch(`${BLOGS_PAGE_URL}?ima=${dayjs().format("mmss")}`, {
+  const response = await fetch(`${BLOGS_PAGE_URL}?ima=${getIma()}`, {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP
     }
@@ -67,7 +59,7 @@ export function parseHinataBlogsHtml(html: string): BlogWithHtml[] {
     }
 
     blogs.push({
-      datetime: dayjs.tz(datetime, DATETIME_FORMAT, TIMEZONE_JAPAN).toDate(),
+      datetime: parseDatetimeJst(datetime),
       html: contentHtml,
       images: findImagesInHtml(contentHtml, url),
       memberName: $(blogElement).find(".p-blog-article__info .c-blog-article__name").text().trim(),

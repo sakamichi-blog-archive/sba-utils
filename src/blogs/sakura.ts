@@ -1,16 +1,9 @@
 import * as cheerio from "cheerio"
-import dayjs from "dayjs"
-import customParseFormat from "dayjs/plugin/customParseFormat"
-import timezone from "dayjs/plugin/timezone"
-import utc from "dayjs/plugin/utc"
 
-import { TIMEZONE_JAPAN, USER_AGENT_DESKTOP } from "../shared/constants"
+import { USER_AGENT_DESKTOP } from "../shared/constants"
+import { getIma, parseDatetimeJst } from "../shared/datetime"
 import type { BlogWithHtml } from "./_types"
 import { findImagesInHtml, getUidFromUrl } from "./_utils"
-
-dayjs.extend(customParseFormat)
-dayjs.extend(timezone)
-dayjs.extend(utc)
 
 export interface SakuraBlog {
   /** Publish date, without time info */
@@ -21,8 +14,6 @@ export interface SakuraBlog {
   url: string
 }
 
-const DATE_FORMAT = "YYYY/M/DD"
-const DATETIME_FORMAT = "YYYY/MM/DD HH:mm"
 const BLOGS_PAGE_URL = "https://sakurazaka46.com/s/s46/diary/blog/list"
 
 export async function fetchSakuraBlog(uid: number): Promise<BlogWithHtml> {
@@ -50,7 +41,7 @@ async function fetchSakuraBlogHtml(uid: number): Promise<string> {
 }
 
 export async function fetchSakuraBlogsHtml(): Promise<string> {
-  const response = await fetch(`${BLOGS_PAGE_URL}?ima=${dayjs().format("mmss")}`, {
+  const response = await fetch(`${BLOGS_PAGE_URL}?ima=${getIma()}`, {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP
     }
@@ -64,7 +55,7 @@ export async function fetchSakuraBlogsHtml(): Promise<string> {
 }
 
 export function getSakuraBlogUrl(uid: number): string {
-  return `https://sakurazaka46.com/s/s46/diary/detail/${uid}?ima=${dayjs().format("mmss")}&cd=blog`
+  return `https://sakurazaka46.com/s/s46/diary/detail/${uid}?ima=${getIma()}&cd=blog`
 }
 
 function parseSakuraBlogHtml(html: string, uid: number): BlogWithHtml {
@@ -77,7 +68,7 @@ function parseSakuraBlogHtml(html: string, uid: number): BlogWithHtml {
   const url = getSakuraBlogUrl(uid)
 
   return {
-    datetime: dayjs.tz(datetime, DATETIME_FORMAT, TIMEZONE_JAPAN).toDate(),
+    datetime: parseDatetimeJst(datetime),
     html: contentHtml,
     images: findImagesInHtml(contentHtml, url),
     memberName: $(articleElement).find(".col-r .blog-foot .txt p.name").text().trim(),
@@ -112,7 +103,7 @@ export function parseSakuraBlogsHtml(html: string): SakuraBlog[] {
     }
 
     blogs.push({
-      date: dayjs.tz(date, DATE_FORMAT, TIMEZONE_JAPAN).toDate(),
+      date: parseDatetimeJst(date),
       memberName: $(blogElement).find("a .wrap-bg .txt .prof .prof-in p.name").text().trim(),
       title: $(blogElement).find("a .wrap-bg .txt .date-title h3.title").first().text().trim(),
       uid,

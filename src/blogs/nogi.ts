@@ -1,20 +1,12 @@
-import dayjs from "dayjs"
-import customParseFormat from "dayjs/plugin/customParseFormat"
-import timezone from "dayjs/plugin/timezone"
-import utc from "dayjs/plugin/utc"
 import * as z from "zod"
 
-import { TIMEZONE_JAPAN, USER_AGENT_DESKTOP } from "../shared/constants"
+import { USER_AGENT_DESKTOP } from "../shared/constants"
+import { getIma, parseDatetimeJst } from "../shared/datetime"
 import { castStringToIntegerSchema } from "../shared/schemas"
 import type { BlogWithHtml } from "./_types"
 import { findImagesInHtml, getJavaScriptArgument, normalizeFullWidthNumbers } from "./_utils"
 
-dayjs.extend(customParseFormat)
-dayjs.extend(timezone)
-dayjs.extend(utc)
-
 const BLOGS_API_ENDPOINT = "https://www.nogizaka46.com/s/n46/api/list/blog"
-const DATETIME_FORMAT = "YYYY/MM/DD HH:mm:ss"
 
 const getBlogsFunctionArgumentSchema = z.object({
   /** Blogs */
@@ -43,7 +35,7 @@ export async function fetchNogiBlogs(): Promise<BlogWithHtml[]> {
 
 export async function fetchNogiBlogsJs(): Promise<string> {
   const params = new URLSearchParams({
-    ima: dayjs().format("mmss"),
+    ima: getIma(),
     rw: "32",
     st: "0",
     callback: "res"
@@ -62,7 +54,7 @@ export async function fetchNogiBlogsJs(): Promise<string> {
 }
 
 export function getNogiBlogUrl(uid: number): string {
-  return `https://www.nogizaka46.com/s/n46/diary/detail/${uid}?ima=${dayjs().format("mmss")}`
+  return `https://www.nogizaka46.com/s/n46/diary/detail/${uid}?ima=${getIma()}`
 }
 
 export function parseNogiBlogsJs(js: string): BlogWithHtml[] {
@@ -76,7 +68,7 @@ export function parseNogiBlogsJs(js: string): BlogWithHtml[] {
   return data
     .map<BlogWithHtml>(blog => {
       return {
-        datetime: dayjs.tz(blog.date, DATETIME_FORMAT, TIMEZONE_JAPAN).toDate(),
+        datetime: parseDatetimeJst(blog.date),
         html: blog.text.trim(),
         images: findImagesInHtml(blog.text, blog.link),
         memberName: normalizeFullWidthNumbers(blog.name.trim()),
