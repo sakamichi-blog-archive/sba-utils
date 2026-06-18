@@ -75,3 +75,11 @@ export function getJavaScriptArgument<T>(js: string, functionName: string): T | 
     console.warn(e)
   }
 }
+
+/**
+ * Convert full-width numbers to half-width
+ * @see {@link https://www.yoheim.net/blog.php?q=20191101}
+ */
+export function normalizeFullWidthNumbers(name: string): string {
+  return name.replace(/[０-９]/g, str => String.fromCharCode(str.charCodeAt(0) - 0xfee0))
+}
