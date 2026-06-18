@@ -39,7 +39,6 @@
   },
   "dependencies": {
     "cheerio": "^1.2.0",
-    "dayjs": "^1.11.21",
     "esprima": "^4.0.1",
     "static-eval": "^2.1.1",
     "zod": "^4.4.3"
