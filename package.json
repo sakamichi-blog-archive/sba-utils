@@ -38,6 +38,8 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.3",
+    "@types/esprima": "^4.0.6",
+    "@types/static-eval": "^0.2.34",
     "oxfmt": "^0.54.0",
     "oxlint": "^1.69.0",
     "publint": "^0.3.21",
