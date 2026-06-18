@@ -2,6 +2,7 @@ import * as cheerio from "cheerio"
 
 import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getIma, parseDatetimeJst } from "../shared/datetime"
+import { FetchStatusError } from "../shared/errors"
 import type { BlogWithHtml } from "./_types"
 import { findImagesInHtml, getUidFromUrl } from "./_utils"
 
@@ -20,7 +21,7 @@ export async function fetchHinataBlogsHtml(): Promise<string> {
   })
   if (response.status !== 200) {
     await response.body?.cancel()
-    throw new Error(`Invalid status code ${response.status} - ${response.url}`)
+    throw new FetchStatusError(response.status, response.url)
   }
 
   return response.text()

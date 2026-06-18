@@ -2,6 +2,7 @@ import * as z from "zod"
 
 import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getIma, parseDatetimeJst } from "../shared/datetime"
+import { FetchStatusError } from "../shared/errors"
 import { castStringToIntegerSchema } from "../shared/schemas"
 import type { BlogWithHtml } from "./_types"
 import { findImagesInHtml, getJavaScriptArgument, normalizeFullWidthNumbers } from "./_utils"
@@ -47,7 +48,7 @@ export async function fetchNogiBlogsJs(): Promise<string> {
   })
   if (response.status !== 200) {
     await response.body?.cancel()
-    throw new Error(`Invalid status code ${response.status} - ${response.url}`)
+    throw new FetchStatusError(response.status, response.url)
   }
 
   return response.text()

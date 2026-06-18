@@ -13,6 +13,7 @@ import {
   parseNogiBlogsJs,
   parseSakuraBlogsHtml
 } from "./blogs/index"
+import { FetchStatusError } from "./shared/errors"
 export {
   fetchHinataBlogs,
   fetchHinataBlogsHtml,
@@ -21,6 +22,7 @@ export {
   fetchSakuraBlog,
   fetchSakuraBlogs,
   fetchSakuraBlogsHtml,
+  FetchStatusError,
   getHinataBlogUrl,
   getNogiBlogUrl,
   getSakuraBlogUrl,
