@@ -9,19 +9,19 @@ import {
 
 describe("getUidFromUrl", () => {
   it("extracts uid from full URL", () => {
-    expect(getUidFromUrl("https://www.nogizaka46.com/s/n46/diary/detail/104660?ima=2926")).toBe(
+    expect(getUidFromUrl("https://example.com/s/n46/diary/detail/104660?ima=2926")).toBe(
       104660
     )
   })
 
   it("extracts uid from URL object", () => {
-    expect(getUidFromUrl(new URL("https://www.nogizaka46.com/s/n46/diary/detail/104660"))).toBe(
+    expect(getUidFromUrl(new URL("https://example.com/s/n46/diary/detail/104660"))).toBe(
       104660
     )
   })
 
   it("returns undefined when path has no diary/detail segment", () => {
-    expect(getUidFromUrl("https://www.nogizaka46.com/s/n46/diary/list")).toBeUndefined()
+    expect(getUidFromUrl("https://example.com/diary/list")).toBeUndefined()
   })
 })
 

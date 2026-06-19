@@ -43,7 +43,7 @@ describe("parseNogiBlogsJs", () => {
   })
 
   it("normalizes full-width numbers in member name", () => {
-    const js = `res({"data":[{"code":"104999","date":"2026/06/07 17:18:49","link":"https://www.nogizaka46.com/s/n46/diary/detail/104999","name":"田中　２号","text":"","title":"Test"}]})`
+    const js = `res({"data":[{"code":"104999","date":"2026/06/07 17:18:49","link":"https://example.com/s/n46/diary/detail/104999","name":"田中　２号","text":"","title":"Test"}]})`
     const [blog] = parseNogiBlogsJs(js)
     expect(blog?.memberName).toBe("田中　2号")
   })
