@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest"
 import { FetchStatusError } from "../shared/errors"
 import { readFixture } from "../test/utils"
 import {
+  fetchSakuraBlog,
   fetchSakuraBlogsHtml,
   getSakuraBlogUrl,
   parseSakuraBlogHtml,
@@ -45,6 +46,20 @@ describe("parseSakuraBlogHtml", () => {
     expect(blog.title).toBe("Title One")
     expect(blog.datetime).toEqual(new Date("2024-05-03T09:05:00+09:00"))
     expect(blog.images).toHaveLength(1)
+  })
+})
+
+describe("fetchSakuraBlog", () => {
+  afterEach(() => vi.restoreAllMocks())
+
+  it("throws FetchStatusError on non-200", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue({ status: 404, url: "https://example.com", body: { cancel: vi.fn() } })
+    )
+    await expect(fetchSakuraBlog(300001)).rejects.toBeInstanceOf(FetchStatusError)
   })
 })
 

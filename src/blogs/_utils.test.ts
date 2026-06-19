@@ -53,6 +53,16 @@ describe("findImagesInHtml", () => {
     const images = findImagesInHtml('<img src="   ">', BASE)
     expect(images).toHaveLength(0)
   })
+
+  it("skips img with no src attribute", () => {
+    const images = findImagesInHtml("<img>", BASE)
+    expect(images).toHaveLength(0)
+  })
+
+  it("skips img with non-http src", () => {
+    const images = findImagesInHtml('<img src="data:image/png;base64,abc">', BASE)
+    expect(images).toHaveLength(0)
+  })
 })
 
 describe("normalizeFullWidthNumbers", () => {

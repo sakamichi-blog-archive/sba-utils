@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest"
 import { FetchStatusError } from "../shared/errors"
 import { readFixture } from "../test/utils"
 import {
+  fetchHinataBlog,
   fetchHinataBlogHtml,
   fetchHinataBlogsHtml,
   getHinataBlogUrl,
@@ -47,6 +48,20 @@ describe("parseHinataBlogHtml", () => {
     expect(blog.title).toBe("Title One")
     expect(blog.datetime).toEqual(new Date("2024-05-03T09:05:00+09:00"))
     expect(blog.images).toHaveLength(1)
+  })
+})
+
+describe("fetchHinataBlog", () => {
+  afterEach(() => vi.restoreAllMocks())
+
+  it("throws FetchStatusError on non-200", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue({ status: 404, url: "https://example.com", body: { cancel: vi.fn() } })
+    )
+    await expect(fetchHinataBlog(100001)).rejects.toBeInstanceOf(FetchStatusError)
   })
 })
 
