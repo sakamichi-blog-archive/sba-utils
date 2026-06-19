@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import {
   findImagesInHtml,
-  getJavaScriptArgument,
+  parseJsonpArgument,
   getUidFromUrl,
   normalizeFullWidthNumbers
 } from "./_utils"
@@ -79,12 +79,12 @@ describe("normalizeFullWidthNumbers", () => {
   })
 })
 
-describe("getJavaScriptArgument", () => {
+describe("parseJsonpArgument", () => {
   it("extracts single argument from function call", () => {
-    expect(getJavaScriptArgument('res({"key":"value"})', "res")).toEqual({ key: "value" })
+    expect(parseJsonpArgument('res({"key":"value"})', "res")).toEqual({ key: "value" })
   })
 
   it("returns undefined when function name does not match", () => {
-    expect(getJavaScriptArgument('res({"key":"value"})', "other")).toBeUndefined()
+    expect(parseJsonpArgument('res({"key":"value"})', "other")).toBeUndefined()
   })
 })

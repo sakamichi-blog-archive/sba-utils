@@ -6,7 +6,7 @@ import { getIma, parseDatetimeJst } from "../shared/datetime"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import { castStringToIntegerSchema } from "../shared/schemas"
 import type { BlogWithHtml } from "./_types"
-import { findImagesInHtml, getJavaScriptArgument, normalizeFullWidthNumbers } from "./_utils"
+import { findImagesInHtml, parseJsonpArgument, normalizeFullWidthNumbers } from "./_utils"
 
 const BLOGS_API_ENDPOINT = "https://www.nogizaka46.com/s/n46/api/list/blog"
 
@@ -106,7 +106,7 @@ export function parseNogiBlogHtml(html: string, uid: number): BlogWithHtml {
 }
 
 export function parseNogiBlogsJs(js: string): BlogWithHtml[] {
-  const functionArgument = getJavaScriptArgument(js, "res")
+  const functionArgument = parseJsonpArgument(js, "res")
   if (functionArgument === undefined) {
     throw new ParseError("Failed to find JavaScript function argument")
   }

@@ -1,6 +1,4 @@
 import * as cheerio from "cheerio"
-import { parseScript } from "esprima"
-import evaluate from "static-eval"
 
 type FindImagesInHtmlOutput = {
   /** Absolute URL of parent `<a>` element `href` attribute */
@@ -50,29 +48,14 @@ export function findImagesInHtml(html: string, blogUrl: string | URL): FindImage
   return images
 }
 
-/** Get function argument in JavaScript string */
-export function getJavaScriptArgument<T>(js: string, functionName: string): T | undefined {
+/** Parse the JSON argument from a JSONP callback string, e.g. `res({...})` */
+export function parseJsonpArgument<T>(js: string, functionName: string): T | undefined {
+  const match = js.trim().match(new RegExp(`^${functionName}\\(([\\s\\S]+)\\);?\\s*$`))
+  if (!match) return undefined
   try {
-    const ast = parseScript(js)
-    let data: any
-
-    // oxlint-disable-next-line eslint/no-unmodified-loop-condition
-    for (let i = 0; data === undefined && i < ast.body.length; i++) {
-      const body = ast.body[i]
-      if (body?.type !== "ExpressionStatement") {
-        continue
-      }
-
-      evaluate(body.expression, {
-        [functionName]: (...args: any) => {
-          data = args
-        }
-      })
-    }
-
-    return Array.isArray(data) && data.length === 1 ? data[0] : data
-  } catch (e) {
-    console.warn(e)
+    return JSON.parse(match[1]) as T
+  } catch {
+    return undefined
   }
 }
 
