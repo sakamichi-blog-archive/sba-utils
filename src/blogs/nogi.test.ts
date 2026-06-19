@@ -1,9 +1,7 @@
-import { readFileSync } from "node:fs"
-import { resolve } from "node:path"
-
 import { afterEach, describe, expect, it, vi } from "vitest"
 
 import { FetchStatusError, ParseError } from "../shared/errors"
+import { readFixture } from "../test/utils"
 import {
   fetchNogiBlogHtml,
   fetchNogiBlogsJs,
@@ -12,8 +10,6 @@ import {
   parseNogiBlogsJs
 } from "./nogi"
 
-const fixturesDir = resolve(import.meta.dirname, "__fixtures__")
-
 describe("getNogiBlogUrl", () => {
   it("includes uid in URL", () => {
     expect(getNogiBlogUrl(200001)).toContain("/diary/detail/200001")
@@ -21,7 +17,7 @@ describe("getNogiBlogUrl", () => {
 })
 
 describe("parseNogiBlogsJs", () => {
-  const js = readFileSync(resolve(fixturesDir, "nogi-blogs.js"), "utf-8")
+  const js = readFixture("nogi-blogs.js")
 
   it("returns blogs in chronological order", () => {
     const blogs = parseNogiBlogsJs(js)
@@ -46,7 +42,7 @@ describe("parseNogiBlogsJs", () => {
 })
 
 describe("parseNogiBlogHtml", () => {
-  const html = readFileSync(resolve(fixturesDir, "nogi-blog.html"), "utf-8")
+  const html = readFixture("nogi-blog.html")
 
   it("parses single blog fields correctly", () => {
     const blog = parseNogiBlogHtml(html, 200001)

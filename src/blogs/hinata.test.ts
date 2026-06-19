@@ -1,9 +1,7 @@
-import { readFileSync } from "node:fs"
-import { resolve } from "node:path"
-
 import { afterEach, describe, expect, it, vi } from "vitest"
 
 import { FetchStatusError } from "../shared/errors"
+import { readFixture } from "../test/utils"
 import {
   fetchHinataBlogHtml,
   fetchHinataBlogsHtml,
@@ -12,8 +10,6 @@ import {
   parseHinataBlogsHtml
 } from "./hinata"
 
-const fixturesDir = resolve(import.meta.dirname, "__fixtures__")
-
 describe("getHinataBlogUrl", () => {
   it("includes uid in URL", () => {
     expect(getHinataBlogUrl(100001)).toContain("/diary/detail/100001")
@@ -21,7 +17,7 @@ describe("getHinataBlogUrl", () => {
 })
 
 describe("parseHinataBlogsHtml", () => {
-  const html = readFileSync(resolve(fixturesDir, "hinata-blogs.html"), "utf-8")
+  const html = readFixture("hinata-blogs.html")
 
   it("returns blogs in chronological order", () => {
     const blogs = parseHinataBlogsHtml(html)
@@ -42,7 +38,7 @@ describe("parseHinataBlogsHtml", () => {
 })
 
 describe("parseHinataBlogHtml", () => {
-  const html = readFileSync(resolve(fixturesDir, "hinata-blog.html"), "utf-8")
+  const html = readFixture("hinata-blog.html")
 
   it("parses single blog fields correctly", () => {
     const blog = parseHinataBlogHtml(html, 100001)

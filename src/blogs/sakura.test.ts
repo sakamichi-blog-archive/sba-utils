@@ -1,17 +1,13 @@
-import { readFileSync } from "node:fs"
-import { resolve } from "node:path"
-
 import { afterEach, describe, expect, it, vi } from "vitest"
 
 import { FetchStatusError } from "../shared/errors"
+import { readFixture } from "../test/utils"
 import {
   fetchSakuraBlogsHtml,
   getSakuraBlogUrl,
   parseSakuraBlogHtml,
   parseSakuraBlogsHtml
 } from "./sakura"
-
-const fixturesDir = resolve(import.meta.dirname, "__fixtures__")
 
 describe("getSakuraBlogUrl", () => {
   it("includes uid in URL", () => {
@@ -20,7 +16,7 @@ describe("getSakuraBlogUrl", () => {
 })
 
 describe("parseSakuraBlogsHtml", () => {
-  const html = readFileSync(resolve(fixturesDir, "sakura-blogs.html"), "utf-8")
+  const html = readFixture("sakura-blogs.html")
 
   it("returns blogs in chronological order", () => {
     const blogs = parseSakuraBlogsHtml(html)
@@ -40,7 +36,7 @@ describe("parseSakuraBlogsHtml", () => {
 })
 
 describe("parseSakuraBlogHtml", () => {
-  const html = readFileSync(resolve(fixturesDir, "sakura-blog.html"), "utf-8")
+  const html = readFixture("sakura-blog.html")
 
   it("parses single blog fields correctly", () => {
     const blog = parseSakuraBlogHtml(html, 300001)
