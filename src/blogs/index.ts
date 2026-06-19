@@ -41,6 +41,7 @@ import {
   fetchSakuraBlogs,
   fetchSakuraBlogsHtml,
   getSakuraBlogUrl,
+  parseSakuraBlogHtml,
   parseSakuraBlogsHtml
 } from "./sakura"
 export {
@@ -48,5 +49,6 @@ export {
   fetchSakuraBlogs,
   fetchSakuraBlogsHtml,
   getSakuraBlogUrl,
+  parseSakuraBlogHtml,
   parseSakuraBlogsHtml
 }

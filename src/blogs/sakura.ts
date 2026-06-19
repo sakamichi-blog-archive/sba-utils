@@ -59,7 +59,7 @@ export function getSakuraBlogUrl(uid: number): string {
   return `https://sakurazaka46.com/s/s46/diary/detail/${uid}?ima=${getIma()}&cd=blog`
 }
 
-function parseSakuraBlogHtml(html: string, uid: number): BlogWithHtml {
+export function parseSakuraBlogHtml(html: string, uid: number): BlogWithHtml {
   const $ = cheerio.load(html)
   const articleElement = $("main.site-main .col2-wrap-in2 .col-l-wrap article.post").first()
 

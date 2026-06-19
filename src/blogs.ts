@@ -17,6 +17,7 @@ import {
   parseHinataBlogsHtml,
   parseNogiBlogHtml,
   parseNogiBlogsJs,
+  parseSakuraBlogHtml,
   parseSakuraBlogsHtml
 } from "./blogs/index"
 import { FetchStatusError, ParseError } from "./shared/errors"
@@ -41,5 +42,6 @@ export {
   parseHinataBlogsHtml,
   parseNogiBlogHtml,
   parseNogiBlogsJs,
+  parseSakuraBlogHtml,
   parseSakuraBlogsHtml
 }
