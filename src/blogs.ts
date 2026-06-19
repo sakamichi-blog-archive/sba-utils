@@ -1,6 +1,10 @@
 import {
+  fetchHinataBlog,
+  fetchHinataBlogHtml,
   fetchHinataBlogs,
   fetchHinataBlogsHtml,
+  fetchNogiBlog,
+  fetchNogiBlogHtml,
   fetchNogiBlogs,
   fetchNogiBlogsJs,
   fetchSakuraBlog,
@@ -9,14 +13,20 @@ import {
   getHinataBlogUrl,
   getNogiBlogUrl,
   getSakuraBlogUrl,
+  parseHinataBlogHtml,
   parseHinataBlogsHtml,
+  parseNogiBlogHtml,
   parseNogiBlogsJs,
   parseSakuraBlogsHtml
 } from "./blogs/index"
 import { FetchStatusError, ParseError } from "./shared/errors"
 export {
+  fetchHinataBlog,
+  fetchHinataBlogHtml,
   fetchHinataBlogs,
   fetchHinataBlogsHtml,
+  fetchNogiBlog,
+  fetchNogiBlogHtml,
   fetchNogiBlogs,
   fetchNogiBlogsJs,
   fetchSakuraBlog,
@@ -27,7 +37,9 @@ export {
   getHinataBlogUrl,
   getNogiBlogUrl,
   getSakuraBlogUrl,
+  parseHinataBlogHtml,
   parseHinataBlogsHtml,
+  parseNogiBlogHtml,
   parseNogiBlogsJs,
   parseSakuraBlogsHtml
 }

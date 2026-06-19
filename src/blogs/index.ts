@@ -1,13 +1,40 @@
 import {
+  fetchHinataBlog,
+  fetchHinataBlogHtml,
   fetchHinataBlogs,
   fetchHinataBlogsHtml,
   getHinataBlogUrl,
+  parseHinataBlogHtml,
   parseHinataBlogsHtml
 } from "./hinata"
-export { fetchHinataBlogs, fetchHinataBlogsHtml, getHinataBlogUrl, parseHinataBlogsHtml }
+export {
+  fetchHinataBlog,
+  fetchHinataBlogHtml,
+  fetchHinataBlogs,
+  fetchHinataBlogsHtml,
+  getHinataBlogUrl,
+  parseHinataBlogHtml,
+  parseHinataBlogsHtml
+}
 
-import { fetchNogiBlogs, fetchNogiBlogsJs, getNogiBlogUrl, parseNogiBlogsJs } from "./nogi"
-export { fetchNogiBlogs, fetchNogiBlogsJs, getNogiBlogUrl, parseNogiBlogsJs }
+import {
+  fetchNogiBlog,
+  fetchNogiBlogHtml,
+  fetchNogiBlogs,
+  fetchNogiBlogsJs,
+  getNogiBlogUrl,
+  parseNogiBlogHtml,
+  parseNogiBlogsJs
+} from "./nogi"
+export {
+  fetchNogiBlog,
+  fetchNogiBlogHtml,
+  fetchNogiBlogs,
+  fetchNogiBlogsJs,
+  getNogiBlogUrl,
+  parseNogiBlogHtml,
+  parseNogiBlogsJs
+}
 
 import {
   fetchSakuraBlog,

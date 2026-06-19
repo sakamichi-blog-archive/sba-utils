@@ -27,8 +27,53 @@ export async function fetchHinataBlogsHtml(): Promise<string> {
   return response.text()
 }
 
+export async function fetchHinataBlog(uid: number): Promise<BlogWithHtml> {
+  const html = await fetchHinataBlogHtml(uid)
+  return parseHinataBlogHtml(html, uid)
+}
+
+export async function fetchHinataBlogHtml(uid: number): Promise<string> {
+  const response = await fetch(getHinataBlogUrl(uid), {
+    headers: {
+      "User-Agent": USER_AGENT_DESKTOP
+    }
+  })
+  if (response.status !== 200) {
+    await response.body?.cancel()
+    throw new FetchStatusError(response.status, response.url)
+  }
+
+  return response.text()
+}
+
 export function getHinataBlogUrl(uid: number): string {
   return `https://www.hinatazaka46.com/s/official/diary/detail/${uid}?ima=0000&cd=member`
+}
+
+export function parseHinataBlogHtml(html: string, uid: number): BlogWithHtml {
+  const $ = cheerio.load(html)
+  const articleElement = $(".l-maincontents--blog .p-blog-group .p-blog-article").first()
+
+  /** `YYYY.M.D HH:mm` format */
+  const datetime = $(articleElement)
+    .find(".p-blog-article__head .p-blog-article__info .c-blog-article__date time")
+    .text()
+    .trim()
+  const contentHtml = $(articleElement).find(".c-blog-article__text").first().html()?.trim() ?? ""
+  const url = getHinataBlogUrl(uid)
+
+  return {
+    datetime: parseDatetimeJst(datetime),
+    html: contentHtml,
+    images: findImagesInHtml(contentHtml, url),
+    memberName: $(articleElement)
+      .find(".p-blog-article__head .p-blog-article__info .c-blog-article__name")
+      .text()
+      .trim(),
+    title: $(articleElement).find(".p-blog-article__head .c-blog-article__title").text().trim(),
+    uid,
+    url
+  }
 }
 
 export function parseHinataBlogsHtml(html: string): BlogWithHtml[] {

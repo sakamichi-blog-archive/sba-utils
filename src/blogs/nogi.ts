@@ -1,3 +1,4 @@
+import * as cheerio from "cheerio"
 import * as z from "zod"
 
 import { USER_AGENT_DESKTOP } from "../shared/constants"
@@ -54,8 +55,54 @@ export async function fetchNogiBlogsJs(): Promise<string> {
   return response.text()
 }
 
+export async function fetchNogiBlog(uid: number): Promise<BlogWithHtml> {
+  const html = await fetchNogiBlogHtml(uid)
+  return parseNogiBlogHtml(html, uid)
+}
+
+export async function fetchNogiBlogHtml(uid: number): Promise<string> {
+  const response = await fetch(getNogiBlogUrl(uid), {
+    headers: {
+      "User-Agent": USER_AGENT_DESKTOP
+    }
+  })
+  if (response.status !== 200) {
+    await response.body?.cancel()
+    throw new FetchStatusError(response.status, response.url)
+  }
+
+  return response.text()
+}
+
 export function getNogiBlogUrl(uid: number): string {
   return `https://www.nogizaka46.com/s/n46/diary/detail/${uid}?ima=${getIma()}`
+}
+
+export function parseNogiBlogHtml(html: string, uid: number): BlogWithHtml {
+  const $ = cheerio.load(html)
+  const articleElement = $(".b--wrap .b--cont main.b--mn .bd--mc")
+  const headerElement = $(articleElement).find("header.bd--hd .bd--hd__in .bd--hd__data")
+
+  /** `YYYY.MM.DD HH:mm` format */
+  const datetime = $(headerElement).find(".bd--hd__sub p.bd--hd__date").text().trim()
+  const contentHtml =
+    $(articleElement).find(".bd--ctt .bd--ctt__in .bd--mn .bd--edit").html()?.trim() ?? ""
+  const url = getNogiBlogUrl(uid)
+
+  return {
+    datetime: parseDatetimeJst(datetime),
+    html: contentHtml,
+    images: findImagesInHtml(contentHtml, url),
+    memberName: $(articleElement)
+      .find(
+        ".bd--ctt .bd--ctt__in .bd--mn .bd--aside .bd--aside__in .bd--prof .bd--prof__bg .bd--prof__in .bd--prof__tex a.bd--prof__tex__a p.bd--prof__name"
+      )
+      .text()
+      .trim(),
+    title: $(headerElement).find("h1.bd--hd__ttl").text().trim(),
+    uid,
+    url
+  }
 }
 
 export function parseNogiBlogsJs(js: string): BlogWithHtml[] {
