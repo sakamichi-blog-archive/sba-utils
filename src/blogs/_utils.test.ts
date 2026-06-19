@@ -1,14 +1,23 @@
 import { describe, expect, it } from "vitest"
 
-import { findImagesInHtml, getJavaScriptArgument, getUidFromUrl, normalizeFullWidthNumbers } from "./_utils"
+import {
+  findImagesInHtml,
+  getJavaScriptArgument,
+  getUidFromUrl,
+  normalizeFullWidthNumbers
+} from "./_utils"
 
 describe("getUidFromUrl", () => {
   it("extracts uid from full URL", () => {
-    expect(getUidFromUrl("https://www.nogizaka46.com/s/n46/diary/detail/104660?ima=2926")).toBe(104660)
+    expect(getUidFromUrl("https://www.nogizaka46.com/s/n46/diary/detail/104660?ima=2926")).toBe(
+      104660
+    )
   })
 
   it("extracts uid from URL object", () => {
-    expect(getUidFromUrl(new URL("https://www.nogizaka46.com/s/n46/diary/detail/104660"))).toBe(104660)
+    expect(getUidFromUrl(new URL("https://www.nogizaka46.com/s/n46/diary/detail/104660"))).toBe(
+      104660
+    )
   })
 
   it("returns undefined when path has no diary/detail segment", () => {

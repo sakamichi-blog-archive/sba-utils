@@ -1,9 +1,16 @@
 import { readFileSync } from "node:fs"
 import { resolve } from "node:path"
+
 import { afterEach, describe, expect, it, vi } from "vitest"
 
 import { FetchStatusError, ParseError } from "../shared/errors"
-import { fetchNogiBlogHtml, fetchNogiBlogsJs, getNogiBlogUrl, parseNogiBlogHtml, parseNogiBlogsJs } from "./nogi"
+import {
+  fetchNogiBlogHtml,
+  fetchNogiBlogsJs,
+  getNogiBlogUrl,
+  parseNogiBlogHtml,
+  parseNogiBlogsJs
+} from "./nogi"
 
 const fixturesDir = resolve(import.meta.dirname, "__fixtures__")
 
@@ -55,7 +62,12 @@ describe("fetchNogiBlogsJs", () => {
   afterEach(() => vi.restoreAllMocks())
 
   it("throws FetchStatusError on non-200", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ status: 404, url: "https://example.com", body: { cancel: vi.fn() } }))
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue({ status: 404, url: "https://example.com", body: { cancel: vi.fn() } })
+    )
     await expect(fetchNogiBlogsJs()).rejects.toBeInstanceOf(FetchStatusError)
   })
 })
@@ -64,7 +76,12 @@ describe("fetchNogiBlogHtml", () => {
   afterEach(() => vi.restoreAllMocks())
 
   it("throws FetchStatusError on non-200", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ status: 500, url: "https://example.com", body: { cancel: vi.fn() } }))
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue({ status: 500, url: "https://example.com", body: { cancel: vi.fn() } })
+    )
     await expect(fetchNogiBlogHtml(200001)).rejects.toBeInstanceOf(FetchStatusError)
   })
 })

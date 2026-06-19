@@ -1,9 +1,16 @@
 import { readFileSync } from "node:fs"
 import { resolve } from "node:path"
+
 import { afterEach, describe, expect, it, vi } from "vitest"
 
 import { FetchStatusError } from "../shared/errors"
-import { fetchHinataBlogHtml, fetchHinataBlogsHtml, getHinataBlogUrl, parseHinataBlogHtml, parseHinataBlogsHtml } from "./hinata"
+import {
+  fetchHinataBlogHtml,
+  fetchHinataBlogsHtml,
+  getHinataBlogUrl,
+  parseHinataBlogHtml,
+  parseHinataBlogsHtml
+} from "./hinata"
 
 const fixturesDir = resolve(import.meta.dirname, "__fixtures__")
 
@@ -51,7 +58,12 @@ describe("fetchHinataBlogsHtml", () => {
   afterEach(() => vi.restoreAllMocks())
 
   it("throws FetchStatusError on non-200", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ status: 404, url: "https://example.com", body: { cancel: vi.fn() } }))
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue({ status: 404, url: "https://example.com", body: { cancel: vi.fn() } })
+    )
     await expect(fetchHinataBlogsHtml()).rejects.toBeInstanceOf(FetchStatusError)
   })
 })
@@ -60,7 +72,12 @@ describe("fetchHinataBlogHtml", () => {
   afterEach(() => vi.restoreAllMocks())
 
   it("throws FetchStatusError on non-200", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ status: 500, url: "https://example.com", body: { cancel: vi.fn() } }))
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue({ status: 500, url: "https://example.com", body: { cancel: vi.fn() } })
+    )
     await expect(fetchHinataBlogHtml(100001)).rejects.toBeInstanceOf(FetchStatusError)
   })
 })

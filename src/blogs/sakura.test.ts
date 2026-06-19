@@ -1,9 +1,15 @@
 import { readFileSync } from "node:fs"
 import { resolve } from "node:path"
+
 import { afterEach, describe, expect, it, vi } from "vitest"
 
 import { FetchStatusError } from "../shared/errors"
-import { fetchSakuraBlogsHtml, getSakuraBlogUrl, parseSakuraBlogHtml, parseSakuraBlogsHtml } from "./sakura"
+import {
+  fetchSakuraBlogsHtml,
+  getSakuraBlogUrl,
+  parseSakuraBlogHtml,
+  parseSakuraBlogsHtml
+} from "./sakura"
 
 const fixturesDir = resolve(import.meta.dirname, "__fixtures__")
 
@@ -50,7 +56,12 @@ describe("fetchSakuraBlogsHtml", () => {
   afterEach(() => vi.restoreAllMocks())
 
   it("throws FetchStatusError on non-200", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ status: 403, url: "https://example.com", body: { cancel: vi.fn() } }))
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue({ status: 403, url: "https://example.com", body: { cancel: vi.fn() } })
+    )
     await expect(fetchSakuraBlogsHtml()).rejects.toBeInstanceOf(FetchStatusError)
   })
 })

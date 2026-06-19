@@ -1,1 +1,20 @@
-res({"data":[{"code":"200002","date":"2024/05/04 12:00:00","link":"https://www.nogizaka46.com/s/n46/diary/detail/200002","name":"Kubo Shiori","text":"<p>Content two</p>","title":"Title Two"},{"code":"200001","date":"2024/05/03 09:05:00","link":"https://www.nogizaka46.com/s/n46/diary/detail/200001","name":"Yamashita Mana","text":"<p>Content one</p><img src=\"/img/one.jpg\" />","title":"Title One"}]})
+res({
+  data: [
+    {
+      code: "200002",
+      date: "2024/05/04 12:00:00",
+      link: "https://www.nogizaka46.com/s/n46/diary/detail/200002",
+      name: "Kubo Shiori",
+      text: "<p>Content two</p>",
+      title: "Title Two"
+    },
+    {
+      code: "200001",
+      date: "2024/05/03 09:05:00",
+      link: "https://www.nogizaka46.com/s/n46/diary/detail/200001",
+      name: "Yamashita Mana",
+      text: '<p>Content one</p><img src="/img/one.jpg" />',
+      title: "Title One"
+    }
+  ]
+})
