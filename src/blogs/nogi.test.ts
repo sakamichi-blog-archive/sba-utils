@@ -18,7 +18,7 @@ describe("getNogiBlogUrl", () => {
 })
 
 describe("parseNogiBlogsJs", () => {
-  const js = readFixture("nogi-blogs.js")
+  const js = readFixture("nogi-blogs.jsonp")
 
   it("returns blogs in chronological order", () => {
     const blogs = parseNogiBlogsJs(js)
@@ -43,8 +43,8 @@ describe("parseNogiBlogsJs", () => {
   })
 
   it("normalizes full-width numbers in member name", () => {
-    const js = `res({"data":[{"code":"104999","date":"2026/06/07 17:18:49","link":"https://www.nogizaka46.com/s/n46/diary/detail/104999","name":"５期生","text":"","title":"Test"}]})`
-    const [blog] = parseNogiBlogsJs(js)
+    const fullWidthJs = `res({"data":[{"code":"104999","date":"2026/06/07 17:18:49","link":"https://www.nogizaka46.com/s/n46/diary/detail/104999","name":"５期生","text":"","title":"Test"}]})`
+    const [blog] = parseNogiBlogsJs(fullWidthJs)
     expect(blog?.memberName).toBe("5期生")
   })
 })
