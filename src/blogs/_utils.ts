@@ -49,11 +49,11 @@ export function findImagesInHtml(html: string, blogUrl: string | URL): FindImage
 }
 
 /** Parse the JSON argument from a JSONP callback string, e.g. `res({...})` */
-export function parseJsonpArgument<T>(js: string, functionName: string): T | undefined {
+export function parseJsonpArgument(js: string, functionName: string): unknown {
   const match = js.trim().match(new RegExp(`^${functionName}\\(([\\s\\S]+)\\);?\\s*$`))
-  if (!match) return undefined
+  if (match === null) return undefined
   try {
-    return JSON.parse(match[1]) as T
+    return JSON.parse(match[1]!)
   } catch {
     return undefined
   }
