@@ -23,18 +23,19 @@ describe("parseHinataBlogsHtml", () => {
   it("returns blogs in chronological order", () => {
     const blogs = parseHinataBlogsHtml(html)
     expect(blogs).toHaveLength(2)
-    expect(blogs[0]?.uid).toBe(100001)
-    expect(blogs[1]?.uid).toBe(100002)
+    expect(blogs[0]?.uid).toBe(69781)
+    expect(blogs[1]?.uid).toBe(69855)
   })
 
   it("parses blog fields correctly", () => {
-    const [blog] = parseHinataBlogsHtml(html)
-    expect(blog?.uid).toBe(100001)
-    expect(blog?.memberName).toBe("Kanemura Miku")
-    expect(blog?.title).toBe("Title One")
-    expect(blog?.datetime).toEqual(new Date("2024-05-03T09:05:00+09:00"))
-    expect(blog?.url).toContain("/diary/detail/100001")
-    expect(blog?.images).toHaveLength(1)
+    const [first, second] = parseHinataBlogsHtml(html)
+    expect(first?.uid).toBe(69781)
+    expect(first?.memberName).toBe("佐藤 優羽")
+    expect(first?.title).toBe("何色の花火を待っているのか。")
+    expect(first?.datetime).toEqual(new Date("2026-06-14T11:41:00+09:00"))
+    expect(first?.url).toContain("/diary/detail/69781")
+    expect(first?.images).toHaveLength(1)
+    expect(second?.images).toHaveLength(2)
   })
 })
 
@@ -42,12 +43,12 @@ describe("parseHinataBlogHtml", () => {
   const html = readFixture("hinata-blog.html")
 
   it("parses single blog fields correctly", () => {
-    const blog = parseHinataBlogHtml(html, 100001)
-    expect(blog.uid).toBe(100001)
-    expect(blog.memberName).toBe("Kanemura Miku")
-    expect(blog.title).toBe("Title One")
-    expect(blog.datetime).toEqual(new Date("2024-05-03T09:05:00+09:00"))
-    expect(blog.images).toHaveLength(1)
+    const blog = parseHinataBlogHtml(html, 69781)
+    expect(blog.uid).toBe(69781)
+    expect(blog.memberName).toBe("佐藤 優羽")
+    expect(blog.title).toBe("何色の花火を待っているのか。")
+    expect(blog.datetime).toEqual(new Date("2026-06-14T11:41:00+09:00"))
+    expect(blog.images).toHaveLength(2)
   })
 })
 

@@ -23,18 +23,19 @@ describe("parseNogiBlogsJs", () => {
   it("returns blogs in chronological order", () => {
     const blogs = parseNogiBlogsJs(js)
     expect(blogs).toHaveLength(2)
-    expect(blogs[0]?.uid).toBe(200001)
-    expect(blogs[1]?.uid).toBe(200002)
+    expect(blogs[0]?.uid).toBe(104629)
+    expect(blogs[1]?.uid).toBe(104665)
   })
 
   it("parses blog fields correctly", () => {
-    const [blog] = parseNogiBlogsJs(js)
-    expect(blog?.uid).toBe(200001)
-    expect(blog?.memberName).toBe("Yamashita Mana")
-    expect(blog?.title).toBe("Title One")
-    expect(blog?.datetime).toEqual(new Date("2024-05-03T09:05:00+09:00"))
-    expect(blog?.url).toContain("/diary/detail/200001")
-    expect(blog?.images).toHaveLength(1)
+    const [first, second] = parseNogiBlogsJs(js)
+    expect(first?.uid).toBe(104629)
+    expect(first?.memberName).toBe("矢田 萌華")
+    expect(first?.title).toBe("吾輩は猫である。名前は")
+    expect(first?.datetime).toEqual(new Date("2026-06-07T17:18:49+09:00"))
+    expect(first?.url).toContain("/diary/detail/104629")
+    expect(first?.images).toHaveLength(1)
+    expect(second?.images).toHaveLength(2)
   })
 
   it("throws ParseError when JS has no matching call", () => {
@@ -42,7 +43,7 @@ describe("parseNogiBlogsJs", () => {
   })
 
   it("normalizes full-width numbers in member name", () => {
-    const js = `res({"data":[{"code":"200003","date":"2024/05/05 10:00:00","link":"https://www.nogizaka46.com/s/n46/diary/detail/200003","name":"田中　２号","text":"","title":"Test"}]})`
+    const js = `res({"data":[{"code":"104999","date":"2026/06/07 17:18:49","link":"https://www.nogizaka46.com/s/n46/diary/detail/104999","name":"田中　２号","text":"","title":"Test"}]})`
     const [blog] = parseNogiBlogsJs(js)
     expect(blog?.memberName).toBe("田中　2号")
   })
@@ -52,11 +53,11 @@ describe("parseNogiBlogHtml", () => {
   const html = readFixture("nogi-blog.html")
 
   it("parses single blog fields correctly", () => {
-    const blog = parseNogiBlogHtml(html, 200001)
-    expect(blog.uid).toBe(200001)
-    expect(blog.memberName).toBe("Yamashita Mana")
-    expect(blog.title).toBe("Title One")
-    expect(blog.datetime).toEqual(new Date("2024-05-03T09:05:00+09:00"))
+    const blog = parseNogiBlogHtml(html, 104629)
+    expect(blog.uid).toBe(104629)
+    expect(blog.memberName).toBe("矢田 萌華")
+    expect(blog.title).toBe("吾輩は猫である。名前は")
+    expect(blog.datetime).toEqual(new Date("2026-06-07T17:18:00+09:00"))
     expect(blog.images).toHaveLength(1)
   })
 })
