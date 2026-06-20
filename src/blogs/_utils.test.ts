@@ -7,24 +7,6 @@ import {
   normalizeFullWidthNumbers
 } from "./_utils"
 
-describe("getUidFromUrl", () => {
-  it("extracts uid from full URL", () => {
-    expect(getUidFromUrl("https://www.nogizaka46.com/s/n46/diary/detail/104660?ima=2926")).toBe(
-      104660
-    )
-  })
-
-  it("extracts uid from URL object", () => {
-    expect(getUidFromUrl(new URL("https://www.nogizaka46.com/s/n46/diary/detail/104660"))).toBe(
-      104660
-    )
-  })
-
-  it("returns undefined when path has no diary/detail segment", () => {
-    expect(getUidFromUrl("https://www.nogizaka46.com/s/n46/diary/list")).toBeUndefined()
-  })
-})
-
 describe("findImagesInHtml", () => {
   const BASE = "https://example.com/blog/1"
 
@@ -81,6 +63,24 @@ describe("findImagesInHtml", () => {
     expect(images[0]?.src).toBe("/img/a.jpg")
     expect(images[1]?.src).toBe("/img/b.jpg")
     expect(images[2]?.src).toBe("/img/c.jpg")
+  })
+})
+
+describe("getUidFromUrl", () => {
+  it("extracts uid from full URL", () => {
+    expect(getUidFromUrl("https://www.nogizaka46.com/s/n46/diary/detail/104660?ima=2926")).toBe(
+      104660
+    )
+  })
+
+  it("extracts uid from URL object", () => {
+    expect(getUidFromUrl(new URL("https://www.nogizaka46.com/s/n46/diary/detail/104660"))).toBe(
+      104660
+    )
+  })
+
+  it("returns undefined when path has no diary/detail segment", () => {
+    expect(getUidFromUrl("https://www.nogizaka46.com/s/n46/diary/list")).toBeUndefined()
   })
 })
 

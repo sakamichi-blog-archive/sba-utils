@@ -48,17 +48,6 @@ export function findImagesInHtml(html: string, blogUrl: string | URL): FindImage
   return images
 }
 
-/** Parse the JSON argument from a JSONP callback string, e.g. `res({...})` */
-export function parseJsonpArgument(js: string, functionName: string): unknown {
-  const match = js.trim().match(new RegExp(`^${functionName}\\(([\\s\\S]+)\\);?\\s*$`))
-  if (match === null) return undefined
-  try {
-    return JSON.parse(match[1]!)
-  } catch {
-    return undefined
-  }
-}
-
 /** Extract the numeric UID from a diary detail URL, e.g. `.../diary/detail/104660?...` → `104660` */
 export function getUidFromUrl(url: string | URL): number | undefined {
   const { pathname } = url instanceof URL ? url : new URL(url)
@@ -73,4 +62,15 @@ export function getUidFromUrl(url: string | URL): number | undefined {
  */
 export function normalizeFullWidthNumbers(name: string): string {
   return name.replace(/[０-９]/g, str => String.fromCharCode(str.charCodeAt(0) - 0xfee0))
+}
+
+/** Parse the JSON argument from a JSONP callback string, e.g. `res({...})` */
+export function parseJsonpArgument(js: string, functionName: string): unknown {
+  const match = js.trim().match(new RegExp(`^${functionName}\\(([\\s\\S]+)\\);?\\s*$`))
+  if (match === null) return undefined
+  try {
+    return JSON.parse(match[1]!)
+  } catch {
+    return undefined
+  }
 }
