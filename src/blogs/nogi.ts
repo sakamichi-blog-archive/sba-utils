@@ -6,7 +6,12 @@ import { getIma, parseDatetimeJst } from "../shared/datetime"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import { castStringToIntegerSchema } from "../shared/schemas"
 import type { BlogWithHtml } from "./_types"
-import { findImagesInHtml, getUidFromUrl, normalizeFullWidthNumbers, parseJsonpArgument } from "./_utils"
+import {
+  findImagesInHtml,
+  getUidFromUrl,
+  normalizeFullWidthNumbers,
+  parseJsonpArgument
+} from "./_utils"
 
 const BLOGS_API_ENDPOINT = "https://www.nogizaka46.com/s/n46/api/list/blog"
 

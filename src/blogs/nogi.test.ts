@@ -98,7 +98,9 @@ describe("fetchNogiBlogs", () => {
       ]
     `)
     expect(js).toBe(readFixture("nogi-blogs.jsonp"))
-    expect(url).toBe("https://www.nogizaka46.com/s/n46/api/list/blog?ima=3456&rw=32&st=0&callback=res")
+    expect(url).toBe(
+      "https://www.nogizaka46.com/s/n46/api/list/blog?ima=3456&rw=32&st=0&callback=res"
+    )
   })
 })
 

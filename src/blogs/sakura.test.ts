@@ -74,7 +74,9 @@ describe("fetchSakuraBlogsHtml", () => {
         body: { cancel: vi.fn() }
       })
     )
-    await expect(fetchSakuraBlogsHtml()).resolves.toMatchObject({ html: readFixture("sakura-blogs.html") })
+    await expect(fetchSakuraBlogsHtml()).resolves.toMatchObject({
+      html: readFixture("sakura-blogs.html")
+    })
   })
 })
 

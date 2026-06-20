@@ -129,7 +129,9 @@ describe("fetchHinataBlogsHtml", () => {
         body: { cancel: vi.fn() }
       })
     )
-    await expect(fetchHinataBlogsHtml()).resolves.toMatchObject({ html: readFixture("hinata-blogs.html") })
+    await expect(fetchHinataBlogsHtml()).resolves.toMatchObject({
+      html: readFixture("hinata-blogs.html")
+    })
   })
 })
 
@@ -146,13 +148,19 @@ describe("parseHinataBlogHtml", () => {
 
   it("throws ParseError when article element not found", () => {
     expect(() =>
-      parseHinataBlogHtml("<html></html>", "https://www.hinatazaka46.com/s/official/diary/detail/69781")
+      parseHinataBlogHtml(
+        "<html></html>",
+        "https://www.hinatazaka46.com/s/official/diary/detail/69781"
+      )
     ).toThrow(ParseError)
   })
 
   it("parses single blog fields correctly", () => {
     expect(
-      parseHinataBlogHtml(html, "https://www.hinatazaka46.com/s/official/diary/detail/69781?ima=0000&cd=member")
+      parseHinataBlogHtml(
+        html,
+        "https://www.hinatazaka46.com/s/official/diary/detail/69781?ima=0000&cd=member"
+      )
     ).toMatchInlineSnapshot(`
       {
         "datetime": 2026-06-14T02:41:00.000Z,
