@@ -53,6 +53,21 @@ if (!value) ...
 if (value) ...
 ```
 
+### Guard clauses
+
+Add a blank line after a single-line guard (`if (...) throw` or `if (...) return`):
+
+```ts
+// prefer
+if (uid === undefined) throw new ParseError("...")
+
+const $ = cheerio.load(html)
+
+// avoid
+if (uid === undefined) throw new ParseError("...")
+const $ = cheerio.load(html)
+```
+
 ---
 
 ## Testing
