@@ -2,7 +2,7 @@ import * as cheerio from "cheerio"
 
 import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getIma, parseDatetimeJst } from "../shared/datetime"
-import { FetchStatusError } from "../shared/errors"
+import { FetchStatusError, ParseError } from "../shared/errors"
 import type { BlogWithHtml } from "./_types"
 import { findImagesInHtml, getUidFromUrl } from "./_utils"
 
@@ -53,7 +53,7 @@ export function getHinataBlogUrl(uid: number): string {
 
 export function parseHinataBlogHtml(html: string, url: string): BlogWithHtml {
   const uid = getUidFromUrl(url)
-  if (uid === undefined) throw new Error(`Cannot extract uid from URL: ${url}`)
+  if (uid === undefined) throw new ParseError(`Cannot extract uid from URL: ${url}`)
 
   const $ = cheerio.load(html)
   const articleElement = $(".l-maincontents--blog .p-blog-group .p-blog-article").first()

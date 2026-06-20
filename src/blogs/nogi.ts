@@ -81,7 +81,7 @@ export function getNogiBlogUrl(uid: number): string {
 
 export function parseNogiBlogHtml(html: string, url: string): BlogWithHtml {
   const uid = getUidFromUrl(url)
-  if (uid === undefined) throw new Error(`Cannot extract uid from URL: ${url}`)
+  if (uid === undefined) throw new ParseError(`Cannot extract uid from URL: ${url}`)
 
   const $ = cheerio.load(html)
   const articleElement = $(".b--wrap .b--cont main.b--mn .bd--mc")
