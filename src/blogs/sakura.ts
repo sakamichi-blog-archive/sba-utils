@@ -22,11 +22,6 @@ export async function fetchSakuraBlog(uid: number): Promise<BlogWithHtml> {
   return parseSakuraBlogHtml(html, uid)
 }
 
-export async function fetchSakuraBlogs(): Promise<SakuraBlog[]> {
-  const html = await fetchSakuraBlogsHtml()
-  return parseSakuraBlogsHtml(html)
-}
-
 async function fetchSakuraBlogHtml(uid: number): Promise<string> {
   const response = await fetch(getSakuraBlogUrl(uid), {
     headers: {
@@ -39,6 +34,11 @@ async function fetchSakuraBlogHtml(uid: number): Promise<string> {
   }
 
   return response.text()
+}
+
+export async function fetchSakuraBlogs(): Promise<SakuraBlog[]> {
+  const html = await fetchSakuraBlogsHtml()
+  return parseSakuraBlogsHtml(html)
 }
 
 export async function fetchSakuraBlogsHtml(): Promise<string> {

@@ -30,6 +30,25 @@ const getBlogsFunctionArgumentSchema = z.object({
   )
 })
 
+export async function fetchNogiBlog(uid: number): Promise<BlogWithHtml> {
+  const html = await fetchNogiBlogHtml(uid)
+  return parseNogiBlogHtml(html, uid)
+}
+
+export async function fetchNogiBlogHtml(uid: number): Promise<string> {
+  const response = await fetch(getNogiBlogUrl(uid), {
+    headers: {
+      "User-Agent": USER_AGENT_DESKTOP
+    }
+  })
+  if (response.status !== 200) {
+    await response.body?.cancel()
+    throw new FetchStatusError(response.status, response.url)
+  }
+
+  return response.text()
+}
+
 export async function fetchNogiBlogs(): Promise<BlogWithHtml[]> {
   const js = await fetchNogiBlogsJs()
   return parseNogiBlogsJs(js)
@@ -43,25 +62,6 @@ export async function fetchNogiBlogsJs(): Promise<string> {
     callback: "res"
   })
   const response = await fetch(`${BLOGS_API_ENDPOINT}?${params}`, {
-    headers: {
-      "User-Agent": USER_AGENT_DESKTOP
-    }
-  })
-  if (response.status !== 200) {
-    await response.body?.cancel()
-    throw new FetchStatusError(response.status, response.url)
-  }
-
-  return response.text()
-}
-
-export async function fetchNogiBlog(uid: number): Promise<BlogWithHtml> {
-  const html = await fetchNogiBlogHtml(uid)
-  return parseNogiBlogHtml(html, uid)
-}
-
-export async function fetchNogiBlogHtml(uid: number): Promise<string> {
-  const response = await fetch(getNogiBlogUrl(uid), {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP
     }

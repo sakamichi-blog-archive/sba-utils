@@ -11,6 +11,48 @@ import {
   parseNogiBlogsJs
 } from "./nogi"
 
+describe("fetchNogiBlog", () => {
+  afterEach(() => vi.restoreAllMocks())
+
+  it("throws FetchStatusError on non-200", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue({ status: 404, url: "https://example.com", body: { cancel: vi.fn() } })
+    )
+    await expect(fetchNogiBlog(200001)).rejects.toBeInstanceOf(FetchStatusError)
+  })
+})
+
+describe("fetchNogiBlogHtml", () => {
+  afterEach(() => vi.restoreAllMocks())
+
+  it("throws FetchStatusError on non-200", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue({ status: 500, url: "https://example.com", body: { cancel: vi.fn() } })
+    )
+    await expect(fetchNogiBlogHtml(200001)).rejects.toBeInstanceOf(FetchStatusError)
+  })
+})
+
+describe("fetchNogiBlogsJs", () => {
+  afterEach(() => vi.restoreAllMocks())
+
+  it("throws FetchStatusError on non-200", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue({ status: 404, url: "https://example.com", body: { cancel: vi.fn() } })
+    )
+    await expect(fetchNogiBlogsJs()).rejects.toBeInstanceOf(FetchStatusError)
+  })
+})
+
 describe("getNogiBlogUrl", () => {
   beforeEach(() => vi.useFakeTimers())
   afterEach(() => vi.useRealTimers())
@@ -20,6 +62,19 @@ describe("getNogiBlogUrl", () => {
     expect(getNogiBlogUrl(200001)).toBe(
       "https://www.nogizaka46.com/s/n46/diary/detail/200001?ima=3456"
     )
+  })
+})
+
+describe("parseNogiBlogHtml", () => {
+  const html = readFixture("nogi-blog.html")
+
+  it("parses single blog fields correctly", () => {
+    const blog = parseNogiBlogHtml(html, 104629)
+    expect(blog.uid).toBe(104629)
+    expect(blog.memberName).toBe("矢田 萌華")
+    expect(blog.title).toBe("吾輩は猫である。名前は")
+    expect(blog.datetime).toEqual(new Date("2026-06-07T17:18:00+09:00"))
+    expect(blog.images).toHaveLength(1)
   })
 })
 
@@ -52,60 +107,5 @@ describe("parseNogiBlogsJs", () => {
     const fullWidthJs = `res({"data":[{"code":"104999","date":"2026/06/07 17:18:49","link":"https://www.nogizaka46.com/s/n46/diary/detail/104999","name":"５期生","text":"","title":"Test"}]})`
     const [blog] = parseNogiBlogsJs(fullWidthJs)
     expect(blog?.memberName).toBe("5期生")
-  })
-})
-
-describe("parseNogiBlogHtml", () => {
-  const html = readFixture("nogi-blog.html")
-
-  it("parses single blog fields correctly", () => {
-    const blog = parseNogiBlogHtml(html, 104629)
-    expect(blog.uid).toBe(104629)
-    expect(blog.memberName).toBe("矢田 萌華")
-    expect(blog.title).toBe("吾輩は猫である。名前は")
-    expect(blog.datetime).toEqual(new Date("2026-06-07T17:18:00+09:00"))
-    expect(blog.images).toHaveLength(1)
-  })
-})
-
-describe("fetchNogiBlog", () => {
-  afterEach(() => vi.restoreAllMocks())
-
-  it("throws FetchStatusError on non-200", async () => {
-    vi.stubGlobal(
-      "fetch",
-      vi
-        .fn()
-        .mockResolvedValue({ status: 404, url: "https://example.com", body: { cancel: vi.fn() } })
-    )
-    await expect(fetchNogiBlog(200001)).rejects.toBeInstanceOf(FetchStatusError)
-  })
-})
-
-describe("fetchNogiBlogsJs", () => {
-  afterEach(() => vi.restoreAllMocks())
-
-  it("throws FetchStatusError on non-200", async () => {
-    vi.stubGlobal(
-      "fetch",
-      vi
-        .fn()
-        .mockResolvedValue({ status: 404, url: "https://example.com", body: { cancel: vi.fn() } })
-    )
-    await expect(fetchNogiBlogsJs()).rejects.toBeInstanceOf(FetchStatusError)
-  })
-})
-
-describe("fetchNogiBlogHtml", () => {
-  afterEach(() => vi.restoreAllMocks())
-
-  it("throws FetchStatusError on non-200", async () => {
-    vi.stubGlobal(
-      "fetch",
-      vi
-        .fn()
-        .mockResolvedValue({ status: 500, url: "https://example.com", body: { cancel: vi.fn() } })
-    )
-    await expect(fetchNogiBlogHtml(200001)).rejects.toBeInstanceOf(FetchStatusError)
   })
 })
