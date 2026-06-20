@@ -1,4 +1,4 @@
-export type { Generation, Member } from "./types"
+export type { Generation, Member } from "./_types"
 
 export { members as hinataMembers } from "./hinata"
 export { members as keyakiMembers } from "./keyaki"
