@@ -2,54 +2,40 @@ import { describe, expect, it } from "vitest"
 
 import { getIma, parseDatetimeJst } from "./datetime"
 
-describe("parseDatetimeJst", () => {
-  describe("nogi list", () => {
-    it("parses full datetime", () => {
-      expect(parseDatetimeJst("2026/06/19 18:35:30")).toEqual(new Date("2026-06-19T18:35:30+09:00"))
-    })
-  })
-
-  describe("nogi single blog", () => {
-    it("parses datetime without seconds", () => {
-      expect(parseDatetimeJst("2026.06.07 17:18")).toEqual(new Date("2026-06-07T17:18:00+09:00"))
-    })
-  })
-
-  describe("hinata list", () => {
-    it.each([
-      ["2026.6.3 9:05", "2026-06-03T09:05:00+09:00"],
-      ["2026.6.14 11:41", "2026-06-14T11:41:00+09:00"],
-      ["2026.12.14 11:41", "2026-12-14T11:41:00+09:00"]
-    ])("parses %s", (input, expected) => {
-      expect(parseDatetimeJst(input)).toEqual(new Date(expected))
-    })
-  })
-
-  describe("hinata single blog", () => {
-    it("parses datetime without seconds", () => {
-      expect(parseDatetimeJst("2026.6.14 11:41")).toEqual(new Date("2026-06-14T11:41:00+09:00"))
-    })
-  })
-
-  describe("sakura list", () => {
-    it.each([
-      ["2026/6/3", "2026-06-03T00:00:00+09:00"],
-      ["2026/6/18", "2026-06-18T00:00:00+09:00"],
-      ["2026/12/15", "2026-12-15T00:00:00+09:00"]
-    ])("parses %s", (input, expected) => {
-      expect(parseDatetimeJst(input)).toEqual(new Date(expected))
-    })
-  })
-
-  describe("sakura single blog", () => {
-    it("parses datetime without seconds", () => {
-      expect(parseDatetimeJst("2026/06/15 19:20")).toEqual(new Date("2026-06-15T19:20:00+09:00"))
-    })
-  })
-})
-
 describe("getIma", () => {
   it("returns a 4-digit string", () => {
     expect(getIma()).toMatch(/^\d{4}$/)
+  })
+})
+
+describe("parseDatetimeJst", () => {
+  it("Parses Hinata blog/blogs datetime format", () => {
+    expect(parseDatetimeJst("2019.6.5 00:39")).toEqual(new Date("2019-06-05T00:39:00+09:00")) // https://www.hinatazaka46.com/s/official/diary/detail/30542?ima=0000&cd=member
+    expect(parseDatetimeJst("2025.8.11 09:00")).toEqual(new Date("2025-08-11T09:00:00+09:00")) // https://www.hinatazaka46.com/s/official/diary/detail/61433?ima=0000&cd=member
+    expect(parseDatetimeJst("2025.12.31 23:41")).toEqual(new Date("2025-12-31T23:41:00+09:00")) // https://www.hinatazaka46.com/s/official/diary/detail/67431?ima=0000&cd=member
+  })
+
+  it("Parses Nogi blogs datetime format", () => {
+    expect(parseDatetimeJst("2026/06/08 00:49:16")).toEqual(new Date("2026-06-08T00:49:16+09:00")) // https://www.nogizaka46.com/s/n46/diary/detail/104632?ima=2502
+    expect(parseDatetimeJst("2026/06/19 18:35:30")).toEqual(new Date("2026-06-19T18:35:30+09:00")) // https://www.nogizaka46.com/s/n46/diary/detail/104665?ima=2502
+    expect(parseDatetimeJst("2025/12/31 18:38:35")).toEqual(new Date("2025-12-31T18:38:35+09:00")) // https://www.nogizaka46.com/s/n46/diary/detail/104240?ima=3451&cd=MEMBER
+  })
+
+  it("Parses Nogi blog datetime format", () => {
+    expect(parseDatetimeJst("2026.06.08 00:49")).toEqual(new Date("2026-06-08T00:49:00+09:00")) // https://www.nogizaka46.com/s/n46/diary/detail/104632?ima=2502
+    expect(parseDatetimeJst("2026.06.19 18:35")).toEqual(new Date("2026-06-19T18:35:00+09:00")) // https://www.nogizaka46.com/s/n46/diary/detail/104665?ima=2502
+    expect(parseDatetimeJst("2025.12.31 18:38")).toEqual(new Date("2025-12-31T18:38:00+09:00")) // https://www.nogizaka46.com/s/n46/diary/detail/104240?ima=3451&cd=MEMBER
+  })
+
+  it("Parses Sakura blogs datetime format", () => {
+    expect(parseDatetimeJst("2026/6/09")).toEqual(new Date("2026-06-09T00:00:00+09:00")) // https://sakurazaka46.com/s/s46/diary/detail/69717?ima=0000&cd=blog
+    expect(parseDatetimeJst("2026/4/13")).toEqual(new Date("2026-04-13T00:00:00+09:00")) // https://sakurazaka46.com/s/s46/diary/detail/68923?ima=0000&cd=blog
+    expect(parseDatetimeJst("2025/12/31")).toEqual(new Date("2025-12-31T00:00:00+09:00")) // https://sakurazaka46.com/s/s46/diary/detail/67425?ima=0000&cd=blog
+  })
+
+  it("Parses Sakura blog datetime format", () => {
+    expect(parseDatetimeJst("2026/06/09 21:47")).toEqual(new Date("2026-06-09T21:47:00+09:00")) // https://sakurazaka46.com/s/s46/diary/detail/69717?ima=0000&cd=blog
+    expect(parseDatetimeJst("2026/04/13 00:08")).toEqual(new Date("2026-04-13T00:08:00+09:00")) // https://sakurazaka46.com/s/s46/diary/detail/68923?ima=0000&cd=blog
+    expect(parseDatetimeJst("2025/12/31 21:39")).toEqual(new Date("2025-12-31T21:39:00+09:00")) // https://sakurazaka46.com/s/s46/diary/detail/67425?ima=0000&cd=blog
   })
 })
