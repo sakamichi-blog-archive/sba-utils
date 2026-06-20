@@ -1,7 +1,7 @@
 import * as cheerio from "cheerio"
 
 import { USER_AGENT_DESKTOP } from "../shared/constants"
-import { getIma, parseDatetimeJst } from "../shared/datetime"
+import { getMmss, parseDatetimeJst } from "../shared/datetime"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import type { BlogWithHtml } from "./_types"
 import { findImagesInHtml, getUidFromUrl } from "./_utils"
@@ -49,7 +49,7 @@ export async function fetchSakuraBlogs(): Promise<{
 }
 
 export async function fetchSakuraBlogsHtml(): Promise<{ html: string; url: string }> {
-  const url = `${BLOGS_PAGE_URL}?ima=${getIma()}`
+  const url = `${BLOGS_PAGE_URL}?ima=${getMmss()}`
   const response = await fetch(url, {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP
@@ -64,7 +64,7 @@ export async function fetchSakuraBlogsHtml(): Promise<{ html: string; url: strin
 }
 
 export function getSakuraBlogUrl(uid: number): string {
-  return `https://sakurazaka46.com/s/s46/diary/detail/${uid}?ima=${getIma()}&cd=blog`
+  return `https://sakurazaka46.com/s/s46/diary/detail/${uid}?ima=${getMmss()}&cd=blog`
 }
 
 export function parseSakuraBlogHtml(html: string, url: string): BlogWithHtml {

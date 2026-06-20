@@ -2,7 +2,7 @@ import * as cheerio from "cheerio"
 import * as z from "zod"
 
 import { USER_AGENT_DESKTOP } from "../shared/constants"
-import { getIma, parseDatetimeJst } from "../shared/datetime"
+import { getMmss, parseDatetimeJst } from "../shared/datetime"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import { castStringToIntegerSchema } from "../shared/schemas"
 import type { BlogWithHtml } from "./_types"
@@ -68,7 +68,7 @@ export async function fetchNogiBlogs(): Promise<{
 
 export async function fetchNogiBlogsJs(): Promise<{ js: string; url: string }> {
   const params = new URLSearchParams({
-    ima: getIma(),
+    ima: getMmss(),
     rw: "32",
     st: "0",
     callback: "res"
@@ -88,7 +88,7 @@ export async function fetchNogiBlogsJs(): Promise<{ js: string; url: string }> {
 }
 
 export function getNogiBlogUrl(uid: number): string {
-  return `https://www.nogizaka46.com/s/n46/diary/detail/${uid}?ima=${getIma()}`
+  return `https://www.nogizaka46.com/s/n46/diary/detail/${uid}?ima=${getMmss()}`
 }
 
 export function parseNogiBlogHtml(html: string, url: string): BlogWithHtml {
