@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { FetchStatusError, ParseError } from "../shared/errors"
 import { readFixture } from "../test/utils"
@@ -41,9 +41,14 @@ describe("fetchHinataBlogHtml", () => {
 })
 
 describe("fetchHinataBlogs", () => {
-  afterEach(() => vi.restoreAllMocks())
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => {
+    vi.useRealTimers()
+    vi.restoreAllMocks()
+  })
 
   it("returns parsed blogs on 200", async () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue({
@@ -52,7 +57,8 @@ describe("fetchHinataBlogs", () => {
         body: { cancel: vi.fn() }
       })
     )
-    await expect(fetchHinataBlogs()).resolves.toMatchInlineSnapshot(`
+    const { blogs, html, url } = await fetchHinataBlogs()
+    expect(blogs).toMatchInlineSnapshot(`
       [
         {
           "datetime": 2026-06-14T02:41:00.000Z,
@@ -96,6 +102,8 @@ describe("fetchHinataBlogs", () => {
         },
       ]
     `)
+    expect(html).toBe(readFixture("hinata-blogs.html"))
+    expect(url).toBe("https://www.hinatazaka46.com/s/official/diary/member/list?ima=3456")
   })
 })
 
@@ -121,7 +129,7 @@ describe("fetchHinataBlogsHtml", () => {
         body: { cancel: vi.fn() }
       })
     )
-    await expect(fetchHinataBlogsHtml()).resolves.toBe(readFixture("hinata-blogs.html"))
+    await expect(fetchHinataBlogsHtml()).resolves.toMatchObject({ html: readFixture("hinata-blogs.html") })
   })
 })
 

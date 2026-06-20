@@ -1,56 +1,9 @@
-import {
-  fetchHinataBlog,
-  fetchHinataBlogHtml,
-  fetchHinataBlogs,
-  fetchHinataBlogsHtml,
-  getHinataBlogUrl,
-  parseHinataBlogHtml,
-  parseHinataBlogsHtml
-} from "./hinata"
-export {
-  fetchHinataBlog,
-  fetchHinataBlogHtml,
-  fetchHinataBlogs,
-  fetchHinataBlogsHtml,
-  getHinataBlogUrl,
-  parseHinataBlogHtml,
-  parseHinataBlogsHtml
-}
+import { fetchHinataBlog, fetchHinataBlogs } from "./hinata"
+export { fetchHinataBlog, fetchHinataBlogs }
 
-import {
-  fetchNogiBlog,
-  fetchNogiBlogHtml,
-  fetchNogiBlogs,
-  fetchNogiBlogsJs,
-  getNogiBlogUrl,
-  parseNogiBlogHtml,
-  parseNogiBlogsJs
-} from "./nogi"
-export {
-  fetchNogiBlog,
-  fetchNogiBlogHtml,
-  fetchNogiBlogs,
-  fetchNogiBlogsJs,
-  getNogiBlogUrl,
-  parseNogiBlogHtml,
-  parseNogiBlogsJs
-}
+import { fetchNogiBlog, fetchNogiBlogs } from "./nogi"
+export { fetchNogiBlog, fetchNogiBlogs }
 
-import {
-  fetchSakuraBlog,
-  fetchSakuraBlogHtml,
-  fetchSakuraBlogs,
-  fetchSakuraBlogsHtml,
-  getSakuraBlogUrl,
-  parseSakuraBlogHtml,
-  parseSakuraBlogsHtml
-} from "./sakura"
-export {
-  fetchSakuraBlog,
-  fetchSakuraBlogHtml,
-  fetchSakuraBlogs,
-  fetchSakuraBlogsHtml,
-  getSakuraBlogUrl,
-  parseSakuraBlogHtml,
-  parseSakuraBlogsHtml
-}
+import { fetchSakuraBlog, fetchSakuraBlogs } from "./sakura"
+export { fetchSakuraBlog, fetchSakuraBlogs }
+export type { SakuraBlog } from "./sakura"

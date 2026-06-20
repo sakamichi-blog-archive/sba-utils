@@ -41,9 +41,14 @@ describe("fetchNogiBlogHtml", () => {
 })
 
 describe("fetchNogiBlogs", () => {
-  afterEach(() => vi.restoreAllMocks())
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => {
+    vi.useRealTimers()
+    vi.restoreAllMocks()
+  })
 
   it("returns parsed blogs on 200", async () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue({
@@ -52,7 +57,8 @@ describe("fetchNogiBlogs", () => {
         body: { cancel: vi.fn() }
       })
     )
-    await expect(fetchNogiBlogs()).resolves.toMatchInlineSnapshot(`
+    const { blogs, js, url } = await fetchNogiBlogs()
+    expect(blogs).toMatchInlineSnapshot(`
       [
         {
           "datetime": 2026-06-07T08:18:49.000Z,
@@ -91,6 +97,8 @@ describe("fetchNogiBlogs", () => {
         },
       ]
     `)
+    expect(js).toBe(readFixture("nogi-blogs.jsonp"))
+    expect(url).toBe("https://www.nogizaka46.com/s/n46/api/list/blog?ima=3456&rw=32&st=0&callback=res")
   })
 })
 
@@ -116,7 +124,7 @@ describe("fetchNogiBlogsJs", () => {
         body: { cancel: vi.fn() }
       })
     )
-    await expect(fetchNogiBlogsJs()).resolves.toBe(readFixture("nogi-blogs.jsonp"))
+    await expect(fetchNogiBlogsJs()).resolves.toMatchObject({ js: readFixture("nogi-blogs.jsonp") })
   })
 })
 

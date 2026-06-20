@@ -30,9 +30,11 @@ const getBlogsFunctionArgumentSchema = z.object({
   )
 })
 
-export async function fetchNogiBlog(uid: number): Promise<BlogWithHtml> {
+export async function fetchNogiBlog(
+  uid: number
+): Promise<{ blog: BlogWithHtml; html: string; url: string }> {
   const { html, url } = await fetchNogiBlogHtml(uid)
-  return parseNogiBlogHtml(html, url)
+  return { blog: parseNogiBlogHtml(html, url), html, url }
 }
 
 export async function fetchNogiBlogHtml(uid: number): Promise<{ html: string; url: string }> {
@@ -50,19 +52,24 @@ export async function fetchNogiBlogHtml(uid: number): Promise<{ html: string; ur
   return { html: await response.text(), url }
 }
 
-export async function fetchNogiBlogs(): Promise<BlogWithHtml[]> {
-  const js = await fetchNogiBlogsJs()
-  return parseNogiBlogsJs(js)
+export async function fetchNogiBlogs(): Promise<{
+  blogs: BlogWithHtml[]
+  js: string
+  url: string
+}> {
+  const { js, url } = await fetchNogiBlogsJs()
+  return { blogs: parseNogiBlogsJs(js), js, url }
 }
 
-export async function fetchNogiBlogsJs(): Promise<string> {
+export async function fetchNogiBlogsJs(): Promise<{ js: string; url: string }> {
   const params = new URLSearchParams({
     ima: getIma(),
     rw: "32",
     st: "0",
     callback: "res"
   })
-  const response = await fetch(`${BLOGS_API_ENDPOINT}?${params}`, {
+  const url = `${BLOGS_API_ENDPOINT}?${params}`
+  const response = await fetch(url, {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP
     }
@@ -72,7 +79,7 @@ export async function fetchNogiBlogsJs(): Promise<string> {
     throw new FetchStatusError(response.status, response.url)
   }
 
-  return response.text()
+  return { js: await response.text(), url }
 }
 
 export function getNogiBlogUrl(uid: number): string {

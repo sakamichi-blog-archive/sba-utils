@@ -17,9 +17,11 @@ export interface SakuraBlog {
 
 const BLOGS_PAGE_URL = "https://sakurazaka46.com/s/s46/diary/blog/list"
 
-export async function fetchSakuraBlog(uid: number): Promise<BlogWithHtml> {
+export async function fetchSakuraBlog(
+  uid: number
+): Promise<{ blog: BlogWithHtml; html: string; url: string }> {
   const { html, url } = await fetchSakuraBlogHtml(uid)
-  return parseSakuraBlogHtml(html, url)
+  return { blog: parseSakuraBlogHtml(html, url), html, url }
 }
 
 export async function fetchSakuraBlogHtml(uid: number): Promise<{ html: string; url: string }> {
@@ -37,13 +39,18 @@ export async function fetchSakuraBlogHtml(uid: number): Promise<{ html: string; 
   return { html: await response.text(), url }
 }
 
-export async function fetchSakuraBlogs(): Promise<SakuraBlog[]> {
-  const html = await fetchSakuraBlogsHtml()
-  return parseSakuraBlogsHtml(html)
+export async function fetchSakuraBlogs(): Promise<{
+  blogs: SakuraBlog[]
+  html: string
+  url: string
+}> {
+  const { html, url } = await fetchSakuraBlogsHtml()
+  return { blogs: parseSakuraBlogsHtml(html), html, url }
 }
 
-export async function fetchSakuraBlogsHtml(): Promise<string> {
-  const response = await fetch(`${BLOGS_PAGE_URL}?ima=${getIma()}`, {
+export async function fetchSakuraBlogsHtml(): Promise<{ html: string; url: string }> {
+  const url = `${BLOGS_PAGE_URL}?ima=${getIma()}`
+  const response = await fetch(url, {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP
     }
@@ -53,7 +60,7 @@ export async function fetchSakuraBlogsHtml(): Promise<string> {
     throw new FetchStatusError(response.status, response.url)
   }
 
-  return response.text()
+  return { html: await response.text(), url }
 }
 
 export function getSakuraBlogUrl(uid: number): string {

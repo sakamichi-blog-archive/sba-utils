@@ -8,9 +8,11 @@ import { findImagesInHtml, getUidFromUrl } from "./_utils"
 
 const BLOGS_PAGE_URL = "https://www.hinatazaka46.com/s/official/diary/member/list"
 
-export async function fetchHinataBlog(uid: number): Promise<BlogWithHtml> {
+export async function fetchHinataBlog(
+  uid: number
+): Promise<{ blog: BlogWithHtml; html: string; url: string }> {
   const { html, url } = await fetchHinataBlogHtml(uid)
-  return parseHinataBlogHtml(html, url)
+  return { blog: parseHinataBlogHtml(html, url), html, url }
 }
 
 export async function fetchHinataBlogHtml(uid: number): Promise<{ html: string; url: string }> {
@@ -28,13 +30,18 @@ export async function fetchHinataBlogHtml(uid: number): Promise<{ html: string; 
   return { html: await response.text(), url }
 }
 
-export async function fetchHinataBlogs(): Promise<BlogWithHtml[]> {
-  const html = await fetchHinataBlogsHtml()
-  return parseHinataBlogsHtml(html)
+export async function fetchHinataBlogs(): Promise<{
+  blogs: BlogWithHtml[]
+  html: string
+  url: string
+}> {
+  const { html, url } = await fetchHinataBlogsHtml()
+  return { blogs: parseHinataBlogsHtml(html), html, url }
 }
 
-export async function fetchHinataBlogsHtml(): Promise<string> {
-  const response = await fetch(`${BLOGS_PAGE_URL}?ima=${getIma()}`, {
+export async function fetchHinataBlogsHtml(): Promise<{ html: string; url: string }> {
+  const url = `${BLOGS_PAGE_URL}?ima=${getIma()}`
+  const response = await fetch(url, {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP
     }
@@ -44,7 +51,7 @@ export async function fetchHinataBlogsHtml(): Promise<string> {
     throw new FetchStatusError(response.status, response.url)
   }
 
-  return response.text()
+  return { html: await response.text(), url }
 }
 
 export function getHinataBlogUrl(uid: number): string {

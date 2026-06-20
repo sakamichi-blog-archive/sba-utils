@@ -74,14 +74,19 @@ describe("fetchSakuraBlogsHtml", () => {
         body: { cancel: vi.fn() }
       })
     )
-    await expect(fetchSakuraBlogsHtml()).resolves.toBe(readFixture("sakura-blogs.html"))
+    await expect(fetchSakuraBlogsHtml()).resolves.toMatchObject({ html: readFixture("sakura-blogs.html") })
   })
 })
 
 describe("fetchSakuraBlogs", () => {
-  afterEach(() => vi.restoreAllMocks())
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => {
+    vi.useRealTimers()
+    vi.restoreAllMocks()
+  })
 
   it("returns parsed blogs on 200", async () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue({
@@ -90,7 +95,8 @@ describe("fetchSakuraBlogs", () => {
         body: { cancel: vi.fn() }
       })
     )
-    await expect(fetchSakuraBlogs()).resolves.toMatchInlineSnapshot(`
+    const { blogs, html, url } = await fetchSakuraBlogs()
+    expect(blogs).toMatchInlineSnapshot(`
       [
         {
           "date": 2026-06-17T15:00:00.000Z,
@@ -108,6 +114,8 @@ describe("fetchSakuraBlogs", () => {
         },
       ]
     `)
+    expect(html).toBe(readFixture("sakura-blogs.html"))
+    expect(url).toBe("https://sakurazaka46.com/s/s46/diary/blog/list?ima=3456")
   })
 })
 
