@@ -37,6 +37,24 @@ If a commit includes multiple scopes (including no scope), omit the scope.
 
 ---
 
+## Coding conventions
+
+### Comparisons
+
+Use explicit comparisons rather than truthy/falsy coercion:
+
+```ts
+// prefer
+if (value === 0) ...
+if (value !== undefined) ...
+
+// avoid
+if (!value) ...
+if (value) ...
+```
+
+---
+
 ## Testing
 
 ### Fixtures

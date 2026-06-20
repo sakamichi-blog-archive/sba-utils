@@ -57,6 +57,7 @@ export function parseHinataBlogHtml(html: string, url: string): BlogWithHtml {
 
   const $ = cheerio.load(html)
   const articleElement = $(".l-maincontents--blog .p-blog-group .p-blog-article").first()
+  if (articleElement.length === 0) throw new ParseError("Article element not found in HTML")
 
   /** `YYYY.M.D HH:mm` format */
   const datetime = $(articleElement)

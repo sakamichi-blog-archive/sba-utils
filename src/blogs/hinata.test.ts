@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest"
 
-import { FetchStatusError } from "../shared/errors"
+import { FetchStatusError, ParseError } from "../shared/errors"
 import { readFixture } from "../test/utils"
 import {
   fetchHinataBlogs,
@@ -111,6 +111,18 @@ describe("fetchHinataBlogsHtml", () => {
     )
     await expect(fetchHinataBlogsHtml()).rejects.toBeInstanceOf(FetchStatusError)
   })
+
+  it("returns response text on 200", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue(readFixture("hinata-blogs.html")),
+        body: { cancel: vi.fn() }
+      })
+    )
+    await expect(fetchHinataBlogsHtml()).resolves.toBe(readFixture("hinata-blogs.html"))
+  })
 })
 
 describe("getHinataBlogUrl", () => {
@@ -123,6 +135,12 @@ describe("getHinataBlogUrl", () => {
 
 describe("parseHinataBlogHtml", () => {
   const html = readFixture("hinata-blog.html")
+
+  it("throws ParseError when article element not found", () => {
+    expect(() =>
+      parseHinataBlogHtml("<html></html>", "https://www.hinatazaka46.com/s/official/diary/detail/69781")
+    ).toThrow(ParseError)
+  })
 
   it("parses single blog fields correctly", () => {
     expect(

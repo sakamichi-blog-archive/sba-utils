@@ -38,6 +38,7 @@ export {
 
 import {
   fetchSakuraBlog,
+  fetchSakuraBlogHtml,
   fetchSakuraBlogs,
   fetchSakuraBlogsHtml,
   getSakuraBlogUrl,
@@ -46,6 +47,7 @@ import {
 } from "./sakura"
 export {
   fetchSakuraBlog,
+  fetchSakuraBlogHtml,
   fetchSakuraBlogs,
   fetchSakuraBlogsHtml,
   getSakuraBlogUrl,

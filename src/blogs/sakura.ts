@@ -22,7 +22,7 @@ export async function fetchSakuraBlog(uid: number): Promise<BlogWithHtml> {
   return parseSakuraBlogHtml(html, url)
 }
 
-async function fetchSakuraBlogHtml(uid: number): Promise<{ html: string; url: string }> {
+export async function fetchSakuraBlogHtml(uid: number): Promise<{ html: string; url: string }> {
   const url = getSakuraBlogUrl(uid)
   const response = await fetch(url, {
     headers: {
@@ -66,6 +66,7 @@ export function parseSakuraBlogHtml(html: string, url: string): BlogWithHtml {
 
   const $ = cheerio.load(html)
   const articleElement = $("main.site-main .col2-wrap-in2 .col-l-wrap article.post").first()
+  if (articleElement.length === 0) throw new ParseError("Article element not found in HTML")
 
   /** `YYYY/MM/DD HH:mm` format */
   const datetime = $(articleElement).find(".col-r .blog-foot .txt p.date").text()

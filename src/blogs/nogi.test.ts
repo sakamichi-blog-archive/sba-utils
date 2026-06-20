@@ -106,6 +106,18 @@ describe("fetchNogiBlogsJs", () => {
     )
     await expect(fetchNogiBlogsJs()).rejects.toBeInstanceOf(FetchStatusError)
   })
+
+  it("returns response text on 200", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue(readFixture("nogi-blogs.jsonp")),
+        body: { cancel: vi.fn() }
+      })
+    )
+    await expect(fetchNogiBlogsJs()).resolves.toBe(readFixture("nogi-blogs.jsonp"))
+  })
 })
 
 describe("getNogiBlogUrl", () => {
@@ -125,6 +137,12 @@ describe("parseNogiBlogHtml", () => {
 
   beforeEach(() => vi.useFakeTimers())
   afterEach(() => vi.useRealTimers())
+
+  it("throws ParseError when article element not found", () => {
+    expect(() =>
+      parseNogiBlogHtml("<html></html>", "https://www.nogizaka46.com/s/n46/diary/detail/104629")
+    ).toThrow(ParseError)
+  })
 
   it("parses single blog fields correctly", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))

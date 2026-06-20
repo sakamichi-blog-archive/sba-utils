@@ -1,10 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { FetchStatusError } from "../shared/errors"
+import { FetchStatusError, ParseError } from "../shared/errors"
 import { readFixture } from "../test/utils"
 import {
   fetchSakuraBlogs,
   fetchSakuraBlog,
+  fetchSakuraBlogHtml,
   fetchSakuraBlogsHtml,
   getSakuraBlogUrl,
   parseSakuraBlogHtml,
@@ -25,6 +26,32 @@ describe("fetchSakuraBlog", () => {
   })
 })
 
+describe("fetchSakuraBlogHtml", () => {
+  afterEach(() => vi.restoreAllMocks())
+
+  it("throws FetchStatusError on non-200", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue({ status: 500, url: "https://example.com", body: { cancel: vi.fn() } })
+    )
+    await expect(fetchSakuraBlogHtml(300001)).rejects.toBeInstanceOf(FetchStatusError)
+  })
+
+  it("returns html and url on 200", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue("<html></html>"),
+        url: "https://sakurazaka46.com/s/s46/diary/detail/300001?ima=0000&cd=blog"
+      })
+    )
+    await expect(fetchSakuraBlogHtml(300001)).resolves.toMatchObject({ html: "<html></html>" })
+  })
+})
+
 describe("fetchSakuraBlogsHtml", () => {
   afterEach(() => vi.restoreAllMocks())
 
@@ -36,6 +63,18 @@ describe("fetchSakuraBlogsHtml", () => {
         .mockResolvedValue({ status: 403, url: "https://example.com", body: { cancel: vi.fn() } })
     )
     await expect(fetchSakuraBlogsHtml()).rejects.toBeInstanceOf(FetchStatusError)
+  })
+
+  it("returns response text on 200", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue(readFixture("sakura-blogs.html")),
+        body: { cancel: vi.fn() }
+      })
+    )
+    await expect(fetchSakuraBlogsHtml()).resolves.toBe(readFixture("sakura-blogs.html"))
   })
 })
 
@@ -89,6 +128,12 @@ describe("parseSakuraBlogHtml", () => {
 
   beforeEach(() => vi.useFakeTimers())
   afterEach(() => vi.useRealTimers())
+
+  it("throws ParseError when article element not found", () => {
+    expect(() =>
+      parseSakuraBlogHtml("<html></html>", "https://sakurazaka46.com/s/s46/diary/detail/69791")
+    ).toThrow(ParseError)
+  })
 
   it("parses single blog fields correctly", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))

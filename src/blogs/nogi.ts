@@ -85,6 +85,8 @@ export function parseNogiBlogHtml(html: string, url: string): BlogWithHtml {
 
   const $ = cheerio.load(html)
   const articleElement = $(".b--wrap .b--cont main.b--mn .bd--mc")
+  if (articleElement.length === 0) throw new ParseError("Article element not found in HTML")
+
   const headerElement = $(articleElement).find("header.bd--hd .bd--hd__in .bd--hd__data")
 
   /** `YYYY.MM.DD HH:mm` format */
