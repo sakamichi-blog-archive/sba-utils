@@ -12,7 +12,7 @@ import {
   parseHinataBlogsHtml
 } from "./hinata"
 
-describe("fetchHinataBlog", () => {
+describe("fetchHinataBlog()", () => {
   afterEach(() => vi.restoreAllMocks())
 
   it("throws FetchStatusError on non-200", async () => {
@@ -26,7 +26,7 @@ describe("fetchHinataBlog", () => {
   })
 })
 
-describe("fetchHinataBlogHtml", () => {
+describe("fetchHinataBlogHtml()", () => {
   afterEach(() => vi.restoreAllMocks())
 
   it("throws FetchStatusError on non-200", async () => {
@@ -40,7 +40,7 @@ describe("fetchHinataBlogHtml", () => {
   })
 })
 
-describe("fetchHinataBlogs", () => {
+describe("fetchHinataBlogs()", () => {
   beforeEach(() => vi.useFakeTimers())
   afterEach(() => {
     vi.useRealTimers()
@@ -107,7 +107,7 @@ describe("fetchHinataBlogs", () => {
   })
 })
 
-describe("fetchHinataBlogsHtml", () => {
+describe("fetchHinataBlogsHtml()", () => {
   afterEach(() => vi.restoreAllMocks())
 
   it("throws FetchStatusError on non-200", async () => {
@@ -135,7 +135,7 @@ describe("fetchHinataBlogsHtml", () => {
   })
 })
 
-describe("getHinataBlogUrl", () => {
+describe("getHinataBlogUrl()", () => {
   it("returns correct URL", () => {
     expect(getHinataBlogUrl(100001)).toBe(
       "https://www.hinatazaka46.com/s/official/diary/detail/100001?ima=0000&cd=member"
@@ -143,7 +143,7 @@ describe("getHinataBlogUrl", () => {
   })
 })
 
-describe("parseHinataBlogHtml", () => {
+describe("parseHinataBlogHtml()", () => {
   const html = readFixture("hinata-blog.html")
 
   it("throws ParseError when article element not found", () => {
@@ -189,7 +189,7 @@ describe("parseHinataBlogHtml", () => {
   })
 })
 
-describe("parseHinataBlogsHtml", () => {
+describe("parseHinataBlogsHtml()", () => {
   const html = readFixture("hinata-blogs.html")
 
   it("returns blogs in chronological order", () => {

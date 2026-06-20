@@ -7,7 +7,7 @@ import {
   normalizeFullWidthNumbers
 } from "./_utils"
 
-describe("findImagesInHtml", () => {
+describe("findImagesInHtml()", () => {
   const BASE = "https://example.com/blog/1"
 
   it("resolves relative src to absolute URL", () => {
@@ -66,7 +66,7 @@ describe("findImagesInHtml", () => {
   })
 })
 
-describe("getUidFromUrl", () => {
+describe("getUidFromUrl()", () => {
   it("extracts uid from full URL", () => {
     expect(getUidFromUrl("https://www.nogizaka46.com/s/n46/diary/detail/104660?ima=2926")).toBe(
       104660
@@ -84,7 +84,7 @@ describe("getUidFromUrl", () => {
   })
 })
 
-describe("normalizeFullWidthNumbers", () => {
+describe("normalizeFullWidthNumbers()", () => {
   it("converts full-width digits to half-width", () => {
     expect(normalizeFullWidthNumbers("２０２４年")).toBe("2024年")
   })
@@ -98,7 +98,7 @@ describe("normalizeFullWidthNumbers", () => {
   })
 })
 
-describe("parseJsonpArgument", () => {
+describe("parseJsonpArgument()", () => {
   it("extracts single argument from function call", () => {
     expect(parseJsonpArgument('res({"key":"value"})', "res")).toEqual({ key: "value" })
   })

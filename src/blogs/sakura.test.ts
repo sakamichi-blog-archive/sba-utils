@@ -12,7 +12,7 @@ import {
   parseSakuraBlogsHtml
 } from "./sakura"
 
-describe("fetchSakuraBlog", () => {
+describe("fetchSakuraBlog()", () => {
   afterEach(() => vi.restoreAllMocks())
 
   it("throws FetchStatusError on non-200", async () => {
@@ -26,7 +26,7 @@ describe("fetchSakuraBlog", () => {
   })
 })
 
-describe("fetchSakuraBlogHtml", () => {
+describe("fetchSakuraBlogHtml()", () => {
   afterEach(() => vi.restoreAllMocks())
 
   it("throws FetchStatusError on non-200", async () => {
@@ -52,7 +52,7 @@ describe("fetchSakuraBlogHtml", () => {
   })
 })
 
-describe("fetchSakuraBlogsHtml", () => {
+describe("fetchSakuraBlogsHtml()", () => {
   afterEach(() => vi.restoreAllMocks())
 
   it("throws FetchStatusError on non-200", async () => {
@@ -80,7 +80,7 @@ describe("fetchSakuraBlogsHtml", () => {
   })
 })
 
-describe("fetchSakuraBlogs", () => {
+describe("fetchSakuraBlogs()", () => {
   beforeEach(() => vi.useFakeTimers())
   afterEach(() => {
     vi.useRealTimers()
@@ -121,7 +121,7 @@ describe("fetchSakuraBlogs", () => {
   })
 })
 
-describe("getSakuraBlogUrl", () => {
+describe("getSakuraBlogUrl()", () => {
   beforeEach(() => vi.useFakeTimers())
   afterEach(() => vi.useRealTimers())
 
@@ -133,7 +133,7 @@ describe("getSakuraBlogUrl", () => {
   })
 })
 
-describe("parseSakuraBlogHtml", () => {
+describe("parseSakuraBlogHtml()", () => {
   const html = readFixture("sakura-blog.html")
 
   beforeEach(() => vi.useFakeTimers())
@@ -181,7 +181,7 @@ describe("parseSakuraBlogHtml", () => {
   })
 })
 
-describe("parseSakuraBlogsHtml", () => {
+describe("parseSakuraBlogsHtml()", () => {
   const html = readFixture("sakura-blogs.html")
 
   it("returns blogs in chronological order", () => {

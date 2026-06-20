@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { getMmss, parseDatetimeJst } from "./datetime"
 
-describe("getMmss", () => {
+describe("getMmss()", () => {
   beforeEach(() => vi.useFakeTimers())
   afterEach(() => vi.useRealTimers())
 
@@ -17,7 +17,7 @@ describe("getMmss", () => {
   })
 })
 
-describe("parseDatetimeJst", () => {
+describe("parseDatetimeJst()", () => {
   it("Parses Hinata blog/blogs datetime format", () => {
     expect(parseDatetimeJst("2019.6.5 00:39")).toEqual(new Date("2019-06-05T00:39:00+09:00")) // https://www.hinatazaka46.com/s/official/diary/detail/30542?ima=0000&cd=member
     expect(parseDatetimeJst("2025.8.11 09:00")).toEqual(new Date("2025-08-11T09:00:00+09:00")) // https://www.hinatazaka46.com/s/official/diary/detail/61433?ima=0000&cd=member

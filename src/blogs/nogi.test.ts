@@ -12,7 +12,7 @@ import {
   parseNogiBlogsJs
 } from "./nogi"
 
-describe("fetchNogiBlog", () => {
+describe("fetchNogiBlog()", () => {
   afterEach(() => vi.restoreAllMocks())
 
   it("throws FetchStatusError on non-200", async () => {
@@ -26,7 +26,7 @@ describe("fetchNogiBlog", () => {
   })
 })
 
-describe("fetchNogiBlogHtml", () => {
+describe("fetchNogiBlogHtml()", () => {
   afterEach(() => vi.restoreAllMocks())
 
   it("throws FetchStatusError on non-200", async () => {
@@ -40,7 +40,7 @@ describe("fetchNogiBlogHtml", () => {
   })
 })
 
-describe("fetchNogiBlogs", () => {
+describe("fetchNogiBlogs()", () => {
   beforeEach(() => vi.useFakeTimers())
   afterEach(() => {
     vi.useRealTimers()
@@ -104,7 +104,7 @@ describe("fetchNogiBlogs", () => {
   })
 })
 
-describe("fetchNogiBlogsJs", () => {
+describe("fetchNogiBlogsJs()", () => {
   afterEach(() => vi.restoreAllMocks())
 
   it("throws FetchStatusError on non-200", async () => {
@@ -130,7 +130,7 @@ describe("fetchNogiBlogsJs", () => {
   })
 })
 
-describe("getNogiBlogUrl", () => {
+describe("getNogiBlogUrl()", () => {
   beforeEach(() => vi.useFakeTimers())
   afterEach(() => vi.useRealTimers())
 
@@ -142,7 +142,7 @@ describe("getNogiBlogUrl", () => {
   })
 })
 
-describe("parseNogiBlogHtml", () => {
+describe("parseNogiBlogHtml()", () => {
   const html = readFixture("nogi-blog.html")
 
   beforeEach(() => vi.useFakeTimers())
@@ -176,7 +176,7 @@ describe("parseNogiBlogHtml", () => {
   })
 })
 
-describe("parseNogiBlogsJs", () => {
+describe("parseNogiBlogsJs()", () => {
   const js = readFixture("nogi-blogs.jsonp")
 
   it("returns blogs in chronological order", () => {
