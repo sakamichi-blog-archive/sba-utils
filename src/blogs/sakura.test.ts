@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { FetchStatusError } from "../shared/errors"
 import { readFixture } from "../test/utils"
 import {
+  fetchSakuraBlogs,
   fetchSakuraBlog,
   fetchSakuraBlogsHtml,
   getSakuraBlogUrl,
@@ -38,6 +39,39 @@ describe("fetchSakuraBlogsHtml", () => {
   })
 })
 
+describe("fetchSakuraBlogs", () => {
+  afterEach(() => vi.restoreAllMocks())
+
+  it("returns parsed blogs on 200", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue(readFixture("sakura-blogs.html")),
+        body: { cancel: vi.fn() }
+      })
+    )
+    await expect(fetchSakuraBlogs()).resolves.toMatchInlineSnapshot(`
+      [
+        {
+          "date": 2026-06-17T15:00:00.000Z,
+          "memberName": "遠藤 理子",
+          "title": "",
+          "uid": 69842,
+          "url": "https://sakurazaka46.com/s/s46/diary/detail/69842?ima=0000&cd=blog",
+        },
+        {
+          "date": 2026-06-18T15:00:00.000Z,
+          "memberName": "小田倉 麗奈",
+          "title": "(ㅍ‐ㅍ  )",
+          "uid": 69854,
+          "url": "https://sakurazaka46.com/s/s46/diary/detail/69854?ima=0000&cd=blog",
+        },
+      ]
+    `)
+  })
+})
+
 describe("getSakuraBlogUrl", () => {
   beforeEach(() => vi.useFakeTimers())
   afterEach(() => vi.useRealTimers())
@@ -54,12 +88,37 @@ describe("parseSakuraBlogHtml", () => {
   const html = readFixture("sakura-blog.html")
 
   it("parses single blog fields correctly", () => {
-    const blog = parseSakuraBlogHtml(html, 69791)
-    expect(blog.uid).toBe(69791)
-    expect(blog.memberName).toBe("勝又 春")
-    expect(blog.title).toBe("カメラ始めました＿")
-    expect(blog.datetime).toEqual(new Date("2026-06-15T19:20:00+09:00"))
-    expect(blog.images).toHaveLength(3)
+    expect(parseSakuraBlogHtml(html, 69791)).toMatchInlineSnapshot(`
+      {
+        "datetime": 2026-06-15T10:20:00.000Z,
+        "html": "<p>
+                        <img src="/img/photo-1.jpg">
+                        <img src="/img/photo-2.jpg">
+                        <img src="/img/photo-3.jpg">
+                      </p>",
+        "images": [
+          {
+            "anchorElementUrl": undefined,
+            "src": "/img/photo-1.jpg",
+            "srcUrl": "https://sakurazaka46.com/img/photo-1.jpg",
+          },
+          {
+            "anchorElementUrl": undefined,
+            "src": "/img/photo-2.jpg",
+            "srcUrl": "https://sakurazaka46.com/img/photo-2.jpg",
+          },
+          {
+            "anchorElementUrl": undefined,
+            "src": "/img/photo-3.jpg",
+            "srcUrl": "https://sakurazaka46.com/img/photo-3.jpg",
+          },
+        ],
+        "memberName": "勝又 春",
+        "title": "カメラ始めました＿",
+        "uid": 69791,
+        "url": "https://sakurazaka46.com/s/s46/diary/detail/69791?ima=0445&cd=blog",
+      }
+    `)
   })
 })
 
@@ -75,11 +134,23 @@ describe("parseSakuraBlogsHtml", () => {
 
   it("parses blog fields correctly", () => {
     const [first, second] = parseSakuraBlogsHtml(html)
-    expect(first?.uid).toBe(69842)
-    expect(first?.memberName).toBe("遠藤 理子")
-    expect(first?.title).toBe("")
-    expect(first?.date).toEqual(new Date("2026-06-18T00:00:00+09:00"))
-    expect(first?.url).toContain("/diary/detail/69842")
-    expect(second?.title).toBe("(ㅍ‐ㅍ  )")
+    expect(first).toMatchInlineSnapshot(`
+      {
+        "date": 2026-06-17T15:00:00.000Z,
+        "memberName": "遠藤 理子",
+        "title": "",
+        "uid": 69842,
+        "url": "https://sakurazaka46.com/s/s46/diary/detail/69842?ima=0000&cd=blog",
+      }
+    `)
+    expect(second).toMatchInlineSnapshot(`
+      {
+        "date": 2026-06-18T15:00:00.000Z,
+        "memberName": "小田倉 麗奈",
+        "title": "(ㅍ‐ㅍ  )",
+        "uid": 69854,
+        "url": "https://sakurazaka46.com/s/s46/diary/detail/69854?ima=0000&cd=blog",
+      }
+    `)
   })
 })

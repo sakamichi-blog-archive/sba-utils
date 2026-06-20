@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import { readFixture } from "../test/utils"
 import {
+  fetchNogiBlogs,
   fetchNogiBlog,
   fetchNogiBlogHtml,
   fetchNogiBlogsJs,
@@ -39,6 +40,60 @@ describe("fetchNogiBlogHtml", () => {
   })
 })
 
+describe("fetchNogiBlogs", () => {
+  afterEach(() => vi.restoreAllMocks())
+
+  it("returns parsed blogs on 200", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue(readFixture("nogi-blogs.jsonp")),
+        body: { cancel: vi.fn() }
+      })
+    )
+    await expect(fetchNogiBlogs()).resolves.toMatchInlineSnapshot(`
+      [
+        {
+          "datetime": 2026-06-07T08:18:49.000Z,
+          "html": "<p><img src="/img/photo-1.jpg"/></p>",
+          "images": [
+            {
+              "anchorElementUrl": undefined,
+              "src": "/img/photo-1.jpg",
+              "srcUrl": "https://www.nogizaka46.com/img/photo-1.jpg",
+            },
+          ],
+          "memberName": "矢田 萌華",
+          "title": "吾輩は猫である。名前は",
+          "uid": 104629,
+          "url": "https://www.nogizaka46.com/s/n46/diary/detail/104629?ima=0123",
+        },
+        {
+          "datetime": 2026-06-19T09:35:30.000Z,
+          "html": "<p><img  src="/img/photo-1.jpg"/><img  src="/img/photo-2.jpg"/></p>",
+          "images": [
+            {
+              "anchorElementUrl": undefined,
+              "src": "/img/photo-1.jpg",
+              "srcUrl": "https://www.nogizaka46.com/img/photo-1.jpg",
+            },
+            {
+              "anchorElementUrl": undefined,
+              "src": "/img/photo-2.jpg",
+              "srcUrl": "https://www.nogizaka46.com/img/photo-2.jpg",
+            },
+          ],
+          "memberName": "鈴木 佑捺",
+          "title": "不思議な味覚",
+          "uid": 104665,
+          "url": "https://www.nogizaka46.com/s/n46/diary/detail/104665?ima=0123",
+        },
+      ]
+    `)
+  })
+})
+
 describe("fetchNogiBlogsJs", () => {
   afterEach(() => vi.restoreAllMocks())
 
@@ -69,12 +124,23 @@ describe("parseNogiBlogHtml", () => {
   const html = readFixture("nogi-blog.html")
 
   it("parses single blog fields correctly", () => {
-    const blog = parseNogiBlogHtml(html, 104629)
-    expect(blog.uid).toBe(104629)
-    expect(blog.memberName).toBe("矢田 萌華")
-    expect(blog.title).toBe("吾輩は猫である。名前は")
-    expect(blog.datetime).toEqual(new Date("2026-06-07T17:18:00+09:00"))
-    expect(blog.images).toHaveLength(1)
+    expect(parseNogiBlogHtml(html, 104629)).toMatchInlineSnapshot(`
+      {
+        "datetime": 2026-06-07T08:18:00.000Z,
+        "html": "<p><img src="/img/photo-1.jpg"></p>",
+        "images": [
+          {
+            "anchorElementUrl": undefined,
+            "src": "/img/photo-1.jpg",
+            "srcUrl": "https://www.nogizaka46.com/img/photo-1.jpg",
+          },
+        ],
+        "memberName": "矢田 萌華",
+        "title": "吾輩は猫である。名前は",
+        "uid": 104629,
+        "url": "https://www.nogizaka46.com/s/n46/diary/detail/104629?ima=0445",
+      }
+    `)
   })
 })
 
@@ -90,13 +156,45 @@ describe("parseNogiBlogsJs", () => {
 
   it("parses blog fields correctly", () => {
     const [first, second] = parseNogiBlogsJs(js)
-    expect(first?.uid).toBe(104629)
-    expect(first?.memberName).toBe("矢田 萌華")
-    expect(first?.title).toBe("吾輩は猫である。名前は")
-    expect(first?.datetime).toEqual(new Date("2026-06-07T17:18:49+09:00"))
-    expect(first?.url).toContain("/diary/detail/104629")
-    expect(first?.images).toHaveLength(1)
-    expect(second?.images).toHaveLength(2)
+    expect(first).toMatchInlineSnapshot(`
+      {
+        "datetime": 2026-06-07T08:18:49.000Z,
+        "html": "<p><img src="/img/photo-1.jpg"/></p>",
+        "images": [
+          {
+            "anchorElementUrl": undefined,
+            "src": "/img/photo-1.jpg",
+            "srcUrl": "https://www.nogizaka46.com/img/photo-1.jpg",
+          },
+        ],
+        "memberName": "矢田 萌華",
+        "title": "吾輩は猫である。名前は",
+        "uid": 104629,
+        "url": "https://www.nogizaka46.com/s/n46/diary/detail/104629?ima=0123",
+      }
+    `)
+    expect(second).toMatchInlineSnapshot(`
+      {
+        "datetime": 2026-06-19T09:35:30.000Z,
+        "html": "<p><img  src="/img/photo-1.jpg"/><img  src="/img/photo-2.jpg"/></p>",
+        "images": [
+          {
+            "anchorElementUrl": undefined,
+            "src": "/img/photo-1.jpg",
+            "srcUrl": "https://www.nogizaka46.com/img/photo-1.jpg",
+          },
+          {
+            "anchorElementUrl": undefined,
+            "src": "/img/photo-2.jpg",
+            "srcUrl": "https://www.nogizaka46.com/img/photo-2.jpg",
+          },
+        ],
+        "memberName": "鈴木 佑捺",
+        "title": "不思議な味覚",
+        "uid": 104665,
+        "url": "https://www.nogizaka46.com/s/n46/diary/detail/104665?ima=0123",
+      }
+    `)
   })
 
   it("throws ParseError when JS has no matching call", () => {
