@@ -60,17 +60,24 @@ if (value) ...         // when value is a number, string, or object
 
 ### Guard clauses
 
-Add a blank line after a single-line guard (`if (...) throw` or `if (...) return`):
+Add a blank line after a guard clause:
 
 ```ts
-// prefer
+// prefer — one-liner
 if (uid === undefined) throw new ParseError("...")
 
-const $ = cheerio.load(html)
+doSomething()
+
+// prefer — multiline
+if (uid === undefined) {
+  throw new ParseError("...")
+}
+
+doSomething()
 
 // avoid
 if (uid === undefined) throw new ParseError("...")
-const $ = cheerio.load(html)
+doSomething()
 ```
 
 ---
