@@ -138,7 +138,7 @@ describe("parseNogiBlogHtml", () => {
         "memberName": "矢田 萌華",
         "title": "吾輩は猫である。名前は",
         "uid": 104629,
-        "url": "https://www.nogizaka46.com/s/n46/diary/detail/104629?ima=3209",
+        "url": "https://www.nogizaka46.com/s/n46/diary/detail/104629?ima=4440",
       }
     `)
   })

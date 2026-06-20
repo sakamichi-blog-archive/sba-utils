@@ -58,6 +58,16 @@ Fixtures live in `src/test/fixtures/` and are loaded via `readFixture()` in test
   - Nogi: absolute path — `/files/46/diary/n46/MEMBER/moblog/YYYYMM/mobXXXXX.jpg`
   - Sakura: absolute path — `/files/14/diary/s46/blog/moblog/YYYYMM/mobXXXXX.jpg`
 
+**Updating snapshots**
+
+When fixture or parser changes cause inline snapshots to go stale, update them with:
+
+```sh
+pnpm run test:update
+```
+
+Review the diff before committing — snapshot updates are the test's way of showing you what changed in the output.
+
 **Formatting**
 
 - `.jsonp` extension for JSONP fixtures so oxfmt skips them

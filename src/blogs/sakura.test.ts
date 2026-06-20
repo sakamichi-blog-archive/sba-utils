@@ -116,7 +116,7 @@ describe("parseSakuraBlogHtml", () => {
         "memberName": "勝又 春",
         "title": "カメラ始めました＿",
         "uid": 69791,
-        "url": "https://sakurazaka46.com/s/s46/diary/detail/69791?ima=3209&cd=blog",
+        "url": "https://sakurazaka46.com/s/s46/diary/detail/69791?ima=4440&cd=blog",
       }
     `)
   })

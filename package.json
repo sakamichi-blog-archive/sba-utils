@@ -35,6 +35,7 @@
     "packcheck": "publint && attw --pack --profile esm-only .",
     "prepack": "pnpm run build",
     "test": "vitest run",
+    "test:update": "vitest run -u",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
