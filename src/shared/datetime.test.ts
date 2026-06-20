@@ -1,10 +1,19 @@
-import { describe, expect, it } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { getIma, parseDatetimeJst } from "./datetime"
 
 describe("getIma", () => {
-  it("returns a 4-digit string", () => {
-    expect(getIma()).toMatch(/^\d{4}$/)
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => vi.useRealTimers())
+
+  it("returns mmss of current time", () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    expect(getIma()).toBe("3456")
+  })
+
+  it("zero-pads minutes and seconds", () => {
+    vi.setSystemTime(new Date("2026-06-20T12:05:07+09:00"))
+    expect(getIma()).toBe("0507")
   })
 })
 
