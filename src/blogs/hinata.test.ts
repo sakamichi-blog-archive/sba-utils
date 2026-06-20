@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { FetchStatusError } from "../shared/errors"
 import { readFixture } from "../test/utils"
@@ -12,8 +12,10 @@ import {
 } from "./hinata"
 
 describe("getHinataBlogUrl", () => {
-  it("includes uid in URL", () => {
-    expect(getHinataBlogUrl(100001)).toContain("/diary/detail/100001")
+  it("returns correct URL", () => {
+    expect(getHinataBlogUrl(100001)).toBe(
+      "https://www.hinatazaka46.com/s/official/diary/detail/100001?ima=0000&cd=member"
+    )
   })
 })
 

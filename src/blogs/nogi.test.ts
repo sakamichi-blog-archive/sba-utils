@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { FetchStatusError, ParseError } from "../shared/errors"
 import { readFixture } from "../test/utils"
@@ -12,8 +12,14 @@ import {
 } from "./nogi"
 
 describe("getNogiBlogUrl", () => {
-  it("includes uid in URL", () => {
-    expect(getNogiBlogUrl(200001)).toContain("/diary/detail/200001")
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => vi.useRealTimers())
+
+  it("returns correct URL", () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    expect(getNogiBlogUrl(200001)).toBe(
+      "https://www.nogizaka46.com/s/n46/diary/detail/200001?ima=3456"
+    )
   })
 })
 

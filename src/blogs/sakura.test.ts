@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { FetchStatusError } from "../shared/errors"
 import { readFixture } from "../test/utils"
@@ -11,8 +11,14 @@ import {
 } from "./sakura"
 
 describe("getSakuraBlogUrl", () => {
-  it("includes uid in URL", () => {
-    expect(getSakuraBlogUrl(300001)).toContain("/diary/detail/300001")
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => vi.useRealTimers())
+
+  it("returns correct URL", () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    expect(getSakuraBlogUrl(300001)).toBe(
+      "https://sakurazaka46.com/s/s46/diary/detail/300001?ima=3456&cd=blog"
+    )
   })
 })
 
