@@ -92,31 +92,31 @@ describe("parseSakuraBlogHtml", () => {
       {
         "datetime": 2026-06-15T10:20:00.000Z,
         "html": "<p>
-                        <img src="/img/photo-1.jpg">
-                        <img src="/img/photo-2.jpg">
-                        <img src="/img/photo-3.jpg">
+                        <img src="/files/14/diary/s46/blog/moblog/202606/mobPhoto1.jpg">
+                        <img src="/files/14/diary/s46/blog/moblog/202606/mobPhoto2.jpg">
+                        <img src="/files/14/diary/s46/blog/moblog/202606/mobPhoto3.jpg">
                       </p>",
         "images": [
           {
             "anchorElementUrl": undefined,
-            "src": "/img/photo-1.jpg",
-            "srcUrl": "https://sakurazaka46.com/img/photo-1.jpg",
+            "src": "/files/14/diary/s46/blog/moblog/202606/mobPhoto1.jpg",
+            "srcUrl": "https://sakurazaka46.com/files/14/diary/s46/blog/moblog/202606/mobPhoto1.jpg",
           },
           {
             "anchorElementUrl": undefined,
-            "src": "/img/photo-2.jpg",
-            "srcUrl": "https://sakurazaka46.com/img/photo-2.jpg",
+            "src": "/files/14/diary/s46/blog/moblog/202606/mobPhoto2.jpg",
+            "srcUrl": "https://sakurazaka46.com/files/14/diary/s46/blog/moblog/202606/mobPhoto2.jpg",
           },
           {
             "anchorElementUrl": undefined,
-            "src": "/img/photo-3.jpg",
-            "srcUrl": "https://sakurazaka46.com/img/photo-3.jpg",
+            "src": "/files/14/diary/s46/blog/moblog/202606/mobPhoto3.jpg",
+            "srcUrl": "https://sakurazaka46.com/files/14/diary/s46/blog/moblog/202606/mobPhoto3.jpg",
           },
         ],
         "memberName": "勝又 春",
         "title": "カメラ始めました＿",
         "uid": 69791,
-        "url": "https://sakurazaka46.com/s/s46/diary/detail/69791?ima=0445&cd=blog",
+        "url": "https://sakurazaka46.com/s/s46/diary/detail/69791?ima=3209&cd=blog",
       }
     `)
   })

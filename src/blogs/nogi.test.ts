@@ -56,12 +56,12 @@ describe("fetchNogiBlogs", () => {
       [
         {
           "datetime": 2026-06-07T08:18:49.000Z,
-          "html": "<p><img src="/img/photo-1.jpg"/></p>",
+          "html": "<p><img src="/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto3.jpg"/></p>",
           "images": [
             {
               "anchorElementUrl": undefined,
-              "src": "/img/photo-1.jpg",
-              "srcUrl": "https://www.nogizaka46.com/img/photo-1.jpg",
+              "src": "/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto3.jpg",
+              "srcUrl": "https://www.nogizaka46.com/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto3.jpg",
             },
           ],
           "memberName": "矢田 萌華",
@@ -71,17 +71,17 @@ describe("fetchNogiBlogs", () => {
         },
         {
           "datetime": 2026-06-19T09:35:30.000Z,
-          "html": "<p><img  src="/img/photo-1.jpg"/><img  src="/img/photo-2.jpg"/></p>",
+          "html": "<p><img  src="/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto1.jpg"/><img  src="/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto2.jpg"/></p>",
           "images": [
             {
               "anchorElementUrl": undefined,
-              "src": "/img/photo-1.jpg",
-              "srcUrl": "https://www.nogizaka46.com/img/photo-1.jpg",
+              "src": "/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto1.jpg",
+              "srcUrl": "https://www.nogizaka46.com/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto1.jpg",
             },
             {
               "anchorElementUrl": undefined,
-              "src": "/img/photo-2.jpg",
-              "srcUrl": "https://www.nogizaka46.com/img/photo-2.jpg",
+              "src": "/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto2.jpg",
+              "srcUrl": "https://www.nogizaka46.com/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto2.jpg",
             },
           ],
           "memberName": "鈴木 佑捺",
@@ -127,18 +127,18 @@ describe("parseNogiBlogHtml", () => {
     expect(parseNogiBlogHtml(html, 104629)).toMatchInlineSnapshot(`
       {
         "datetime": 2026-06-07T08:18:00.000Z,
-        "html": "<p><img src="/img/photo-1.jpg"></p>",
+        "html": "<p><img src="/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto1.jpg"></p>",
         "images": [
           {
             "anchorElementUrl": undefined,
-            "src": "/img/photo-1.jpg",
-            "srcUrl": "https://www.nogizaka46.com/img/photo-1.jpg",
+            "src": "/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto1.jpg",
+            "srcUrl": "https://www.nogizaka46.com/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto1.jpg",
           },
         ],
         "memberName": "矢田 萌華",
         "title": "吾輩は猫である。名前は",
         "uid": 104629,
-        "url": "https://www.nogizaka46.com/s/n46/diary/detail/104629?ima=0445",
+        "url": "https://www.nogizaka46.com/s/n46/diary/detail/104629?ima=3209",
       }
     `)
   })
@@ -159,12 +159,12 @@ describe("parseNogiBlogsJs", () => {
     expect(first).toMatchInlineSnapshot(`
       {
         "datetime": 2026-06-07T08:18:49.000Z,
-        "html": "<p><img src="/img/photo-1.jpg"/></p>",
+        "html": "<p><img src="/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto3.jpg"/></p>",
         "images": [
           {
             "anchorElementUrl": undefined,
-            "src": "/img/photo-1.jpg",
-            "srcUrl": "https://www.nogizaka46.com/img/photo-1.jpg",
+            "src": "/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto3.jpg",
+            "srcUrl": "https://www.nogizaka46.com/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto3.jpg",
           },
         ],
         "memberName": "矢田 萌華",
@@ -176,17 +176,17 @@ describe("parseNogiBlogsJs", () => {
     expect(second).toMatchInlineSnapshot(`
       {
         "datetime": 2026-06-19T09:35:30.000Z,
-        "html": "<p><img  src="/img/photo-1.jpg"/><img  src="/img/photo-2.jpg"/></p>",
+        "html": "<p><img  src="/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto1.jpg"/><img  src="/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto2.jpg"/></p>",
         "images": [
           {
             "anchorElementUrl": undefined,
-            "src": "/img/photo-1.jpg",
-            "srcUrl": "https://www.nogizaka46.com/img/photo-1.jpg",
+            "src": "/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto1.jpg",
+            "srcUrl": "https://www.nogizaka46.com/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto1.jpg",
           },
           {
             "anchorElementUrl": undefined,
-            "src": "/img/photo-2.jpg",
-            "srcUrl": "https://www.nogizaka46.com/img/photo-2.jpg",
+            "src": "/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto2.jpg",
+            "srcUrl": "https://www.nogizaka46.com/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto2.jpg",
           },
         ],
         "memberName": "鈴木 佑捺",

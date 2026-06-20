@@ -57,13 +57,13 @@ describe("fetchHinataBlogs", () => {
         {
           "datetime": 2026-06-14T02:41:00.000Z,
           "html": "<p>
-                      <img src="/img/photo-3.jpg">
+                      <img src="https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto3.jpg">
                     </p>",
           "images": [
             {
               "anchorElementUrl": undefined,
-              "src": "/img/photo-3.jpg",
-              "srcUrl": "https://www.hinatazaka46.com/img/photo-3.jpg",
+              "src": "https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto3.jpg",
+              "srcUrl": "https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto3.jpg",
             },
           ],
           "memberName": "佐藤 優羽",
@@ -74,19 +74,19 @@ describe("fetchHinataBlogs", () => {
         {
           "datetime": 2026-06-19T13:19:00.000Z,
           "html": "<p>
-                      <img src="/img/photo-1.jpg">
-                      <img src="/img/photo-2.jpg">
+                      <img src="https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto1.jpg">
+                      <img src="https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto2.jpg">
                     </p>",
           "images": [
             {
               "anchorElementUrl": undefined,
-              "src": "/img/photo-1.jpg",
-              "srcUrl": "https://www.hinatazaka46.com/img/photo-1.jpg",
+              "src": "https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto1.jpg",
+              "srcUrl": "https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto1.jpg",
             },
             {
               "anchorElementUrl": undefined,
-              "src": "/img/photo-2.jpg",
-              "srcUrl": "https://www.hinatazaka46.com/img/photo-2.jpg",
+              "src": "https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto2.jpg",
+              "srcUrl": "https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto2.jpg",
             },
           ],
           "memberName": "鶴崎 仁香",
@@ -129,19 +129,19 @@ describe("parseHinataBlogHtml", () => {
       {
         "datetime": 2026-06-14T02:41:00.000Z,
         "html": "<p>
-                    <img src="/img/photo-1.jpg">
-                    <img src="/img/photo-2.jpg">
+                    <img src="https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto1.jpg">
+                    <img src="https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto2.jpg">
                   </p>",
         "images": [
           {
             "anchorElementUrl": undefined,
-            "src": "/img/photo-1.jpg",
-            "srcUrl": "https://www.hinatazaka46.com/img/photo-1.jpg",
+            "src": "https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto1.jpg",
+            "srcUrl": "https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto1.jpg",
           },
           {
             "anchorElementUrl": undefined,
-            "src": "/img/photo-2.jpg",
-            "srcUrl": "https://www.hinatazaka46.com/img/photo-2.jpg",
+            "src": "https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto2.jpg",
+            "srcUrl": "https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto2.jpg",
           },
         ],
         "memberName": "佐藤 優羽",
@@ -169,13 +169,13 @@ describe("parseHinataBlogsHtml", () => {
       {
         "datetime": 2026-06-14T02:41:00.000Z,
         "html": "<p>
-                      <img src="/img/photo-3.jpg">
+                      <img src="https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto3.jpg">
                     </p>",
         "images": [
           {
             "anchorElementUrl": undefined,
-            "src": "/img/photo-3.jpg",
-            "srcUrl": "https://www.hinatazaka46.com/img/photo-3.jpg",
+            "src": "https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto3.jpg",
+            "srcUrl": "https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto3.jpg",
           },
         ],
         "memberName": "佐藤 優羽",
@@ -188,19 +188,19 @@ describe("parseHinataBlogsHtml", () => {
       {
         "datetime": 2026-06-19T13:19:00.000Z,
         "html": "<p>
-                      <img src="/img/photo-1.jpg">
-                      <img src="/img/photo-2.jpg">
+                      <img src="https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto1.jpg">
+                      <img src="https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto2.jpg">
                     </p>",
         "images": [
           {
             "anchorElementUrl": undefined,
-            "src": "/img/photo-1.jpg",
-            "srcUrl": "https://www.hinatazaka46.com/img/photo-1.jpg",
+            "src": "https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto1.jpg",
+            "srcUrl": "https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto1.jpg",
           },
           {
             "anchorElementUrl": undefined,
-            "src": "/img/photo-2.jpg",
-            "srcUrl": "https://www.hinatazaka46.com/img/photo-2.jpg",
+            "src": "https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto2.jpg",
+            "srcUrl": "https://cdn.hinatazaka46.com/files/14/diary/official/member/moblog/202606/mobPhoto2.jpg",
           },
         ],
         "memberName": "鶴崎 仁香",
