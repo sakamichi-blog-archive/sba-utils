@@ -1,47 +1,20 @@
 import {
   fetchHinataBlog,
-  fetchHinataBlogHtml,
   fetchHinataBlogs,
-  fetchHinataBlogsHtml,
   fetchNogiBlog,
-  fetchNogiBlogHtml,
   fetchNogiBlogs,
-  fetchNogiBlogsJs,
   fetchSakuraBlog,
-  fetchSakuraBlogs,
-  fetchSakuraBlogsHtml,
-  getHinataBlogUrl,
-  getNogiBlogUrl,
-  getSakuraBlogUrl,
-  parseHinataBlogHtml,
-  parseHinataBlogsHtml,
-  parseNogiBlogHtml,
-  parseNogiBlogsJs,
-  parseSakuraBlogHtml,
-  parseSakuraBlogsHtml
+  fetchSakuraBlogs
 } from "./blogs/index"
 import { FetchStatusError, ParseError } from "./shared/errors"
+
 export {
   fetchHinataBlog,
-  fetchHinataBlogHtml,
   fetchHinataBlogs,
-  fetchHinataBlogsHtml,
   fetchNogiBlog,
-  fetchNogiBlogHtml,
   fetchNogiBlogs,
-  fetchNogiBlogsJs,
   fetchSakuraBlog,
   fetchSakuraBlogs,
-  fetchSakuraBlogsHtml,
   FetchStatusError,
-  ParseError,
-  getHinataBlogUrl,
-  getNogiBlogUrl,
-  getSakuraBlogUrl,
-  parseHinataBlogHtml,
-  parseHinataBlogsHtml,
-  parseNogiBlogHtml,
-  parseNogiBlogsJs,
-  parseSakuraBlogHtml,
-  parseSakuraBlogsHtml
+  ParseError
 }
