@@ -87,8 +87,12 @@ describe("getSakuraBlogUrl", () => {
 describe("parseSakuraBlogHtml", () => {
   const html = readFixture("sakura-blog.html")
 
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => vi.useRealTimers())
+
   it("parses single blog fields correctly", () => {
-    expect(parseSakuraBlogHtml(html, 69791)).toMatchInlineSnapshot(`
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    expect(parseSakuraBlogHtml(html, getSakuraBlogUrl(69791))).toMatchInlineSnapshot(`
       {
         "datetime": 2026-06-15T10:20:00.000Z,
         "html": "<p>
@@ -116,7 +120,7 @@ describe("parseSakuraBlogHtml", () => {
         "memberName": "勝又 春",
         "title": "カメラ始めました＿",
         "uid": 69791,
-        "url": "https://sakurazaka46.com/s/s46/diary/detail/69791?ima=4440&cd=blog",
+        "url": "https://sakurazaka46.com/s/s46/diary/detail/69791?ima=3456&cd=blog",
       }
     `)
   })

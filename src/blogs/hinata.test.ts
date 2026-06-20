@@ -125,7 +125,9 @@ describe("parseHinataBlogHtml", () => {
   const html = readFixture("hinata-blog.html")
 
   it("parses single blog fields correctly", () => {
-    expect(parseHinataBlogHtml(html, 69781)).toMatchInlineSnapshot(`
+    expect(
+      parseHinataBlogHtml(html, "https://www.hinatazaka46.com/s/official/diary/detail/69781?ima=0000&cd=member")
+    ).toMatchInlineSnapshot(`
       {
         "datetime": 2026-06-14T02:41:00.000Z,
         "html": "<p>

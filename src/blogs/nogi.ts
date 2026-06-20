@@ -6,7 +6,7 @@ import { getIma, parseDatetimeJst } from "../shared/datetime"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import { castStringToIntegerSchema } from "../shared/schemas"
 import type { BlogWithHtml } from "./_types"
-import { findImagesInHtml, parseJsonpArgument, normalizeFullWidthNumbers } from "./_utils"
+import { findImagesInHtml, getUidFromUrl, normalizeFullWidthNumbers, parseJsonpArgument } from "./_utils"
 
 const BLOGS_API_ENDPOINT = "https://www.nogizaka46.com/s/n46/api/list/blog"
 
@@ -31,12 +31,13 @@ const getBlogsFunctionArgumentSchema = z.object({
 })
 
 export async function fetchNogiBlog(uid: number): Promise<BlogWithHtml> {
-  const html = await fetchNogiBlogHtml(uid)
-  return parseNogiBlogHtml(html, uid)
+  const { html, url } = await fetchNogiBlogHtml(uid)
+  return parseNogiBlogHtml(html, url)
 }
 
-export async function fetchNogiBlogHtml(uid: number): Promise<string> {
-  const response = await fetch(getNogiBlogUrl(uid), {
+export async function fetchNogiBlogHtml(uid: number): Promise<{ html: string; url: string }> {
+  const url = getNogiBlogUrl(uid)
+  const response = await fetch(url, {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP
     }
@@ -46,7 +47,7 @@ export async function fetchNogiBlogHtml(uid: number): Promise<string> {
     throw new FetchStatusError(response.status, response.url)
   }
 
-  return response.text()
+  return { html: await response.text(), url }
 }
 
 export async function fetchNogiBlogs(): Promise<BlogWithHtml[]> {
@@ -78,7 +79,10 @@ export function getNogiBlogUrl(uid: number): string {
   return `https://www.nogizaka46.com/s/n46/diary/detail/${uid}?ima=${getIma()}`
 }
 
-export function parseNogiBlogHtml(html: string, uid: number): BlogWithHtml {
+export function parseNogiBlogHtml(html: string, url: string): BlogWithHtml {
+  const uid = getUidFromUrl(url)
+  if (uid === undefined) throw new Error(`Cannot extract uid from URL: ${url}`)
+
   const $ = cheerio.load(html)
   const articleElement = $(".b--wrap .b--cont main.b--mn .bd--mc")
   const headerElement = $(articleElement).find("header.bd--hd .bd--hd__in .bd--hd__data")
@@ -87,7 +91,6 @@ export function parseNogiBlogHtml(html: string, uid: number): BlogWithHtml {
   const datetime = $(headerElement).find(".bd--hd__sub p.bd--hd__date").text().trim()
   const contentHtml =
     $(articleElement).find(".bd--ctt .bd--ctt__in .bd--mn .bd--edit").html()?.trim() ?? ""
-  const url = getNogiBlogUrl(uid)
 
   return {
     datetime: parseDatetimeJst(datetime),

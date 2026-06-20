@@ -9,12 +9,13 @@ import { findImagesInHtml, getUidFromUrl } from "./_utils"
 const BLOGS_PAGE_URL = "https://www.hinatazaka46.com/s/official/diary/member/list"
 
 export async function fetchHinataBlog(uid: number): Promise<BlogWithHtml> {
-  const html = await fetchHinataBlogHtml(uid)
-  return parseHinataBlogHtml(html, uid)
+  const { html, url } = await fetchHinataBlogHtml(uid)
+  return parseHinataBlogHtml(html, url)
 }
 
-export async function fetchHinataBlogHtml(uid: number): Promise<string> {
-  const response = await fetch(getHinataBlogUrl(uid), {
+export async function fetchHinataBlogHtml(uid: number): Promise<{ html: string; url: string }> {
+  const url = getHinataBlogUrl(uid)
+  const response = await fetch(url, {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP
     }
@@ -24,7 +25,7 @@ export async function fetchHinataBlogHtml(uid: number): Promise<string> {
     throw new FetchStatusError(response.status, response.url)
   }
 
-  return response.text()
+  return { html: await response.text(), url }
 }
 
 export async function fetchHinataBlogs(): Promise<BlogWithHtml[]> {
@@ -50,7 +51,10 @@ export function getHinataBlogUrl(uid: number): string {
   return `https://www.hinatazaka46.com/s/official/diary/detail/${uid}?ima=0000&cd=member`
 }
 
-export function parseHinataBlogHtml(html: string, uid: number): BlogWithHtml {
+export function parseHinataBlogHtml(html: string, url: string): BlogWithHtml {
+  const uid = getUidFromUrl(url)
+  if (uid === undefined) throw new Error(`Cannot extract uid from URL: ${url}`)
+
   const $ = cheerio.load(html)
   const articleElement = $(".l-maincontents--blog .p-blog-group .p-blog-article").first()
 
@@ -60,7 +64,6 @@ export function parseHinataBlogHtml(html: string, uid: number): BlogWithHtml {
     .text()
     .trim()
   const contentHtml = $(articleElement).find(".c-blog-article__text").first().html()?.trim() ?? ""
-  const url = getHinataBlogUrl(uid)
 
   return {
     datetime: parseDatetimeJst(datetime),

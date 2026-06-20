@@ -18,12 +18,13 @@ export interface SakuraBlog {
 const BLOGS_PAGE_URL = "https://sakurazaka46.com/s/s46/diary/blog/list"
 
 export async function fetchSakuraBlog(uid: number): Promise<BlogWithHtml> {
-  const html = await fetchSakuraBlogHtml(uid)
-  return parseSakuraBlogHtml(html, uid)
+  const { html, url } = await fetchSakuraBlogHtml(uid)
+  return parseSakuraBlogHtml(html, url)
 }
 
-async function fetchSakuraBlogHtml(uid: number): Promise<string> {
-  const response = await fetch(getSakuraBlogUrl(uid), {
+async function fetchSakuraBlogHtml(uid: number): Promise<{ html: string; url: string }> {
+  const url = getSakuraBlogUrl(uid)
+  const response = await fetch(url, {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP
     }
@@ -33,7 +34,7 @@ async function fetchSakuraBlogHtml(uid: number): Promise<string> {
     throw new FetchStatusError(response.status, response.url)
   }
 
-  return response.text()
+  return { html: await response.text(), url }
 }
 
 export async function fetchSakuraBlogs(): Promise<SakuraBlog[]> {
@@ -59,14 +60,16 @@ export function getSakuraBlogUrl(uid: number): string {
   return `https://sakurazaka46.com/s/s46/diary/detail/${uid}?ima=${getIma()}&cd=blog`
 }
 
-export function parseSakuraBlogHtml(html: string, uid: number): BlogWithHtml {
+export function parseSakuraBlogHtml(html: string, url: string): BlogWithHtml {
+  const uid = getUidFromUrl(url)
+  if (uid === undefined) throw new Error(`Cannot extract uid from URL: ${url}`)
+
   const $ = cheerio.load(html)
   const articleElement = $("main.site-main .col2-wrap-in2 .col-l-wrap article.post").first()
 
   /** `YYYY/MM/DD HH:mm` format */
   const datetime = $(articleElement).find(".col-r .blog-foot .txt p.date").text()
   const contentHtml = $(articleElement).find(".col-r .box-article").html()?.trim() ?? ""
-  const url = getSakuraBlogUrl(uid)
 
   return {
     datetime: parseDatetimeJst(datetime),

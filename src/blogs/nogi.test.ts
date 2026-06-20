@@ -123,8 +123,12 @@ describe("getNogiBlogUrl", () => {
 describe("parseNogiBlogHtml", () => {
   const html = readFixture("nogi-blog.html")
 
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => vi.useRealTimers())
+
   it("parses single blog fields correctly", () => {
-    expect(parseNogiBlogHtml(html, 104629)).toMatchInlineSnapshot(`
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    expect(parseNogiBlogHtml(html, getNogiBlogUrl(104629))).toMatchInlineSnapshot(`
       {
         "datetime": 2026-06-07T08:18:00.000Z,
         "html": "<p><img src="/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto1.jpg"></p>",
@@ -138,7 +142,7 @@ describe("parseNogiBlogHtml", () => {
         "memberName": "矢田 萌華",
         "title": "吾輩は猫である。名前は",
         "uid": 104629,
-        "url": "https://www.nogizaka46.com/s/n46/diary/detail/104629?ima=4440",
+        "url": "https://www.nogizaka46.com/s/n46/diary/detail/104629?ima=3456",
       }
     `)
   })
