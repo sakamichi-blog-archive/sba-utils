@@ -49,6 +49,16 @@ describe("findImagesInHtml", () => {
     expect(img?.anchorElementUrl).toBeUndefined()
   })
 
+  it("omits anchorElementUrl when anchor parent has no href", () => {
+    const [img] = findImagesInHtml('<a><img src="/thumb.jpg"></a>', BASE)
+    expect(img?.anchorElementUrl).toBeUndefined()
+  })
+
+  it("omits anchorElementUrl when anchor parent has blank href", () => {
+    const [img] = findImagesInHtml('<a href="  "><img src="/thumb.jpg"></a>', BASE)
+    expect(img?.anchorElementUrl).toBeUndefined()
+  })
+
   it("skips img with blank src", () => {
     const images = findImagesInHtml('<img src="   ">', BASE)
     expect(images).toHaveLength(0)
@@ -62,6 +72,15 @@ describe("findImagesInHtml", () => {
   it("skips img with non-http src", () => {
     const images = findImagesInHtml('<img src="data:image/png;base64,abc">', BASE)
     expect(images).toHaveLength(0)
+  })
+
+  it("returns all imgs in order", () => {
+    const html = '<img src="/img/a.jpg"><img src="/img/b.jpg"><img src="/img/c.jpg">'
+    const images = findImagesInHtml(html, BASE)
+    expect(images).toHaveLength(3)
+    expect(images[0]?.src).toBe("/img/a.jpg")
+    expect(images[1]?.src).toBe("/img/b.jpg")
+    expect(images[2]?.src).toBe("/img/c.jpg")
   })
 })
 
