@@ -1,20 +1,12 @@
-import {
-  fetchHinataBlog,
-  fetchHinataBlogs,
-  fetchNogiBlog,
-  fetchNogiBlogs,
-  fetchSakuraBlog,
-  fetchSakuraBlogs
-} from "./blogs/index"
-import { FetchStatusError, ParseError } from "./shared/errors"
-
 export {
+  type Blog,
+  type BlogWithHtml,
   fetchHinataBlog,
   fetchHinataBlogs,
   fetchNogiBlog,
   fetchNogiBlogs,
   fetchSakuraBlog,
   fetchSakuraBlogs,
-  FetchStatusError,
-  ParseError
-}
+  type SakuraBlog
+} from "./blogs/index"
+export { FetchStatusError, ParseError } from "./shared/errors"
