@@ -22,6 +22,6 @@ jobs:
         with:
           install_args: actionlint shellcheck zizmor
       - run: actionlint
-      - run: zizmor .github/workflows --format github
+      - run: zizmor --format github .
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

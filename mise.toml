@@ -11,4 +11,4 @@ zizmor = "1.25.2"
 
 [tasks."check:workflows"]
 description = "Check GitHub Actions workflows"
-run = ["actionlint", "zizmor .github/workflows/"]
+run = ["actionlint", "zizmor ."]
