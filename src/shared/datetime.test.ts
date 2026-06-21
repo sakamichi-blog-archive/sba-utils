@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { getMmss, parseDatetimeJst } from "./datetime"
+import { ParseError } from "./errors"
 
 describe("getMmss()", () => {
   beforeEach(() => vi.useFakeTimers())
@@ -46,5 +47,9 @@ describe("parseDatetimeJst()", () => {
     expect(parseDatetimeJst("2026/06/09 21:47")).toEqual(new Date("2026-06-09T21:47:00+09:00")) // https://sakurazaka46.com/s/s46/diary/detail/69717?ima=0000&cd=blog
     expect(parseDatetimeJst("2026/04/13 00:08")).toEqual(new Date("2026-04-13T00:08:00+09:00")) // https://sakurazaka46.com/s/s46/diary/detail/68923?ima=0000&cd=blog
     expect(parseDatetimeJst("2025/12/31 21:39")).toEqual(new Date("2025-12-31T21:39:00+09:00")) // https://sakurazaka46.com/s/s46/diary/detail/67425?ima=0000&cd=blog
+  })
+
+  it("throws ParseError for unexpected input", () => {
+    expect(() => parseDatetimeJst("")).toThrow(ParseError)
   })
 })
