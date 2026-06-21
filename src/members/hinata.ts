@@ -147,6 +147,7 @@ export const members: Member[] = [
   {
     birthdate: "1999-04-27",
     generation: generation2,
+    graduatedAt: "2026-03-31T03:00:00Z",
     name: "松田好花",
     nameSpaced: "松田 好花",
     uid: "18"
