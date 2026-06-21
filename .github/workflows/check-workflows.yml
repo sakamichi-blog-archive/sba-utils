@@ -3,7 +3,7 @@ name: Check workflows
 on:
   pull_request:
     branches: [main]
-    paths: 
+    paths:
       - .github/workflows/**
       - mise.lock
       - zizmor.yml
