@@ -1,4 +1,4 @@
-/** Return current time as `mmss` used in `ima` query params */
+/** Return current time as `mmss` */
 export function getMmss(): string {
   const now = new Date()
   return `${String(now.getMinutes()).padStart(2, "0")}${String(now.getSeconds()).padStart(2, "0")}`

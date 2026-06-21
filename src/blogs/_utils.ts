@@ -1,7 +1,7 @@
 import * as cheerio from "cheerio"
 
 type FindImagesInHtmlOutput = {
-  /** Absolute URL of parent `<a>` element `href` attribute */
+  /** Absolute URL of parent `<a>` element `href` attribute. This may or may not be a link to a higher resolution image. */
   anchorElementUrl?: string
   /** `<img>` element `src` attribute */
   src: string
@@ -48,7 +48,7 @@ export function findImagesInHtml(html: string, blogUrl: string | URL): FindImage
   return images
 }
 
-/** Extract the numeric UID from a diary detail URL, e.g. `.../diary/detail/104660?...` → `104660` */
+/** Extract blog UID from blog URL */
 export function getUidFromUrl(url: string | URL): number | undefined {
   const { pathname } = url instanceof URL ? url : new URL(url)
   const match = pathname.match(/\/diary\/detail\/(\d+)/)
@@ -64,10 +64,11 @@ export function normalizeFullWidthNumbers(name: string): string {
   return name.replace(/[０-９]/g, str => String.fromCharCode(str.charCodeAt(0) - 0xfee0))
 }
 
-/** Parse the JSON argument from a JSONP callback string, e.g. `res({...})` */
-export function parseJsonpArgument(js: string, functionName: string): unknown {
+/** Parse JSON argument from JSONP callback string */
+export function parseJsonpArgumentJson(js: string, functionName: string): unknown {
   const match = js.trim().match(new RegExp(`^${functionName}\\(([\\s\\S]+)\\);?\\s*$`))
   if (match === null) return undefined
+
   try {
     return JSON.parse(match[1]!)
   } catch {

@@ -10,7 +10,7 @@ import {
   findImagesInHtml,
   getUidFromUrl,
   normalizeFullWidthNumbers,
-  parseJsonpArgument
+  parseJsonpArgumentJson
 } from "./_utils"
 
 const BLOGS_API_ENDPOINT = "https://www.nogizaka46.com/s/n46/api/list/blog"
@@ -123,7 +123,7 @@ export function parseNogiBlogHtml(html: string, url: string): BlogWithHtml {
 }
 
 export function parseNogiBlogsJs(js: string): BlogWithHtml[] {
-  const functionArgument = parseJsonpArgument(js, "res")
+  const functionArgument = parseJsonpArgumentJson(js, "res")
   if (functionArgument === undefined) {
     throw new ParseError("Failed to find JavaScript function argument")
   }
