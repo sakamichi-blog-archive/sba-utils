@@ -12,6 +12,10 @@
   ],
   "type": "module",
   "exports": {
+    "./blogs": {
+      "types": "./dist/blogs.d.mts",
+      "import": "./dist/blogs.mjs"
+    },
     "./members": {
       "types": "./dist/members.d.mts",
       "import": "./dist/members.mjs"
@@ -23,22 +27,30 @@
   },
   "scripts": {
     "build": "tsdown",
-    "check": "pnpm run format && pnpm run lint && pnpm run typecheck && pnpm run packcheck",
+    "check": "pnpm run format && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build && pnpm run packcheck",
     "format": "oxfmt --check",
     "format:fix": "oxfmt",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "packcheck": "publint && attw --pack --profile esm-only .",
     "prepack": "pnpm run build",
+    "test": "vitest run",
+    "test:update": "vitest run -u",
     "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.3",
+    "@types/node": "^24.13.2",
     "oxfmt": "^0.54.0",
     "oxlint": "^1.69.0",
     "publint": "^0.3.21",
     "tsdown": "^0.22.2",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
   },
   "devEngines": {
     "runtime": {
