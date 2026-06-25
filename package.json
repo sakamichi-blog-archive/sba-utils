@@ -45,6 +45,7 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.3",
     "@types/node": "^24.13.2",
+    "happy-dom": "^20.10.6",
     "oxfmt": "^0.55.0",
     "oxlint": "^1.70.0",
     "publint": "^0.3.21",
