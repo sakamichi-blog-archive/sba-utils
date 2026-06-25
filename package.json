@@ -11,6 +11,7 @@
     "dist/"
   ],
   "type": "module",
+  "types": "./dist/index.d.mts",
   "exports": {
     "./blogs": {
       "types": "./dist/blogs.d.mts",
