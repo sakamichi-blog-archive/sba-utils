@@ -32,7 +32,7 @@
     "format:fix": "oxfmt",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "packcheck": "publint && attw --pack --profile esm-only .",
+    "packcheck": "publint && pnpm pack --out .out.tgz && attw --profile esm-only .out.tgz",
     "prepack": "pnpm run build",
     "test": "vitest run",
     "test:update": "vitest run -u",
