@@ -23,4 +23,4 @@ jobs:
           registry-url: https://registry.npmjs.org
       - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
       - run: pnpm install
-      - run: npm publish
+      - run: pnpm publish --no-git-checks
