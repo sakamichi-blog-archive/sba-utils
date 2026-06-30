@@ -33,7 +33,7 @@
     "format:fix": "oxfmt",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "packcheck": "publint && pnpm pack --out .out.tgz && attw --profile esm-only .out.tgz",
+    "packcheck": "publint && pnpm pack --out .out.tgz && attw --profile esm-only .out.tgz && rm .out.tgz",
     "prepack": "pnpm run build",
     "test": "vitest run",
     "test:update": "vitest run -u",
@@ -44,11 +44,11 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "^0.18.3",
+    "@arethetypeswrong/cli": "^0.18.4",
     "@types/node": "^24.13.2",
     "happy-dom": "^20.10.6",
-    "oxfmt": "^0.55.0",
-    "oxlint": "^1.70.0",
+    "oxfmt": "^0.56.0",
+    "oxlint": "^1.71.0",
     "publint": "^0.3.21",
     "tsdown": "^0.22.3",
     "typescript": "^6.0.3",
