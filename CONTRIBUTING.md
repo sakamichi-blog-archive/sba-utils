@@ -5,7 +5,7 @@
 ### Workflow
 
 - Feature branches: `features/<name>`
-- Merge branches using a merge commit (`git merge --no-ff`). Use git's default merge commit message.
+- Merge PRs using squash merge. The PR title becomes the commit on `main` and the changelog entry, so it must follow Conventional Commits format.
 
 ### Making commits
 
@@ -34,6 +34,19 @@ Scopes are wrapped in parentheses.
 - No scope: Changes that don't match any of the above
 
 If a commit includes multiple scopes (including no scope), omit the scope.
+
+---
+
+## Releases
+
+Releases are managed by [Release Please](https://github.com/googleapis/release-please) and published to npm via [Trusted publishing](https://docs.npmjs.com/trusted-publishers) (OIDC — no token required).
+
+### Flow
+
+1. Merge feature/fix PRs to `main` as usual
+2. Release Please opens (or updates) a Release PR that bumps the version in `package.json` and updates `CHANGELOG.md` based on Conventional Commits
+3. When you're ready to release, optionally edit `CHANGELOG.md` in the Release PR to override the generated release notes, then merge
+4. The package is automatically published to npm
 
 ---
 
