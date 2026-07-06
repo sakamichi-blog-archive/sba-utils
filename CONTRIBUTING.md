@@ -37,6 +37,14 @@ If a commit includes multiple scopes (including no scope), omit the scope.
 
 ---
 
+## Releases
+
+Releases are managed by [Release Please](https://github.com/googleapis/release-please). It watches commits on `main` and maintains a Release PR that bumps the version in `package.json` and updates `CHANGELOG.md` based on Conventional Commits.
+
+Merging that Release PR publishes the package to npm via [npm trusted publishing](https://docs.npmjs.com/generating-provenance-statements) (OIDC — no token required).
+
+---
+
 ## Coding conventions
 
 ### Comparisons
