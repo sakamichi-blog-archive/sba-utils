@@ -5,7 +5,7 @@
 ### Workflow
 
 - Feature branches: `features/<name>`
-- Merge branches using a merge commit (`git merge --no-ff`). Use git's default merge commit message.
+- Merge PRs using squash merge. The PR title becomes the commit on `main` and the changelog entry, so it must follow Conventional Commits format.
 
 ### Making commits
 
