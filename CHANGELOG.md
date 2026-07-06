@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.1.0...utils-v0.2.0) (2026-07-06)
+
+
+### Features
+
+* Add English names to members ([#19](https://github.com/sakamichi-blog-archive/sba-utils/issues/19)) ([6322630](https://github.com/sakamichi-blog-archive/sba-utils/commit/63226309f3730b2f8c3c688c1fcc1d32492a23f6))
+
 ## [0.1.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.0.1...utils-v0.1.0) (2026-07-06)
 
 
