@@ -39,9 +39,14 @@ If a commit includes multiple scopes (including no scope), omit the scope.
 
 ## Releases
 
-Releases are managed by [Release Please](https://github.com/googleapis/release-please). It watches commits on `main` and maintains a Release PR that bumps the version in `package.json` and updates `CHANGELOG.md` based on Conventional Commits.
+Releases are managed by [Release Please](https://github.com/googleapis/release-please) and published to npm via [Trusted publishing](https://docs.npmjs.com/trusted-publishers) (OIDC — no token required).
 
-Merging that Release PR publishes the package to npm via [Trusted publishing](https://docs.npmjs.com/trusted-publishers) (OIDC — no token required).
+### Flow
+
+1. Merge feature/fix PRs to `main` as usual
+2. Release Please opens (or updates) a Release PR that bumps the version in `package.json` and updates `CHANGELOG.md` based on Conventional Commits
+3. When you're ready to release, merge the Release PR
+4. The package is automatically published to npm
 
 ---
 
