@@ -9,3 +9,5 @@ node_modules/
 
 !.claude/
 .claude/worktrees/
+
+!.release-please-manifest.json
