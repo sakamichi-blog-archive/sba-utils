@@ -48,6 +48,10 @@ Releases are managed by [Release Please](https://github.com/googleapis/release-p
 3. When you're ready to release, optionally edit `CHANGELOG.md` in the Release PR to override the generated release notes, then merge
 4. The package is automatically published to npm
 
+### Versioning
+
+While the package is pre-1.0, `bump-minor-pre-major: true` is set in `release-please-config.json` so that breaking changes bump the minor version instead of the major. Remove this when releasing 1.0.0.
+
 ---
 
 ## Coding conventions
