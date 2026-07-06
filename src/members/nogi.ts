@@ -32,6 +32,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2018-05-31T03:00:00Z",
     name: "生駒里奈",
+    nameEnglish: "Rina Ikoma",
     nameSpaced: "生駒 里奈",
     uid: "254"
   },
@@ -40,6 +41,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2014-07-21T14:59:00Z",
     name: "市來玲奈",
+    nameEnglish: "Rena Ichiki",
     nameSpaced: "市來 玲奈",
     uid: "255"
   },
@@ -48,6 +50,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2014-10-31T14:59:00Z",
     name: "伊藤寧々",
+    nameEnglish: "Nene Itou",
     nameSpaced: "伊藤 寧々",
     uid: "256"
   },
@@ -56,6 +59,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2018-01-31T03:00:00Z",
     name: "伊藤万理華",
+    nameEnglish: "Marika Itou",
     nameSpaced: "伊藤 万理華",
     uid: "257"
   },
@@ -73,6 +77,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2012-11-18T14:59:00Z",
     name: "岩瀬佑美子",
+    nameEnglish: "Yumiko Iwase",
     nameSpaced: "岩瀬 佑美子",
     uid: "53388"
   },
@@ -81,6 +86,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2019-04-30T03:00:00Z",
     name: "衛藤美彩",
+    nameEnglish: "Misa Etou",
     nameSpaced: "衛藤 美彩",
     uid: "260"
   },
@@ -89,6 +95,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2013-11-17T14:59:00Z",
     name: "柏幸奈",
+    nameEnglish: "Yukina Kashiwa",
     nameSpaced: "柏 幸奈",
     uid: "261"
   },
@@ -97,6 +104,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2018-12-31T03:00:00Z",
     name: "川後陽菜",
+    nameEnglish: "Hina Kawago",
     nameSpaced: "川後 陽菜",
     uid: "262"
   },
@@ -105,6 +113,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2018-04-30T03:00:00Z",
     name: "川村真洋",
+    nameEnglish: "Mahiro Kawamura",
     nameSpaced: "川村 真洋",
     uid: "263"
   },
@@ -122,6 +131,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2018-07-31T03:00:00Z",
     name: "斎藤ちはる",
+    nameEnglish: "Chiharu Saitou",
     nameSpaced: "斎藤 ちはる",
     uid: "265"
   },
@@ -130,6 +140,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2019-07-31T03:00:00Z",
     name: "斉藤優里",
+    nameEnglish: "Yuuri Saitou",
     nameSpaced: "斉藤 優里",
     uid: "266"
   },
@@ -138,6 +149,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2019-09-30T03:00:00Z",
     name: "桜井玲香",
+    nameEnglish: "Reika Sakurai",
     nameSpaced: "桜井 玲香",
     uid: "267"
   },
@@ -164,6 +176,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2016-04-30T03:00:00Z",
     name: "永島聖羅",
+    nameEnglish: "Seira Nagashima",
     nameSpaced: "永島 聖羅",
     uid: "272"
   },
@@ -181,6 +194,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2018-01-31T03:00:00Z",
     name: "中元日芽香",
+    nameEnglish: "Himeka Nakamoto",
     nameSpaced: "中元 日芽香",
     uid: "271"
   },
@@ -189,6 +203,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2019-02-28T03:00:00Z",
     name: "西野七瀬",
+    nameEnglish: "Nanase Nishino",
     nameSpaced: "西野 七瀬",
     uid: "273"
   },
@@ -197,6 +212,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2018-12-31T03:00:00Z",
     name: "能條愛未",
+    nameEnglish: "Ami Noujou",
     nameSpaced: "能條 愛未",
     uid: "274"
   },
@@ -205,6 +221,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2017-03-31T03:00:00Z",
     name: "橋本奈々未",
+    nameEnglish: "Nanami Hashimoto",
     nameSpaced: "橋本 奈々未",
     uid: "275"
   },
@@ -213,6 +230,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2015-04-04T14:59:00Z",
     name: "畠中清羅",
+    nameEnglish: "Seira Hatanaka",
     nameSpaced: "畠中 清羅",
     uid: "276"
   },
@@ -230,6 +248,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2016-07-01T03:00:00Z",
     name: "深川麻衣",
+    nameEnglish: "Mai Fukagawa",
     nameSpaced: "深川 麻衣",
     uid: "278"
   },
@@ -256,6 +275,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2013-11-17T14:59:00Z",
     name: "宮澤成良",
+    nameEnglish: "Seira Miyazawa",
     nameSpaced: "宮澤 成良",
     uid: "281"
   },
@@ -264,6 +284,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2014-12-15T14:59:00Z",
     name: "大和里菜",
+    nameEnglish: "Rina Yamato",
     nameSpaced: "大和 里菜",
     uid: "282"
   },
@@ -272,6 +293,7 @@ export const members: Member[] = [
     generation: generation1,
     graduatedAt: "2018-12-31T03:00:00Z",
     name: "若月佑美",
+    nameEnglish: "Yumi Wakatsuki",
     nameSpaced: "若月 佑美",
     uid: "283"
   },
@@ -372,6 +394,7 @@ export const members: Member[] = [
     generation: generation2,
     graduatedAt: "2014-10-31T14:59:00Z",
     name: "矢田里沙子",
+    nameEnglish: "Risako Yada",
     nameSpaced: "矢田 里沙子",
     uid: "17380"
   },
@@ -389,6 +412,7 @@ export const members: Member[] = [
     generation: generation2,
     graduatedAt: "2014-10-31T14:59:00Z",
     name: "米徳京花",
+    nameEnglish: "Kyouka Yonetoku",
     nameSpaced: "米徳 京花",
     uid: "17382"
   },
@@ -740,6 +764,7 @@ export const members: Member[] = [
     birthdate: "2005-09-17",
     generation: generation6,
     name: "愛宕心響",
+    nameEnglish: "Kokone Atago",
     nameSpaced: "愛宕 心響",
     uid: "63101"
   },
@@ -747,6 +772,7 @@ export const members: Member[] = [
     birthdate: "2004-12-01",
     generation: generation6,
     name: "大越ひなの",
+    nameEnglish: "Hinano Ookoshi",
     nameSpaced: "大越 ひなの",
     uid: "63102"
   },
@@ -754,6 +780,7 @@ export const members: Member[] = [
     birthdate: "2007-04-17",
     generation: generation6,
     name: "小津玲奈",
+    nameEnglish: "Reina Ozu",
     nameSpaced: "小津 玲奈",
     uid: "63103"
   },
@@ -761,6 +788,7 @@ export const members: Member[] = [
     birthdate: "2007-02-14",
     generation: generation6,
     name: "海邉朱莉",
+    nameEnglish: "Akari Kaibe",
     nameSpaced: "海邉 朱莉",
     uid: "63104"
   },
@@ -768,6 +796,7 @@ export const members: Member[] = [
     birthdate: "2011-01-14",
     generation: generation6,
     name: "川端晃菜",
+    nameEnglish: "Hina Kawabata",
     nameSpaced: "川端 晃菜",
     uid: "63105"
   },
@@ -775,6 +804,7 @@ export const members: Member[] = [
     birthdate: "2006-05-18",
     generation: generation6,
     name: "鈴木佑捺",
+    nameEnglish: "Yuuna Suzuki",
     nameSpaced: "鈴木 佑捺",
     uid: "63106"
   },
@@ -782,6 +812,7 @@ export const members: Member[] = [
     birthdate: "2005-07-16",
     generation: generation6,
     name: "瀬戸口心月",
+    nameEnglish: "Mitsuki Setoguchi",
     nameSpaced: "瀬戸口 心月",
     uid: "63107"
   },
@@ -789,6 +820,7 @@ export const members: Member[] = [
     birthdate: "2007-05-25",
     generation: generation6,
     name: "長嶋凛桜",
+    nameEnglish: "Rio Nagashima",
     nameSpaced: "長嶋 凛桜",
     uid: "63108"
   },
@@ -796,6 +828,7 @@ export const members: Member[] = [
     birthdate: "2009-11-01",
     generation: generation6,
     name: "増田三莉音",
+    nameEnglish: "Mirine Masuda",
     nameSpaced: "増田 三莉音",
     uid: "63109"
   },
@@ -803,6 +836,7 @@ export const members: Member[] = [
     birthdate: "2008-10-05",
     generation: generation6,
     name: "森平麗心",
+    nameEnglish: "Urumi Morihira",
     nameSpaced: "森平 麗心",
     uid: "63110"
   },
@@ -810,6 +844,7 @@ export const members: Member[] = [
     birthdate: "2008-01-27",
     generation: generation6,
     name: "矢田萌華",
+    nameEnglish: "Moeka Yada",
     nameSpaced: "矢田 萌華",
     uid: "63111"
   }

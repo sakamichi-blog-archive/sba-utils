@@ -327,6 +327,7 @@ export const members: Member[] = [
     birthdate: "2004-12-22",
     generation: generation4,
     name: "浅井恋乃未",
+    nameEnglish: "Konomi Asai",
     nameSpaced: "浅井 恋乃未",
     uid: "70"
   },
@@ -334,6 +335,7 @@ export const members: Member[] = [
     birthdate: "2006-03-09",
     generation: generation4,
     name: "稲熊ひな",
+    nameEnglish: "Hina Inaguma",
     nameSpaced: "稲熊 ひな",
     uid: "71"
   },
@@ -341,6 +343,7 @@ export const members: Member[] = [
     birthdate: "2004-01-24",
     generation: generation4,
     name: "勝又春",
+    nameEnglish: "Haru Katsumata",
     nameSpaced: "勝又 春",
     uid: "72"
   },
@@ -348,6 +351,7 @@ export const members: Member[] = [
     birthdate: "2006-12-01",
     generation: generation4,
     name: "佐藤愛桜",
+    nameEnglish: "Neo Satou",
     nameSpaced: "佐藤 愛桜",
     uid: "73"
   },
@@ -355,6 +359,7 @@ export const members: Member[] = [
     birthdate: "2007-09-16",
     generation: generation4,
     name: "中川智尋",
+    nameEnglish: "Chihiro Nakagawa",
     nameSpaced: "中川 智尋",
     uid: "74"
   },
@@ -362,6 +367,7 @@ export const members: Member[] = [
     birthdate: "2005-02-06",
     generation: generation4,
     name: "松本和子",
+    nameEnglish: "Wako Matsumoto",
     nameSpaced: "松本 和子",
     uid: "75"
   },
@@ -369,6 +375,7 @@ export const members: Member[] = [
     birthdate: "2006-01-24",
     generation: generation4,
     name: "目黒陽色",
+    nameEnglish: "Hiiro Meguro",
     nameSpaced: "目黒 陽色",
     uid: "76"
   },
@@ -376,6 +383,7 @@ export const members: Member[] = [
     birthdate: "2005-09-19",
     generation: generation4,
     name: "山川宇衣",
+    nameEnglish: "Ui Yamakawa",
     nameSpaced: "山川 宇衣",
     uid: "77"
   },
@@ -383,6 +391,7 @@ export const members: Member[] = [
     birthdate: "2008-07-20",
     generation: generation4,
     name: "山田桃実",
+    nameEnglish: "Momomi Yamada",
     nameSpaced: "山田 桃実",
     uid: "78"
   }

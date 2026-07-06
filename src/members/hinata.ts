@@ -327,6 +327,7 @@ export const members: Member[] = [
     birthdate: "2006-12-07",
     generation: generation5,
     name: "大田美月",
+    nameEnglish: "Mizuki Oota",
     nameSpaced: "大田 美月",
     uid: "37"
   },
@@ -334,6 +335,7 @@ export const members: Member[] = [
     birthdate: "2007-05-05",
     generation: generation5,
     name: "大野愛実",
+    nameEnglish: "Manami Oono",
     nameSpaced: "大野 愛実",
     uid: "38"
   },
@@ -341,6 +343,7 @@ export const members: Member[] = [
     birthdate: "2006-12-26",
     generation: generation5,
     name: "片山紗希",
+    nameEnglish: "Saki Katayama",
     nameSpaced: "片山 紗希",
     uid: "39"
   },
@@ -348,6 +351,7 @@ export const members: Member[] = [
     birthdate: "2006-01-23",
     generation: generation5,
     name: "蔵盛妃那乃",
+    nameEnglish: "Hinano Kuramori",
     nameSpaced: "蔵盛 妃那乃",
     uid: "40"
   },
@@ -355,6 +359,7 @@ export const members: Member[] = [
     birthdate: "2009-03-14",
     generation: generation5,
     name: "坂井新奈",
+    nameEnglish: "Niina Sakai",
     nameSpaced: "坂井 新奈",
     uid: "41"
   },
@@ -362,6 +367,7 @@ export const members: Member[] = [
     birthdate: "2006-09-10",
     generation: generation5,
     name: "佐藤優羽",
+    nameEnglish: "Yuu Satou",
     nameSpaced: "佐藤 優羽",
     uid: "42"
   },
@@ -369,6 +375,7 @@ export const members: Member[] = [
     birthdate: "2006-12-26",
     generation: generation5,
     name: "下田衣珠季",
+    nameEnglish: "Izuki Shimoda",
     nameSpaced: "下田 衣珠季",
     uid: "43"
   },
@@ -376,6 +383,7 @@ export const members: Member[] = [
     birthdate: "2007-08-01",
     generation: generation5,
     name: "高井俐香",
+    nameEnglish: "Rika Takai",
     nameSpaced: "高井 俐香",
     uid: "44"
   },
@@ -383,6 +391,7 @@ export const members: Member[] = [
     birthdate: "2004-03-27",
     generation: generation5,
     name: "鶴崎仁香",
+    nameEnglish: "Niko Tsurusaki",
     nameSpaced: "鶴崎 仁香",
     uid: "45"
   },
@@ -390,6 +399,7 @@ export const members: Member[] = [
     birthdate: "2005-06-08",
     generation: generation5,
     name: "松尾桜",
+    nameEnglish: "Sakura Matsuo",
     nameSpaced: "松尾 桜",
     uid: "46"
   }
