@@ -6,7 +6,7 @@ const generation3: Generation = { key: "hinata-3", seq: 3, name: "3期生" }
 const generation4: Generation = { key: "hinata-4", seq: 4, name: "4期生" }
 const generation5: Generation = { key: "hinata-5", seq: 5, name: "5期生" }
 
-export const members: Member[] = [
+const memberList: Member[] = [
   // 1st generation
   {
     birthdate: "1995-11-10",
@@ -404,3 +404,17 @@ export const members: Member[] = [
     uid: "46"
   }
 ]
+
+const nonMemberList: Member[] = [
+  { name: "ポカ", nameEnglish: "Poka", nameSpaced: "ポカ", uid: "000" },
+  {
+    name: "日向坂46新三期生",
+    nameEnglish: "New 3rd Generation",
+    nameSpaced: "日向坂46 新三期生",
+    uid: "1000"
+  },
+  { name: "四期生リレー", nameEnglish: "4th Generation", nameSpaced: "四期生リレー", uid: "2000" },
+  { name: "五期生リレー", nameEnglish: "5th Generation", nameSpaced: "五期生リレー", uid: "3000" }
+]
+
+export const members: Member[] = [...memberList, ...nonMemberList]

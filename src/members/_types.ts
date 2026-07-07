@@ -10,12 +10,12 @@ export interface Generation {
 export interface Member {
   /** Birth date in `YYYY-MM-DD` format */
   birthdate?: string
-  generation: Generation
+  generation?: Generation
   /** Graduation datetime in ISO 8601 format. `undefined` if not graduated. */
   graduatedAt?: string
   name: string
-  /** English representation of the member's name, in Western order (given name first) */
-  nameEnglish?: string
+  /** English representation of the member's name, in Western order (given name first). Opinionated. */
+  nameEnglish: string
   nameSpaced: string
   /** Member ID used by official website */
   uid: string
