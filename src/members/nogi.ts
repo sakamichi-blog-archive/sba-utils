@@ -851,12 +851,17 @@ const memberList: Member[] = [
 ]
 
 const nonMemberList: Member[] = [
-  { name: "運営スタッフ", nameSpaced: "運営スタッフ", uid: "40003" },
+  {
+    name: "運営スタッフ",
+    nameEnglish: "Management Blog",
+    nameSpaced: "運営スタッフ",
+    uid: "40003"
+  },
   { name: "研究生", nameSpaced: "研究生", uid: "40006" },
-  { name: "3期生", nameSpaced: "3期生", uid: "40004" },
-  { name: "4期生", nameSpaced: "4期生", uid: "40005" },
-  { name: "新4期生", nameSpaced: "新4期生", uid: "40001" },
-  { name: "5期生", nameSpaced: "5期生", uid: "40007" },
+  { name: "3期生", nameEnglish: "Third Generation", nameSpaced: "3期生", uid: "40004" },
+  { name: "4期生", nameEnglish: "Fourth Generation", nameSpaced: "4期生", uid: "40005" },
+  { name: "新4期生", nameEnglish: "New 4th Generation", nameSpaced: "新4期生", uid: "40001" },
+  { name: "5期生", nameEnglish: "Fifth Generation", nameSpaced: "5期生", uid: "40007" },
   { name: "6期生", nameSpaced: "6期生", uid: "40008" }
 ]
 
