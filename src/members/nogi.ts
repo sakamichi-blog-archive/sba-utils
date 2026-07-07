@@ -850,6 +850,13 @@ const memberList: Member[] = [
   }
 ]
 
-const nonMemberList: NonMember[] = [{ name: "6期生", nameSpaced: "6期生", uid: "40008" }]
+const nonMemberList: NonMember[] = [
+  { name: "運営スタッフ", nameSpaced: "運営スタッフ", uid: "40003" },
+  { name: "3期生", nameSpaced: "3期生", uid: "40004" },
+  { name: "4期生", nameSpaced: "4期生", uid: "40005" },
+  { name: "新4期生", nameSpaced: "新4期生", uid: "40001" },
+  { name: "5期生", nameSpaced: "5期生", uid: "40007" },
+  { name: "6期生", nameSpaced: "6期生", uid: "40008" }
+]
 
 export const members: (Member | NonMember)[] = [...memberList, ...nonMemberList]
