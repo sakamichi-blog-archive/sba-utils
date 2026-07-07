@@ -1,4 +1,4 @@
-import type { Generation, Member, NonMember } from "./_types"
+import type { Generation, Member } from "./_types"
 
 const generation1: Generation = { key: "sakura-1", seq: 1, name: "1期生" }
 const generation2: Generation = { key: "sakura-2", seq: 2, name: "2期生" }
@@ -397,8 +397,6 @@ const memberList: Member[] = [
   }
 ]
 
-const nonMemberList: NonMember[] = [
-  { name: "四期生リレー", nameSpaced: "四期生リレー", uid: "2001" }
-]
+const nonMemberList: Member[] = [{ name: "四期生リレー", nameSpaced: "四期生リレー", uid: "2001" }]
 
-export const members: (Member | NonMember)[] = [...memberList, ...nonMemberList]
+export const members: Member[] = [...memberList, ...nonMemberList]

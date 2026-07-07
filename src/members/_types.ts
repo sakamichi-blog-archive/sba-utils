@@ -7,21 +7,16 @@ export interface Generation {
   seq: number
 }
 
-interface MemberBase {
+export interface Member {
+  /** Birth date in `YYYY-MM-DD` format */
+  birthdate?: string
+  generation?: Generation
+  /** Graduation datetime in ISO 8601 format. `undefined` if not graduated. */
+  graduatedAt?: string
   name: string
+  /** English representation of the member's name, in Western order (given name first) */
+  nameEnglish?: string
   nameSpaced: string
   /** Member ID used by official website */
   uid: string
-}
-
-export interface NonMember extends MemberBase {}
-
-export interface Member extends MemberBase {
-  /** Birth date in `YYYY-MM-DD` format */
-  birthdate?: string
-  generation: Generation
-  /** Graduation datetime in ISO 8601 format. `undefined` if not graduated. */
-  graduatedAt?: string
-  /** English representation of the member's name, in Western order (given name first) */
-  nameEnglish?: string
 }
