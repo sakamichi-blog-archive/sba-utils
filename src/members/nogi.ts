@@ -7,7 +7,7 @@ const generation4: Generation = { key: "nogi-4", name: "4期生", seq: 4 }
 const generation5: Generation = { key: "nogi-5", name: "5期生", seq: 5 }
 const generation6: Generation = { key: "nogi-6", name: "6期生", seq: 6 }
 
-export const members: Member[] = [
+export const members: (Member | NonMember)[] = [
   // 1st generation
   {
     birthdate: "1993-08-20",
@@ -847,7 +847,6 @@ export const members: Member[] = [
     nameEnglish: "Moeka Yada",
     nameSpaced: "矢田 萌華",
     uid: "63111"
-  }
+  },
+  { name: "6期生", nameSpaced: "6期生", uid: "40008" }
 ]
-
-export const nonMembers: NonMember[] = [{ name: "6期生", nameSpaced: "6期生", uid: "40008" }]
