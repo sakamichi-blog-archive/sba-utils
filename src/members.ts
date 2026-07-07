@@ -1,8 +1,12 @@
 export {
   type Generation,
   hinataMembers,
+  hinataNonMembers,
   keyakiMembers,
   type Member,
+  type NonMember,
   nogiMembers,
-  sakuraMembers
+  nogiNonMembers,
+  sakuraMembers,
+  sakuraNonMembers
 } from "./members/index"

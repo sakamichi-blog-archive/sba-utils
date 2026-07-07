@@ -7,6 +7,13 @@ export interface Generation {
   seq: number
 }
 
+export interface NonMember {
+  name: string
+  nameSpaced: string
+  /** Member ID used by official website */
+  uid: string
+}
+
 export interface Member {
   /** Birth date in `YYYY-MM-DD` format */
   birthdate?: string
