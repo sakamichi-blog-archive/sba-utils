@@ -862,7 +862,7 @@ const nonMemberList: Member[] = [
   { name: "4期生", nameEnglish: "4th Generation", nameSpaced: "4期生", uid: "40005" },
   { name: "新4期生", nameEnglish: "New 4th Generation", nameSpaced: "新4期生", uid: "40001" },
   { name: "5期生", nameEnglish: "5th Generation", nameSpaced: "5期生", uid: "40007" },
-  { name: "6期生", nameSpaced: "6期生", uid: "40008" }
+  { name: "6期生", nameEnglish: "6th Generation", nameSpaced: "6期生", uid: "40008" }
 ]
 
 export const members: Member[] = [...memberList, ...nonMemberList]
