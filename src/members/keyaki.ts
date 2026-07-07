@@ -485,9 +485,19 @@ const memberList: Member[] = [
 ]
 
 const nonMemberList: Member[] = [
-  { name: "けやき坂462期生", nameSpaced: "けやき坂46 2期生", uid: "1000" },
-  { name: "欅坂46二期生", nameSpaced: "欅坂46 二期生", uid: "1001" },
-  { name: "欅坂46新二期生", nameSpaced: "欅坂46 新二期生", uid: "1002" }
+  {
+    name: "けやき坂462期生",
+    nameEnglish: "Hiragana Keyaki 2nd Generation",
+    nameSpaced: "けやき坂46 2期生",
+    uid: "1000"
+  },
+  { name: "欅坂46二期生", nameEnglish: "2nd Generation", nameSpaced: "欅坂46 二期生", uid: "1001" },
+  {
+    name: "欅坂46新二期生",
+    nameEnglish: "New 2nd Generation",
+    nameSpaced: "欅坂46 新二期生",
+    uid: "1002"
+  }
 ]
 
 export const members: Member[] = [...memberList, ...nonMemberList]
