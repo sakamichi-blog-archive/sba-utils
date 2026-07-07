@@ -851,6 +851,7 @@ const memberList: Member[] = [
 ]
 
 const nonMemberList: NonMember[] = [
+  { name: "研究生", nameSpaced: "研究生", uid: "40006" },
   { name: "運営スタッフ", nameSpaced: "運営スタッフ", uid: "40003" },
   { name: "3期生", nameSpaced: "3期生", uid: "40004" },
   { name: "4期生", nameSpaced: "4期生", uid: "40005" },
