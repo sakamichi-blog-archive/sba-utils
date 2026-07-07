@@ -1,4 +1,4 @@
-import type { Generation, Member } from "./_types"
+import type { Generation, Member, NonMember } from "./_types"
 
 const generation1: Generation = { key: "keyaki-1", name: "1期生", seq: 1 }
 const hiraganaGeneration1: Generation = { key: "hiragana-1", name: "けやき坂46 1期生", seq: 2 }
@@ -6,7 +6,7 @@ const hiraganaGeneration2: Generation = { key: "hiragana-2", name: "けやき坂
 const generation2: Generation = { key: "keyaki-2", name: "2期生", seq: 4 }
 const hiraganaGeneration3: Generation = { key: "hiragana-3", name: "けやき坂46 3期生", seq: 5 }
 
-export const members: Member[] = [
+const memberList: Member[] = [
   // 1st generation
   {
     birthdate: "1997-05-07",
@@ -483,3 +483,11 @@ export const members: Member[] = [
     uid: "52"
   }
 ]
+
+const nonMemberList: NonMember[] = [
+  { name: "けやき坂462期生", nameSpaced: "けやき坂46 2期生", uid: "1000" },
+  { name: "欅坂46二期生", nameSpaced: "欅坂46 二期生", uid: "1001" },
+  { name: "欅坂46新二期生", nameSpaced: "欅坂46 新二期生", uid: "1002" }
+]
+
+export const members: (Member | NonMember)[] = [...memberList, ...nonMemberList]
