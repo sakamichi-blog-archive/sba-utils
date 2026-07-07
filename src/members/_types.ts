@@ -15,7 +15,7 @@ export interface Member {
   graduatedAt?: string
   name: string
   /** English representation of the member's name, in Western order (given name first). Opinionated. */
-  nameEnglish?: string
+  nameEnglish: string
   nameSpaced: string
   /** Member ID used by official website */
   uid: string
