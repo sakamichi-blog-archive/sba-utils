@@ -850,4 +850,4 @@ export const members: Member[] = [
   }
 ]
 
-export const nonMembers: NonMember[] = [{ name: "6期生", nameSpaced: "6期生", uid: "93" }]
+export const nonMembers: NonMember[] = [{ name: "6期生", nameSpaced: "6期生", uid: "40008" }]
