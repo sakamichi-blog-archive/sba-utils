@@ -398,6 +398,7 @@ const memberList: Member[] = [
 ]
 
 const nonMemberList: Member[] = [
+  { name: "三期生リレー", nameEnglish: "3rd Generation", nameSpaced: "三期生リレー", uid: "2000" },
   { name: "四期生リレー", nameEnglish: "4th Generation", nameSpaced: "四期生リレー", uid: "2001" }
 ]
 
