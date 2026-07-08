@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.2.0...utils-v0.3.0) (2026-07-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* Add missing members ([#21](https://github.com/sakamichi-blog-archive/sba-utils/issues/21))
+
+### Features
+
+* Add missing members ([#21](https://github.com/sakamichi-blog-archive/sba-utils/issues/21)) ([b36f378](https://github.com/sakamichi-blog-archive/sba-utils/commit/b36f37858b57ff6984c7465b14df3c53fd97e130))
+
 ## [0.2.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.1.0...utils-v0.2.0) (2026-07-06)
 
 
