@@ -28,7 +28,7 @@ jobs:
 
   publish-to-npm:
     needs: release-please
-    if: always() && needs.release-please.outputs.release_created == 'true'
+    if: always() && (needs.release-please.outputs.release_created == 'true' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     permissions:
       contents: read
