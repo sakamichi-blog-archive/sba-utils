@@ -6,9 +6,18 @@ pin = true
 [tools]
 actionlint = "1.7.12"
 node = "24"
+pinact = "4.1.0"
 shellcheck = "0.11.0" # Used via actionlint
 zizmor = "1.25.2"
 
 [tasks."check:workflows"]
 description = "Check GitHub Actions workflows"
-run = ["actionlint", "zizmor ."]
+run = ["actionlint", "zizmor .", "pinact run --check"]
+
+[tasks."pin:actions"]
+description = "Pin unpinned GitHub Actions to their commit SHAs"
+run = "pinact run"
+
+[tasks."pin:actions:update"]
+description = "Update pinned GitHub Actions to their latest commit SHAs"
+run = "pinact run --update"
