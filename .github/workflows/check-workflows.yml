@@ -6,6 +6,7 @@ on:
     paths:
       - .github/workflows/**
       - mise.lock
+      - mise.toml
       - zizmor.yml
 
 permissions: {}
@@ -21,8 +22,11 @@ jobs:
           persist-credentials: false
       - uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
         with:
-          install_args: actionlint shellcheck zizmor
+          install_args: actionlint pinact shellcheck zizmor
       - run: actionlint
       - run: zizmor --format github .
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: mise run pinact:check
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
