@@ -12,7 +12,11 @@ zizmor = "1.25.2"
 
 [tasks."check:workflows"]
 description = "Check GitHub Actions workflows"
-run = ["actionlint", "zizmor .", "pinact run --check --min-age 3"]
+run = ["actionlint", "zizmor .", "mise run pinact:check"]
+
+[tasks."pinact:check"]
+description = "Check GitHub Actions are pinned to commit SHAs"
+run = "pinact run --check --min-age 3"
 
 [tasks."pinact:run"]
 description = "Pin unpinned GitHub Actions to their commit SHAs"

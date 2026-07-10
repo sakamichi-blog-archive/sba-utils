@@ -27,6 +27,6 @@ jobs:
       - run: zizmor --format github .
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: pinact run --check --min-age 3
+      - run: mise run pinact:check
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
