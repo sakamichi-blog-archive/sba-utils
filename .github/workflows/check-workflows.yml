@@ -30,3 +30,4 @@ jobs:
       - run: mise run pinact:check
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MISE_TASK_RUN_AUTO_INSTALL: "false"
