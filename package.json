@@ -28,7 +28,8 @@
   },
   "scripts": {
     "build": "tsdown",
-    "check": "pnpm run format && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build && pnpm run packcheck",
+    "check": "pnpm run format && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build && pnpm run packcheck && pnpm run license:check",
+    "license:check": "node scripts/check-licenses.js",
     "format": "oxfmt --check",
     "format:fix": "oxfmt",
     "lint": "oxlint",
