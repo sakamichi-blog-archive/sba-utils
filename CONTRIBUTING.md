@@ -15,7 +15,7 @@ Do not bundle unrelated changes into a single commit.
 ### Commit messages
 
 - Follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
-- Common types: `feat`, `fix`, `docs`, `refactor`, `chore`, `ci`, `test`, `style`
+- Common types: `feat`, `fix`, `docs`, `refactor`, `chore`, `ci`, `test`, `style`, `deps`
 - Description after the colon should be capitalized, unless it begins with a proper noun
 
 ### Commit message syntax
@@ -155,6 +155,18 @@ Always modify local config by adding `--local`; do not modify global config.
 
 - Tasks must be ordered alphabetically
 - Tasks for root should not have a prefix
+
+---
+
+## pnpm
+
+### Updating pnpm version
+
+Use `corepack use` to update pnpm — this updates the `packageManager` field in `package.json` including the integrity hash:
+
+```sh
+corepack use pnpm@latest
+```
 
 ---
 
