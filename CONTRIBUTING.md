@@ -12,8 +12,6 @@
 Commits must be made in logical units, and in a logical timeline.
 Do not bundle unrelated changes into a single commit.
 
-Since PRs are squash-merged, individual commit history within a branch doesn't need to be pristine — avoid amending unless necessary.
-
 ### Commit messages
 
 - Follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
