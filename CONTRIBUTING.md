@@ -158,6 +158,18 @@ Always modify local config by adding `--local`; do not modify global config.
 
 ---
 
+## pnpm
+
+### Updating pnpm version
+
+Use `corepack use` to update pnpm — this updates the `packageManager` field in `package.json` including the integrity hash:
+
+```sh
+corepack use pnpm@<version>
+```
+
+---
+
 ## Claude Code
 
 ### Settings
