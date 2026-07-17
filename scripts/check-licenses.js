@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 // Checks that all production dependencies use licenses compatible with MIT distribution.
 import { execSync } from "node:child_process"
 
