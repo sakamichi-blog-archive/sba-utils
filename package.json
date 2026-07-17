@@ -29,9 +29,9 @@
   "scripts": {
     "build": "tsdown",
     "check": "pnpm run format && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build && pnpm run packcheck && pnpm run license:check",
-    "license:check": "node scripts/check-licenses.js",
     "format": "oxfmt --check",
     "format:fix": "oxfmt",
+    "license:check": "node scripts/check-licenses.js",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "packcheck": "publint && pnpm pack --out .out.tgz && attw --profile esm-only .out.tgz && rm .out.tgz",
