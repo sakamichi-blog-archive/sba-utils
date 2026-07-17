@@ -2,6 +2,10 @@
 
 Utils written in JavaScript.
 
+## Requirements
+
+This package is ESM-only and requires Node.js `^22.12.0 || ^24.0.0 || ^26.0.0`.
+
 ## Installation
 
 Install from npm. If using `npm`:
