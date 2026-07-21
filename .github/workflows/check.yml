@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    continue-on-error: ${{ matrix.node-version == '26.x' }}
     strategy:
       matrix:
         # LTS versions are supported; Current is tested but not officially supported
