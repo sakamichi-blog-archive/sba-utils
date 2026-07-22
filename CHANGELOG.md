@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.4.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.3.0...utils-v0.4.0) (2026-07-22)
+
+
+### Features
+
+* Expand Node.js support to LTS ([#38](https://github.com/sakamichi-blog-archive/sba-utils/issues/38)) ([16a06f6](https://github.com/sakamichi-blog-archive/sba-utils/commit/16a06f6b2747212291f60a6c8e80bc02666ded11))
+
+
+### Dependencies
+
+* bump the all-non-major group with 3 updates ([#40](https://github.com/sakamichi-blog-archive/sba-utils/issues/40)) ([f8c56c4](https://github.com/sakamichi-blog-archive/sba-utils/commit/f8c56c4a227d99843f77aec45b0652167f366d82))
+* Bump tsdown from 0.22.4 to 0.22.5 in the all-non-major group ([#34](https://github.com/sakamichi-blog-archive/sba-utils/issues/34)) ([e3faf25](https://github.com/sakamichi-blog-archive/sba-utils/commit/e3faf25b481c9436da4955ec0cca6c2dfb67929a))
+* bump tsdown from 0.22.5 to 0.22.7 in the all-non-major group ([#36](https://github.com/sakamichi-blog-archive/sba-utils/issues/36)) ([a85ee55](https://github.com/sakamichi-blog-archive/sba-utils/commit/a85ee5584ec90126cf2815dcb1de311c66f24f1b))
+* Update dependencies ([#32](https://github.com/sakamichi-blog-archive/sba-utils/issues/32)) ([3b53860](https://github.com/sakamichi-blog-archive/sba-utils/commit/3b538609b6a828763bde2704c91db2a2c4f2991f))
+
 ## [0.3.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.2.0...utils-v0.3.0) (2026-07-08)
 
 
