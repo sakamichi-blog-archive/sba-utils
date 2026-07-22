@@ -14,8 +14,7 @@ Do not bundle unrelated changes into a single commit.
 
 ### Commit messages
 
-- Follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
-- Common types: `feat`, `fix`, `docs`, `refactor`, `chore`, `ci`, `test`, `style`, `deps`
+- Follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) with types from [@commitlint/config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional), plus `deps` for dependency updates.
 - Description after the colon should be capitalized, unless it begins with a proper noun
 
 ### Commit message syntax
