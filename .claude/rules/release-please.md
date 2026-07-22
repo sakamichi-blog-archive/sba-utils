@@ -3,13 +3,13 @@ paths:
   - release-please-config.json
 ---
 
-The `changelog-sections` entry for `deps` exists so that Dependabot npm bumps trigger patch release PRs instead of being silently skipped.
+`changelog-sections` controls which commit types appear in the rendered changelog, which has two effects:
 
-Two separate mechanisms in release-please combine to produce this:
+1. **Display** — only listed types show up in the changelog body.
+2. **Release PR gate** — `src/strategies/base.ts` suppresses the release PR entirely if the rendered changelog is empty (`changelogEmpty` gate). So a commit type not listed here will not trigger a release PR on its own.
 
-1. `src/versioning-strategies/default.ts` — version bump logic only checks for `feat`/breaking changes; everything else falls through to a patch bump.
-2. `src/strategies/base.ts` — `buildReleasePullRequest` has a `changelogEmpty` gate: if the rendered changelog body is empty, the release PR is suppressed entirely.
+The version bump level comes from a separate mechanism in `src/versioning-strategies/default.ts`: only `feat`/breaking changes affect the bump level; everything else falls through to patch. `changelog-sections` has no `bump` property and does not influence the bump level.
 
-So `deps:` commits with no `changelog-sections` entry → empty changelog → release PR suppressed. Adding `deps` to `changelog-sections` (hidden: false by default) → commit appears in changelog → gate passes → patch release PR is created.
+**Why `deps` is listed:** Dependabot npm commits use `deps:` prefix. Without a `changelog-sections` entry, they produce an empty changelog and are silently skipped. Adding `deps` here lets them appear in the changelog and trigger patch release PRs.
 
-`changelog-sections` has no `bump` property; the patch bump comes purely from the fallthrough in the versioning strategy.
+**Why `chore`, `ci`, `test`, `style`, `build`, `docs`, `refactor` are not listed:** Omitting them is intentional. These types have no user-facing impact and should not trigger npm releases. Commits of these types will not produce a release PR on their own — they will be bundled into the next release triggered by a listed type.
