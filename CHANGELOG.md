@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.4.0...utils-v0.4.1) (2026-07-24)
+
+
+### Dependencies
+
+* Bump the all-non-major group with 2 updates ([#44](https://github.com/sakamichi-blog-archive/sba-utils/issues/44)) ([88dfea3](https://github.com/sakamichi-blog-archive/sba-utils/commit/88dfea345daf57a5bfa85f2f5eb4a1fcfe7e28b7))
+
 ## [0.4.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.3.0...utils-v0.4.0) (2026-07-22)
 
 
