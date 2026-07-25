@@ -1,3 +1,9 @@
+export interface BlogDateFilter {
+  year: number
+  month?: number
+  day?: number
+}
+
 export interface Blog {
   datetime: Date
   /** Potentially spaced */

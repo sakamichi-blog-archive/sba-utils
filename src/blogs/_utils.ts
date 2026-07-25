@@ -1,5 +1,21 @@
 import * as cheerio from "cheerio"
 
+import type { BlogDateFilter } from "./_types"
+
+/** Format a date filter into a site `dy=` query value (`YYYY`, `YYYYMM`, or `YYYYMMDD`) */
+export function formatBlogDateFilter(filter: BlogDateFilter): string {
+  const { year, month, day } = filter
+  if (day !== undefined && month === undefined) {
+    throw new RangeError("`month` is required when `day` is specified")
+  }
+
+  let value = String(year)
+  if (month !== undefined) value += String(month).padStart(2, "0")
+  if (day !== undefined) value += String(day).padStart(2, "0")
+
+  return value
+}
+
 type FindImagesInHtmlOutput = {
   /** Absolute URL of parent `<a>` element `href` attribute. This may or may not be a link to a higher resolution image. */
   anchorElementUrl?: string
