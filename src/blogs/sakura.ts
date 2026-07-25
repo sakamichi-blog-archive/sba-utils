@@ -3,8 +3,8 @@ import * as cheerio from "cheerio"
 import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDatetimeJst } from "../shared/datetime"
 import { FetchStatusError, ParseError } from "../shared/errors"
-import type { BlogWithHtml } from "./_types"
-import { findImagesInHtml, getUidFromUrl } from "./_utils"
+import type { BlogDateFilter, BlogWithHtml } from "./_types"
+import { findImagesInHtml, formatBlogDateFilter, getUidFromUrl } from "./_utils"
 
 export interface SakuraBlog {
   /** Publish date, without time info */
@@ -39,17 +39,29 @@ export async function fetchSakuraBlogHtml(uid: number): Promise<{ html: string; 
   return { html: await response.text(), url }
 }
 
-export async function fetchSakuraBlogs(): Promise<{
+export async function fetchSakuraBlogs(
+  filter?: BlogDateFilter,
+  page = 0
+): Promise<{
   blogs: SakuraBlog[]
   html: string
   url: string
 }> {
-  const { html, url } = await fetchSakuraBlogsHtml()
+  const { html, url } = await fetchSakuraBlogsHtml(filter, page)
   return { blogs: parseSakuraBlogsHtml(html), html, url }
 }
 
-export async function fetchSakuraBlogsHtml(): Promise<{ html: string; url: string }> {
-  const url = `${BLOGS_PAGE_URL}?ima=${getMmss()}`
+export async function fetchSakuraBlogsHtml(
+  filter?: BlogDateFilter,
+  page = 0
+): Promise<{ html: string; url: string }> {
+  const params = new URLSearchParams({ ima: getMmss() })
+  if (filter !== undefined) {
+    params.set("dy", formatBlogDateFilter(filter))
+    params.set("page", String(page))
+  }
+
+  const url = `${BLOGS_PAGE_URL}?${params}`
   const response = await fetch(url, {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP

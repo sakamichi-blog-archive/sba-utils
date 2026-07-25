@@ -78,6 +78,22 @@ describe("fetchSakuraBlogsHtml()", () => {
       html: readFixture("sakura-blogs.html")
     })
   })
+
+  it("defaults page to 0 when filter is given without an explicit page", async () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue(readFixture("sakura-blogs.html")),
+        body: { cancel: vi.fn() }
+      })
+    )
+    const { url } = await fetchSakuraBlogsHtml({ year: 2026 })
+    expect(url).toBe("https://sakurazaka46.com/s/s46/diary/blog/list?ima=3456&dy=2026&page=0")
+    vi.useRealTimers()
+  })
 })
 
 describe("fetchSakuraBlogs()", () => {
@@ -118,6 +134,20 @@ describe("fetchSakuraBlogs()", () => {
     `)
     expect(html).toBe(readFixture("sakura-blogs.html"))
     expect(url).toBe("https://sakurazaka46.com/s/s46/diary/blog/list?ima=3456")
+  })
+
+  it("applies dy and page params when filter is given", async () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue(readFixture("sakura-blogs.html")),
+        body: { cancel: vi.fn() }
+      })
+    )
+    const { url } = await fetchSakuraBlogs({ year: 2026, month: 7, day: 1 }, 2)
+    expect(url).toBe("https://sakurazaka46.com/s/s46/diary/blog/list?ima=3456&dy=20260701&page=2")
   })
 })
 
