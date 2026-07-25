@@ -5,15 +5,25 @@ import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDatetimeJst } from "../shared/datetime"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import { castStringToIntegerSchema } from "../shared/schemas"
-import type { BlogWithHtml } from "./_types"
+import type { BlogDateFilter, BlogWithHtml } from "./_types"
 import {
   findImagesInHtml,
+  formatBlogDateFilter,
   getUidFromUrl,
   normalizeFullWidthNumbers,
   parseJsonpArgumentJson
 } from "./_utils"
 
+/** Date-filtered list page doesn't expose member name, unlike {@link BlogWithHtml} */
+export interface NogiBlogSummary {
+  datetime: Date
+  title: string
+  uid: number
+  url: string
+}
+
 const BLOGS_API_ENDPOINT = "https://www.nogizaka46.com/s/n46/api/list/blog"
+const BLOGS_LIST_URL = "https://www.nogizaka46.com/s/n46/diary/MEMBER/list"
 
 const getBlogsFunctionArgumentSchema = z.object({
   /** Blogs */
@@ -66,6 +76,32 @@ export async function fetchNogiBlogs(): Promise<{
   return { blogs: parseNogiBlogsJs(js), js, url }
 }
 
+export async function fetchNogiBlogsByDate(
+  filter: BlogDateFilter,
+  page = 0
+): Promise<{ blogs: NogiBlogSummary[]; html: string; url: string }> {
+  const { html, url } = await fetchNogiBlogsByDateHtml(filter, page)
+  return { blogs: parseNogiBlogsByDateHtml(html), html, url }
+}
+
+export async function fetchNogiBlogsByDateHtml(
+  filter: BlogDateFilter,
+  page = 0
+): Promise<{ html: string; url: string }> {
+  const url = getNogiBlogsByDateUrl(filter, page)
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent": USER_AGENT_DESKTOP
+    }
+  })
+  if (response.status !== 200) {
+    await response.body?.cancel()
+    throw new FetchStatusError(response.status, response.url)
+  }
+
+  return { html: await response.text(), url }
+}
+
 export async function fetchNogiBlogsJs(): Promise<{ js: string; url: string }> {
   const params = new URLSearchParams({
     ima: getMmss(),
@@ -89,6 +125,15 @@ export async function fetchNogiBlogsJs(): Promise<{ js: string; url: string }> {
 
 export function getNogiBlogUrl(uid: number): string {
   return `https://www.nogizaka46.com/s/n46/diary/detail/${uid}?ima=${getMmss()}`
+}
+
+export function getNogiBlogsByDateUrl(filter: BlogDateFilter, page = 0): string {
+  const params = new URLSearchParams({
+    ima: getMmss(),
+    dy: formatBlogDateFilter(filter),
+    page: String(page)
+  })
+  return `${BLOGS_LIST_URL}?${params}`
 }
 
 export function parseNogiBlogHtml(html: string, url: string): BlogWithHtml {
@@ -120,6 +165,40 @@ export function parseNogiBlogHtml(html: string, url: string): BlogWithHtml {
     uid,
     url
   }
+}
+
+export function parseNogiBlogsByDateHtml(html: string): NogiBlogSummary[] {
+  const $ = cheerio.load(html)
+  const blogElements = $(".bl--wp .bl--list a.bl--card")
+  const blogs: NogiBlogSummary[] = []
+
+  for (let blogElementIndex = 0; blogElementIndex < blogElements.length; blogElementIndex++) {
+    const blogElement = blogElements[blogElementIndex]
+    const href = $(blogElement).attr("href")
+    if (!href) {
+      console.error(`Failed to extract href from blog element index ${blogElementIndex}. Skipping.`)
+      continue
+    }
+
+    const url = new URL(href, BLOGS_LIST_URL)
+    const uid = getUidFromUrl(url)
+    if (!uid) {
+      console.error(`Failed to extract UID from URL. Skipping - ${url.href}`)
+      continue
+    }
+
+    /** `YYYY.MM.DD HH:mm` format */
+    const datetime = $(blogElement).find(".bl--card__date").text().trim()
+
+    blogs.push({
+      datetime: parseDatetimeJst(datetime),
+      title: $(blogElement).find(".bl--card__ttl").text().trim(),
+      uid,
+      url: url.href
+    })
+  }
+
+  return blogs.reverse() // oxlint-disable-line unicorn/no-array-reverse
 }
 
 export function parseNogiBlogsJs(js: string): BlogWithHtml[] {
