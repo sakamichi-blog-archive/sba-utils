@@ -1,7 +1,7 @@
 export interface BlogListFilter {
   /** Required if `month` or `day` is given */
   year?: number
-  /** Requires `year`; required if `day` is given */
+  /** 1-based (January = 1), unlike JS `Date`; requires `year`, required if `day` is given */
   month?: number
   /** Requires `month` to also be given */
   day?: number
