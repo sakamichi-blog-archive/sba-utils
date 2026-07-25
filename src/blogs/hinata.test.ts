@@ -116,7 +116,7 @@ describe("fetchHinataBlogs()", () => {
         body: { cancel: vi.fn() }
       })
     )
-    const { url } = await fetchHinataBlogs({ year: 2026, month: 7, day: 1 }, 2)
+    const { url } = await fetchHinataBlogs({ year: 2026, month: 7, day: 1, page: 2 })
     expect(url).toBe(
       "https://www.hinatazaka46.com/s/official/diary/member/list?ima=3456&dy=20260701&page=2"
     )
@@ -177,7 +177,7 @@ describe("fetchHinataBlogsHtml()", () => {
         body: { cancel: vi.fn() }
       })
     )
-    const { url } = await fetchHinataBlogsHtml(undefined, 1)
+    const { url } = await fetchHinataBlogsHtml({ page: 1 })
     expect(url).toBe("https://www.hinatazaka46.com/s/official/diary/member/list?ima=3456&page=1")
     vi.useRealTimers()
   })

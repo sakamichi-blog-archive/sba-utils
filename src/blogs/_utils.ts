@@ -1,9 +1,11 @@
 import * as cheerio from "cheerio"
 
-import type { BlogDateFilter } from "./_types"
-
-/** Format a date filter into a site `dy=` query value (`YYYY`, `YYYYMM`, or `YYYYMMDD`) */
-export function formatBlogDateFilter(filter: BlogDateFilter): string {
+/** Format a year/month/day into a site `dy=` query value (`YYYY`, `YYYYMM`, or `YYYYMMDD`) */
+export function formatBlogDateFilter(filter: {
+  year: number
+  month?: number
+  day?: number
+}): string {
   const { year, month, day } = filter
   if (day !== undefined && month === undefined) {
     throw new RangeError("`month` is required when `day` is specified")

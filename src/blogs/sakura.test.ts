@@ -106,7 +106,7 @@ describe("fetchSakuraBlogsHtml()", () => {
         body: { cancel: vi.fn() }
       })
     )
-    const { url } = await fetchSakuraBlogsHtml(undefined, 1)
+    const { url } = await fetchSakuraBlogsHtml({ page: 1 })
     expect(url).toBe("https://sakurazaka46.com/s/s46/diary/blog/list?ima=3456&page=1")
     vi.useRealTimers()
   })
@@ -162,7 +162,7 @@ describe("fetchSakuraBlogs()", () => {
         body: { cancel: vi.fn() }
       })
     )
-    const { url } = await fetchSakuraBlogs({ year: 2026, month: 7, day: 1 }, 2)
+    const { url } = await fetchSakuraBlogs({ year: 2026, month: 7, day: 1, page: 2 })
     expect(url).toBe("https://sakurazaka46.com/s/s46/diary/blog/list?ima=3456&dy=20260701&page=2")
   })
 })

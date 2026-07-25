@@ -3,7 +3,7 @@ import * as cheerio from "cheerio"
 import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDatetimeJst } from "../shared/datetime"
 import { FetchStatusError, ParseError } from "../shared/errors"
-import type { BlogDateFilter, BlogWithHtml } from "./_types"
+import type { BlogListFilter, BlogWithHtml } from "./_types"
 import { findImagesInHtml, formatBlogDateFilter, getUidFromUrl } from "./_utils"
 
 export interface SakuraBlog {
@@ -39,26 +39,26 @@ export async function fetchSakuraBlogHtml(uid: number): Promise<{ html: string; 
   return { html: await response.text(), url }
 }
 
-/** `page` is 0-indexed */
-export async function fetchSakuraBlogs(
-  filter?: BlogDateFilter,
-  page = 0
-): Promise<{
+export async function fetchSakuraBlogs(filter?: BlogListFilter): Promise<{
   blogs: SakuraBlog[]
   html: string
   url: string
 }> {
-  const { html, url } = await fetchSakuraBlogsHtml(filter, page)
+  const { html, url } = await fetchSakuraBlogsHtml(filter)
   return { blogs: parseSakuraBlogsHtml(html), html, url }
 }
 
-/** `page` is 0-indexed */
 export async function fetchSakuraBlogsHtml(
-  filter?: BlogDateFilter,
-  page = 0
+  filter?: BlogListFilter
 ): Promise<{ html: string; url: string }> {
   const params = new URLSearchParams({ ima: getMmss() })
-  if (filter !== undefined) params.set("dy", formatBlogDateFilter(filter))
+  if (filter?.year !== undefined) {
+    params.set(
+      "dy",
+      formatBlogDateFilter({ year: filter.year, month: filter.month, day: filter.day })
+    )
+  }
+  const page = filter?.page ?? 0
   if (page !== 0) params.set("page", String(page))
 
   const url = `${BLOGS_PAGE_URL}?${params}`

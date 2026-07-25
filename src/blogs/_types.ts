@@ -1,9 +1,12 @@
-export interface BlogDateFilter {
-  year: number
+export interface BlogListFilter {
+  /** Required if `month` or `day` is given */
+  year?: number
   /** Requires `year`; required if `day` is given */
   month?: number
   /** Requires `month` to also be given */
   day?: number
+  /** 0-indexed */
+  page?: number
 }
 
 export interface Blog {

@@ -317,7 +317,7 @@ describe("getNogiBlogsByDateUrl()", () => {
 
   it("applies dy and page params", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
-    expect(getNogiBlogsByDateUrl({ year: 2026, month: 7, day: 1 }, 2)).toBe(
+    expect(getNogiBlogsByDateUrl({ year: 2026, month: 7, day: 1, page: 2 })).toBe(
       "https://www.nogizaka46.com/s/n46/diary/MEMBER/list?ima=3456&dy=20260701&page=2"
     )
   })

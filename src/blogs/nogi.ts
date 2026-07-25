@@ -5,7 +5,7 @@ import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDatetimeJst } from "../shared/datetime"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import { castStringToIntegerSchema } from "../shared/schemas"
-import type { BlogDateFilter, BlogWithHtml } from "./_types"
+import type { BlogListFilter, BlogWithHtml } from "./_types"
 import {
   findImagesInHtml,
   formatBlogDateFilter,
@@ -21,6 +21,9 @@ export interface NogiBlogSummary {
   uid: number
   url: string
 }
+
+/** Unlike {@link BlogListFilter}, `year` is required — this fetch is always date-filtered */
+export type NogiBlogsByDateFilter = BlogListFilter & { year: number }
 
 const BLOGS_API_ENDPOINT = "https://www.nogizaka46.com/s/n46/api/list/blog"
 const BLOGS_LIST_URL = "https://www.nogizaka46.com/s/n46/diary/MEMBER/list"
@@ -76,21 +79,17 @@ export async function fetchNogiBlogs(): Promise<{
   return { blogs: parseNogiBlogsJs(js), js, url }
 }
 
-/** `page` is 0-indexed */
 export async function fetchNogiBlogsByDate(
-  filter: BlogDateFilter,
-  page = 0
+  filter: NogiBlogsByDateFilter
 ): Promise<{ blogs: NogiBlogSummary[]; html: string; url: string }> {
-  const { html, url } = await fetchNogiBlogsByDateHtml(filter, page)
+  const { html, url } = await fetchNogiBlogsByDateHtml(filter)
   return { blogs: parseNogiBlogsByDateHtml(html), html, url }
 }
 
-/** `page` is 0-indexed */
 export async function fetchNogiBlogsByDateHtml(
-  filter: BlogDateFilter,
-  page = 0
+  filter: NogiBlogsByDateFilter
 ): Promise<{ html: string; url: string }> {
-  const url = getNogiBlogsByDateUrl(filter, page)
+  const url = getNogiBlogsByDateUrl(filter)
   const response = await fetch(url, {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP
@@ -129,9 +128,12 @@ export function getNogiBlogUrl(uid: number): string {
   return `https://www.nogizaka46.com/s/n46/diary/detail/${uid}?ima=${getMmss()}`
 }
 
-/** `page` is 0-indexed */
-export function getNogiBlogsByDateUrl(filter: BlogDateFilter, page = 0): string {
-  const params = new URLSearchParams({ ima: getMmss(), dy: formatBlogDateFilter(filter) })
+export function getNogiBlogsByDateUrl(filter: NogiBlogsByDateFilter): string {
+  const params = new URLSearchParams({
+    ima: getMmss(),
+    dy: formatBlogDateFilter({ year: filter.year, month: filter.month, day: filter.day })
+  })
+  const page = filter.page ?? 0
   if (page !== 0) params.set("page", String(page))
   return `${BLOGS_LIST_URL}?${params}`
 }
