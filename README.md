@@ -22,6 +22,14 @@ npm install @sakamichi-blog-archive/utils
 import { fetchHinataBlogs } from "@sakamichi-blog-archive/utils/blogs"
 ```
 
+Fetch blogs from a specific year, month, or day:
+
+```typescript
+import { fetchHinataBlogs } from "@sakamichi-blog-archive/utils/blogs"
+
+const { blogs } = await fetchHinataBlogs({ year: 2026, month: 7, day: 1 })
+```
+
 ### Members
 
 ```typescript
