@@ -39,6 +39,7 @@ export async function fetchSakuraBlogHtml(uid: number): Promise<{ html: string; 
   return { html: await response.text(), url }
 }
 
+/** `page` is 0-indexed and ignored unless `filter` is given */
 export async function fetchSakuraBlogs(
   filter?: BlogDateFilter,
   page = 0
@@ -51,6 +52,7 @@ export async function fetchSakuraBlogs(
   return { blogs: parseSakuraBlogsHtml(html), html, url }
 }
 
+/** `page` is 0-indexed and ignored unless `filter` is given */
 export async function fetchSakuraBlogsHtml(
   filter?: BlogDateFilter,
   page = 0

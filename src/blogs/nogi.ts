@@ -76,6 +76,7 @@ export async function fetchNogiBlogs(): Promise<{
   return { blogs: parseNogiBlogsJs(js), js, url }
 }
 
+/** `page` is 0-indexed */
 export async function fetchNogiBlogsByDate(
   filter: BlogDateFilter,
   page = 0
@@ -84,6 +85,7 @@ export async function fetchNogiBlogsByDate(
   return { blogs: parseNogiBlogsByDateHtml(html), html, url }
 }
 
+/** `page` is 0-indexed */
 export async function fetchNogiBlogsByDateHtml(
   filter: BlogDateFilter,
   page = 0

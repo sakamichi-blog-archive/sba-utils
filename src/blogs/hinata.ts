@@ -30,6 +30,7 @@ export async function fetchHinataBlogHtml(uid: number): Promise<{ html: string; 
   return { html: await response.text(), url }
 }
 
+/** `page` is 0-indexed and ignored unless `filter` is given */
 export async function fetchHinataBlogs(
   filter?: BlogDateFilter,
   page = 0
@@ -42,6 +43,7 @@ export async function fetchHinataBlogs(
   return { blogs: parseHinataBlogsHtml(html), html, url }
 }
 
+/** `page` is 0-indexed and ignored unless `filter` is given */
 export async function fetchHinataBlogsHtml(
   filter?: BlogDateFilter,
   page = 0
