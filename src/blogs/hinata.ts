@@ -3,8 +3,8 @@ import * as cheerio from "cheerio"
 import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDatetimeJst } from "../shared/datetime"
 import { FetchStatusError, ParseError } from "../shared/errors"
-import type { BlogWithHtml } from "./_types"
-import { findImagesInHtml, getUidFromUrl } from "./_utils"
+import type { BlogDateFilter, BlogWithHtml } from "./_types"
+import { findImagesInHtml, formatBlogDateFilter, getUidFromUrl } from "./_utils"
 
 const BLOGS_PAGE_URL = "https://www.hinatazaka46.com/s/official/diary/member/list"
 
@@ -30,17 +30,29 @@ export async function fetchHinataBlogHtml(uid: number): Promise<{ html: string; 
   return { html: await response.text(), url }
 }
 
-export async function fetchHinataBlogs(): Promise<{
+export async function fetchHinataBlogs(
+  filter?: BlogDateFilter,
+  page = 0
+): Promise<{
   blogs: BlogWithHtml[]
   html: string
   url: string
 }> {
-  const { html, url } = await fetchHinataBlogsHtml()
+  const { html, url } = await fetchHinataBlogsHtml(filter, page)
   return { blogs: parseHinataBlogsHtml(html), html, url }
 }
 
-export async function fetchHinataBlogsHtml(): Promise<{ html: string; url: string }> {
-  const url = `${BLOGS_PAGE_URL}?ima=${getMmss()}`
+export async function fetchHinataBlogsHtml(
+  filter?: BlogDateFilter,
+  page = 0
+): Promise<{ html: string; url: string }> {
+  const params = new URLSearchParams({ ima: getMmss() })
+  if (filter !== undefined) {
+    params.set("dy", formatBlogDateFilter(filter))
+    params.set("page", String(page))
+  }
+
+  const url = `${BLOGS_PAGE_URL}?${params}`
   const response = await fetch(url, {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP
