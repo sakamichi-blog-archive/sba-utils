@@ -39,7 +39,7 @@ export async function fetchSakuraBlogHtml(uid: number): Promise<{ html: string; 
   return { html: await response.text(), url }
 }
 
-/** `page` is 0-indexed and ignored unless `filter` is given */
+/** `page` is 0-indexed */
 export async function fetchSakuraBlogs(
   filter?: BlogDateFilter,
   page = 0
@@ -52,16 +52,14 @@ export async function fetchSakuraBlogs(
   return { blogs: parseSakuraBlogsHtml(html), html, url }
 }
 
-/** `page` is 0-indexed and ignored unless `filter` is given */
+/** `page` is 0-indexed */
 export async function fetchSakuraBlogsHtml(
   filter?: BlogDateFilter,
   page = 0
 ): Promise<{ html: string; url: string }> {
   const params = new URLSearchParams({ ima: getMmss() })
-  if (filter !== undefined) {
-    params.set("dy", formatBlogDateFilter(filter))
-    params.set("page", String(page))
-  }
+  if (filter !== undefined) params.set("dy", formatBlogDateFilter(filter))
+  if (page !== 0) params.set("page", String(page))
 
   const url = `${BLOGS_PAGE_URL}?${params}`
   const response = await fetch(url, {

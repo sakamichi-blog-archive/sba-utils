@@ -129,12 +129,10 @@ export function getNogiBlogUrl(uid: number): string {
   return `https://www.nogizaka46.com/s/n46/diary/detail/${uid}?ima=${getMmss()}`
 }
 
+/** `page` is 0-indexed */
 export function getNogiBlogsByDateUrl(filter: BlogDateFilter, page = 0): string {
-  const params = new URLSearchParams({
-    ima: getMmss(),
-    dy: formatBlogDateFilter(filter),
-    page: String(page)
-  })
+  const params = new URLSearchParams({ ima: getMmss(), dy: formatBlogDateFilter(filter) })
+  if (page !== 0) params.set("page", String(page))
   return `${BLOGS_LIST_URL}?${params}`
 }
 

@@ -30,7 +30,7 @@ export async function fetchHinataBlogHtml(uid: number): Promise<{ html: string; 
   return { html: await response.text(), url }
 }
 
-/** `page` is 0-indexed and ignored unless `filter` is given */
+/** `page` is 0-indexed */
 export async function fetchHinataBlogs(
   filter?: BlogDateFilter,
   page = 0
@@ -43,16 +43,14 @@ export async function fetchHinataBlogs(
   return { blogs: parseHinataBlogsHtml(html), html, url }
 }
 
-/** `page` is 0-indexed and ignored unless `filter` is given */
+/** `page` is 0-indexed */
 export async function fetchHinataBlogsHtml(
   filter?: BlogDateFilter,
   page = 0
 ): Promise<{ html: string; url: string }> {
   const params = new URLSearchParams({ ima: getMmss() })
-  if (filter !== undefined) {
-    params.set("dy", formatBlogDateFilter(filter))
-    params.set("page", String(page))
-  }
+  if (filter !== undefined) params.set("dy", formatBlogDateFilter(filter))
+  if (page !== 0) params.set("page", String(page))
 
   const url = `${BLOGS_PAGE_URL}?${params}`
   const response = await fetch(url, {

@@ -279,9 +279,7 @@ describe("fetchNogiBlogsByDate()", () => {
       ]
     `)
     expect(html).toBe(readFixture("nogi-blogs-by-date.html"))
-    expect(url).toBe(
-      "https://www.nogizaka46.com/s/n46/diary/MEMBER/list?ima=3456&dy=20260701&page=0"
-    )
+    expect(url).toBe("https://www.nogizaka46.com/s/n46/diary/MEMBER/list?ima=3456&dy=20260701")
   })
 })
 
@@ -324,10 +322,10 @@ describe("getNogiBlogsByDateUrl()", () => {
     )
   })
 
-  it("defaults page to 0", () => {
+  it("omits page param when page is 0", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     expect(getNogiBlogsByDateUrl({ year: 2026 })).toBe(
-      "https://www.nogizaka46.com/s/n46/diary/MEMBER/list?ima=3456&dy=2026&page=0"
+      "https://www.nogizaka46.com/s/n46/diary/MEMBER/list?ima=3456&dy=2026"
     )
   })
 })

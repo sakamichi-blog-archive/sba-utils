@@ -150,7 +150,7 @@ describe("fetchHinataBlogsHtml()", () => {
     })
   })
 
-  it("defaults page to 0 when filter is given without an explicit page", async () => {
+  it("omits page param when page is 0", async () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     vi.stubGlobal(
@@ -162,9 +162,23 @@ describe("fetchHinataBlogsHtml()", () => {
       })
     )
     const { url } = await fetchHinataBlogsHtml({ year: 2026 })
-    expect(url).toBe(
-      "https://www.hinatazaka46.com/s/official/diary/member/list?ima=3456&dy=2026&page=0"
+    expect(url).toBe("https://www.hinatazaka46.com/s/official/diary/member/list?ima=3456&dy=2026")
+    vi.useRealTimers()
+  })
+
+  it("applies page even when filter is not given", async () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue(readFixture("hinata-blogs.html")),
+        body: { cancel: vi.fn() }
+      })
     )
+    const { url } = await fetchHinataBlogsHtml(undefined, 1)
+    expect(url).toBe("https://www.hinatazaka46.com/s/official/diary/member/list?ima=3456&page=1")
     vi.useRealTimers()
   })
 })
