@@ -46,14 +46,13 @@ const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
 | Nogi   | `fetchNogiBlog(uid)`   | `fetchNogiBlogs(filter?)`   | `fetchNogiBlogsByDate(filter)`    |
 | Sakura | `fetchSakuraBlog(uid)` | `fetchSakuraBlogs(filter?)` | — (built into `fetchSakuraBlogs`) |
 
-`filter` is a `BlogListFilter` (`{ year?, month?, day?, page?, memberUid? }`); `page` is 0-indexed
-and `memberUid` is the member ID used by the official website.
+`filter` consists of the following properties. They may be used simultaneously.
 
-- Hinata and Sakura take `filter` directly on their list function.
-- Nogi's default `fetchNogiBlogs()` doesn't support date filtering, so it instead takes a
-  `NogiBlogsFilter` (`{ page?, memberUid? }`, no date fields).
-- Filtering Nogi blogs by date uses the separate `fetchNogiBlogsByDate(filter)`, which requires
-  `year` and returns a lighter `NogiBlogSummary` (no `memberName`).
+- `page`: 0-based index
+- `memberUid`: Member ID used by official websites
+- `year`/`month`/`day`: Setting `month` requires `year`, and setting `day` requires `month`
+
+Some functions do not accept some of the properties, due to the external API.
 
 ### Members
 
