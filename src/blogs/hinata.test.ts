@@ -166,7 +166,7 @@ describe("fetchHinataBlogsHtml()", () => {
     vi.useRealTimers()
   })
 
-  it("applies page without a date filter", async () => {
+  it("applies page", async () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     vi.stubGlobal(
