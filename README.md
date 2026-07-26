@@ -30,6 +30,19 @@ import { fetchHinataBlogs } from "@sakamichi-blog-archive/utils/blogs"
 const { blogs } = await fetchHinataBlogs({ year: 2026, month: 7, day: 1 })
 ```
 
+#### Available functions
+
+| Group  | Single blog            | Blog list                   | Blog list by date                 |
+| ------ | ---------------------- | --------------------------- | --------------------------------- |
+| Hinata | `fetchHinataBlog(uid)` | `fetchHinataBlogs(filter?)` | — (built into `fetchHinataBlogs`) |
+| Nogi   | `fetchNogiBlog(uid)`   | `fetchNogiBlogs()`          | `fetchNogiBlogsByDate(filter)`    |
+| Sakura | `fetchSakuraBlog(uid)` | `fetchSakuraBlogs(filter?)` | — (built into `fetchSakuraBlogs`) |
+
+`filter` is a `BlogListFilter` (`{ year?, month?, day?, page? }`). Hinata and Sakura take it directly
+on their list function; Nogi's default `fetchNogiBlogs()` has no date filter, so filtering by date
+uses the separate `fetchNogiBlogsByDate(filter)`, which requires `year` and returns a lighter
+`NogiBlogSummary` (no `memberName`).
+
 ### Members
 
 ```typescript
