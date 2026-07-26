@@ -27,6 +27,7 @@ export type NogiBlogsByDateFilter = BlogListFilter & { year: number }
 
 const BLOGS_API_ENDPOINT = "https://www.nogizaka46.com/s/n46/api/list/blog"
 const BLOGS_LIST_URL = "https://www.nogizaka46.com/s/n46/diary/MEMBER/list"
+const BLOGS_API_PAGE_SIZE = 32
 
 const getBlogsFunctionArgumentSchema = z.object({
   /** Blogs */
@@ -70,12 +71,13 @@ export async function fetchNogiBlogHtml(uid: number): Promise<{ html: string; ur
   return { html: await response.text(), url }
 }
 
-export async function fetchNogiBlogs(): Promise<{
+/** `page` is 0-indexed */
+export async function fetchNogiBlogs(page = 0): Promise<{
   blogs: BlogWithHtml[]
   js: string
   url: string
 }> {
-  const { js, url } = await fetchNogiBlogsJs()
+  const { js, url } = await fetchNogiBlogsJs(page)
   return { blogs: parseNogiBlogsJs(js), js, url }
 }
 
@@ -103,11 +105,12 @@ export async function fetchNogiBlogsByDateHtml(
   return { html: await response.text(), url }
 }
 
-export async function fetchNogiBlogsJs(): Promise<{ js: string; url: string }> {
+/** `page` is 0-indexed */
+export async function fetchNogiBlogsJs(page = 0): Promise<{ js: string; url: string }> {
   const params = new URLSearchParams({
     ima: getMmss(),
-    rw: "32",
-    st: "0",
+    rw: String(BLOGS_API_PAGE_SIZE),
+    st: String(page * BLOGS_API_PAGE_SIZE),
     callback: "res"
   })
   const url = `${BLOGS_API_ENDPOINT}?${params}`

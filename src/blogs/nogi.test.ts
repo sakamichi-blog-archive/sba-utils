@@ -106,6 +106,22 @@ describe("fetchNogiBlogs()", () => {
       "https://www.nogizaka46.com/s/n46/api/list/blog?ima=3456&rw=32&st=0&callback=res"
     )
   })
+
+  it("applies page as a multiple of the page size", async () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue(readFixture("nogi-blogs.jsonp")),
+        body: { cancel: vi.fn() }
+      })
+    )
+    const { url } = await fetchNogiBlogs(2)
+    expect(url).toBe(
+      "https://www.nogizaka46.com/s/n46/api/list/blog?ima=3456&rw=32&st=64&callback=res"
+    )
+  })
 })
 
 describe("fetchNogiBlogsJs()", () => {
@@ -131,6 +147,24 @@ describe("fetchNogiBlogsJs()", () => {
       })
     )
     await expect(fetchNogiBlogsJs()).resolves.toMatchObject({ js: readFixture("nogi-blogs.jsonp") })
+  })
+
+  it("defaults page to 0", async () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue(readFixture("nogi-blogs.jsonp")),
+        body: { cancel: vi.fn() }
+      })
+    )
+    const { url } = await fetchNogiBlogsJs()
+    expect(url).toBe(
+      "https://www.nogizaka46.com/s/n46/api/list/blog?ima=3456&rw=32&st=0&callback=res"
+    )
+    vi.useRealTimers()
   })
 })
 
