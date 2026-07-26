@@ -1,3 +1,4 @@
+/** Throws `RangeError` at fetch time if `month`/`day`/`year` requirements below aren't met */
 export interface BlogListFilter {
   /** Required if `month` or `day` is given */
   year?: number

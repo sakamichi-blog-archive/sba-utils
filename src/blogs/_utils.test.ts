@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 import {
   findImagesInHtml,
   formatBlogDateFilter,
+  formatOptionalBlogDateFilter,
   parseJsonpArgumentJson,
   getUidFromUrl,
   normalizeFullWidthNumbers
@@ -27,6 +28,32 @@ describe("formatBlogDateFilter()", () => {
 
   it("throws RangeError when day is given without month", () => {
     expect(() => formatBlogDateFilter({ year: 2026, day: 1 })).toThrow(RangeError)
+  })
+})
+
+describe("formatOptionalBlogDateFilter()", () => {
+  it("returns undefined when filter is undefined", () => {
+    expect(formatOptionalBlogDateFilter()).toBeUndefined()
+  })
+
+  it("returns undefined when filter has no year, month, or day", () => {
+    expect(formatOptionalBlogDateFilter({ page: 2 })).toBeUndefined()
+  })
+
+  it("formats when year is given", () => {
+    expect(formatOptionalBlogDateFilter({ year: 2026, month: 7, day: 1 })).toBe("20260701")
+  })
+
+  it("throws RangeError when month is given without year", () => {
+    expect(() => formatOptionalBlogDateFilter({ month: 7 })).toThrow(RangeError)
+  })
+
+  it("throws RangeError when day is given without year", () => {
+    expect(() => formatOptionalBlogDateFilter({ day: 1 })).toThrow(RangeError)
+  })
+
+  it("throws RangeError when day is given without month, even with year", () => {
+    expect(() => formatOptionalBlogDateFilter({ year: 2026, day: 1 })).toThrow(RangeError)
   })
 })
 

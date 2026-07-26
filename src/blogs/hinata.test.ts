@@ -136,6 +136,10 @@ describe("fetchHinataBlogsHtml()", () => {
     await expect(fetchHinataBlogsHtml()).rejects.toBeInstanceOf(FetchStatusError)
   })
 
+  it("throws RangeError when filter has month without year", async () => {
+    await expect(fetchHinataBlogsHtml({ month: 7 })).rejects.toThrow(RangeError)
+  })
+
   it("returns response text on 200", async () => {
     vi.stubGlobal(
       "fetch",
