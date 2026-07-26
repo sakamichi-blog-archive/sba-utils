@@ -125,7 +125,11 @@ describe("fetchNogiBlogs()", () => {
 })
 
 describe("fetchNogiBlogsJs()", () => {
-  afterEach(() => vi.restoreAllMocks())
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => {
+    vi.useRealTimers()
+    vi.restoreAllMocks()
+  })
 
   it("throws FetchStatusError on non-200", async () => {
     vi.stubGlobal(
@@ -150,7 +154,6 @@ describe("fetchNogiBlogsJs()", () => {
   })
 
   it("defaults page to 0", async () => {
-    vi.useFakeTimers()
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     vi.stubGlobal(
       "fetch",
@@ -164,7 +167,6 @@ describe("fetchNogiBlogsJs()", () => {
     expect(url).toBe(
       "https://www.nogizaka46.com/s/n46/api/list/blog?ima=3456&rw=32&st=0&callback=res"
     )
-    vi.useRealTimers()
   })
 })
 
