@@ -8,6 +8,7 @@ export {
   fetchNogiBlogs,
   fetchNogiBlogsByDate,
   type NogiBlogsByDateFilter,
+  type NogiBlogsFilter,
   type NogiBlogSummary,
   fetchSakuraBlog,
   fetchSakuraBlogs,

@@ -117,9 +117,25 @@ describe("fetchNogiBlogs()", () => {
         body: { cancel: vi.fn() }
       })
     )
-    const { url } = await fetchNogiBlogs(2)
+    const { url } = await fetchNogiBlogs({ page: 2 })
     expect(url).toBe(
       "https://www.nogizaka46.com/s/n46/api/list/blog?ima=3456&rw=32&st=64&callback=res"
+    )
+  })
+
+  it("applies memberUid as ct param", async () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue(readFixture("nogi-blogs.jsonp")),
+        body: { cancel: vi.fn() }
+      })
+    )
+    const { url } = await fetchNogiBlogs({ memberUid: "48010" })
+    expect(url).toBe(
+      "https://www.nogizaka46.com/s/n46/api/list/blog?ima=3456&rw=32&st=0&callback=res&ct=48010"
     )
   })
 })
@@ -362,6 +378,13 @@ describe("getNogiBlogsByDateUrl()", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     expect(getNogiBlogsByDateUrl({ year: 2026 })).toBe(
       "https://www.nogizaka46.com/s/n46/diary/MEMBER/list?ima=3456&dy=2026"
+    )
+  })
+
+  it("applies memberUid as ct param", () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    expect(getNogiBlogsByDateUrl({ year: 2026, memberUid: "48010" })).toBe(
+      "https://www.nogizaka46.com/s/n46/diary/MEMBER/list?ima=3456&dy=2026&ct=48010"
     )
   })
 })

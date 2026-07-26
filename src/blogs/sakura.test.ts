@@ -114,6 +114,20 @@ describe("fetchSakuraBlogsHtml()", () => {
     const { url } = await fetchSakuraBlogsHtml({ page: 1 })
     expect(url).toBe("https://sakurazaka46.com/s/s46/diary/blog/list?ima=3456&page=1")
   })
+
+  it("applies memberUid as ct param", async () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue(readFixture("sakura-blogs.html")),
+        body: { cancel: vi.fn() }
+      })
+    )
+    const { url } = await fetchSakuraBlogsHtml({ memberUid: "46" })
+    expect(url).toBe("https://sakurazaka46.com/s/s46/diary/blog/list?ima=3456&ct=46")
+  })
 })
 
 describe("fetchSakuraBlogs()", () => {

@@ -47,6 +47,7 @@ export async function fetchHinataBlogsHtml(
   if (dy !== undefined) params.set("dy", dy)
   const page = filter?.page ?? 0
   if (page !== 0) params.set("page", String(page))
+  if (filter?.memberUid !== undefined) params.set("ct", filter.memberUid)
 
   const url = `${BLOGS_PAGE_URL}?${params}`
   const response = await fetch(url, {

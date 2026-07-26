@@ -30,19 +30,29 @@ import { fetchHinataBlogs } from "@sakamichi-blog-archive/utils/blogs"
 const { blogs } = await fetchHinataBlogs({ year: 2026, month: 7, day: 1 })
 ```
 
+Fetch blogs from a specific member, using their member ID from the official website:
+
+```typescript
+import { fetchHinataBlogs } from "@sakamichi-blog-archive/utils/blogs"
+
+const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
+```
+
 #### Available functions
 
 | Group  | Single blog            | Blog list                   | Blog list by date                 |
 | ------ | ---------------------- | --------------------------- | --------------------------------- |
 | Hinata | `fetchHinataBlog(uid)` | `fetchHinataBlogs(filter?)` | — (built into `fetchHinataBlogs`) |
-| Nogi   | `fetchNogiBlog(uid)`   | `fetchNogiBlogs(page?)`     | `fetchNogiBlogsByDate(filter)`    |
+| Nogi   | `fetchNogiBlog(uid)`   | `fetchNogiBlogs(filter?)`   | `fetchNogiBlogsByDate(filter)`    |
 | Sakura | `fetchSakuraBlog(uid)` | `fetchSakuraBlogs(filter?)` | — (built into `fetchSakuraBlogs`) |
 
-`filter` is a `BlogListFilter` (`{ year?, month?, day?, page? }`); `page` is 0-indexed. Hinata and
-Sakura take it directly on their list function; Nogi's default `fetchNogiBlogs()` hits a JSON API
-with no date filter, so it only takes a 0-indexed `page` number (32 blogs per page), while filtering
-by date uses the separate `fetchNogiBlogsByDate(filter)`, which requires `year` and returns a
-lighter `NogiBlogSummary` (no `memberName`).
+`filter` consists of the following properties. They may be used simultaneously.
+
+- `page`: 0-based index
+- `memberUid`: Member ID used by official websites
+- `year`/`month`/`day`: Setting `month` requires `year`, and setting `day` requires `month`
+
+Some functions do not accept some of the properties, due to the external API.
 
 ### Members
 

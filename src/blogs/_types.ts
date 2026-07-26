@@ -8,6 +8,8 @@ export interface BlogListFilter {
   day?: number
   /** 0-indexed */
   page?: number
+  /** Member ID used by the official website */
+  memberUid?: string
 }
 
 export interface Blog {

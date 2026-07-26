@@ -185,6 +185,20 @@ describe("fetchHinataBlogsHtml()", () => {
     const { url } = await fetchHinataBlogsHtml({ page: 1 })
     expect(url).toBe("https://www.hinatazaka46.com/s/official/diary/member/list?ima=3456&page=1")
   })
+
+  it("applies memberUid as ct param", async () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue(readFixture("hinata-blogs.html")),
+        body: { cancel: vi.fn() }
+      })
+    )
+    const { url } = await fetchHinataBlogsHtml({ memberUid: "25" })
+    expect(url).toBe("https://www.hinatazaka46.com/s/official/diary/member/list?ima=3456&ct=25")
+  })
 })
 
 describe("getHinataBlogUrl()", () => {

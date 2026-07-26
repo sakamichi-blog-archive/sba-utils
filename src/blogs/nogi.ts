@@ -25,6 +25,9 @@ export interface NogiBlogSummary {
 /** Unlike {@link BlogListFilter}, `year` is required — this fetch is always date-filtered */
 export type NogiBlogsByDateFilter = BlogListFilter & { year: number }
 
+/** Unlike {@link BlogListFilter}, has no date fields — the JSON API behind {@link fetchNogiBlogs} has no date filter */
+export type NogiBlogsFilter = Pick<BlogListFilter, "page" | "memberUid">
+
 const BLOGS_API_ENDPOINT = "https://www.nogizaka46.com/s/n46/api/list/blog"
 const BLOGS_LIST_URL = "https://www.nogizaka46.com/s/n46/diary/MEMBER/list"
 const BLOGS_API_PAGE_SIZE = 32
@@ -71,13 +74,12 @@ export async function fetchNogiBlogHtml(uid: number): Promise<{ html: string; ur
   return { html: await response.text(), url }
 }
 
-/** `page` is 0-indexed */
-export async function fetchNogiBlogs(page = 0): Promise<{
+export async function fetchNogiBlogs(filter?: NogiBlogsFilter): Promise<{
   blogs: BlogWithHtml[]
   js: string
   url: string
 }> {
-  const { js, url } = await fetchNogiBlogsJs(page)
+  const { js, url } = await fetchNogiBlogsJs(filter)
   return { blogs: parseNogiBlogsJs(js), js, url }
 }
 
@@ -105,14 +107,19 @@ export async function fetchNogiBlogsByDateHtml(
   return { html: await response.text(), url }
 }
 
-/** `page` is 0-indexed */
-export async function fetchNogiBlogsJs(page = 0): Promise<{ js: string; url: string }> {
+export async function fetchNogiBlogsJs(filter?: NogiBlogsFilter): Promise<{
+  js: string
+  url: string
+}> {
+  const page = filter?.page ?? 0
   const params = new URLSearchParams({
     ima: getMmss(),
     rw: String(BLOGS_API_PAGE_SIZE),
     st: String(page * BLOGS_API_PAGE_SIZE),
     callback: "res"
   })
+  if (filter?.memberUid !== undefined) params.set("ct", filter.memberUid)
+
   const url = `${BLOGS_API_ENDPOINT}?${params}`
   const response = await fetch(url, {
     headers: {
@@ -138,6 +145,7 @@ export function getNogiBlogsByDateUrl(filter: NogiBlogsByDateFilter): string {
   })
   const page = filter.page ?? 0
   if (page !== 0) params.set("page", String(page))
+  if (filter.memberUid !== undefined) params.set("ct", filter.memberUid)
   return `${BLOGS_LIST_URL}?${params}`
 }
 

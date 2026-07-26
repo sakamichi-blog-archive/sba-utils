@@ -5,6 +5,7 @@ export {
   fetchNogiBlogs,
   fetchNogiBlogsByDate,
   type NogiBlogsByDateFilter,
+  type NogiBlogsFilter,
   type NogiBlogSummary
 } from "./nogi"
 export { fetchSakuraBlog, fetchSakuraBlogs, type SakuraBlog } from "./sakura"
