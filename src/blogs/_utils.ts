@@ -1,5 +1,38 @@
 import * as cheerio from "cheerio"
 
+import type { BlogListFilter } from "./_types"
+
+/** Format a year/month/day into a site `dy=` query value (`YYYY`, `YYYYMM`, or `YYYYMMDD`) */
+export function formatBlogDateFilter(filter: {
+  year: number
+  month?: number
+  day?: number
+}): string {
+  const { year, month, day } = filter
+  if (day !== undefined && month === undefined) {
+    throw new RangeError("`month` is required when `day` is specified")
+  }
+
+  let value = String(year)
+  if (month !== undefined) value += String(month).padStart(2, "0")
+  if (day !== undefined) value += String(day).padStart(2, "0")
+
+  return value
+}
+
+/** Like {@link formatBlogDateFilter}, but `year` may be omitted entirely (returns `undefined`); throws if `month`/`day` is given without it */
+export function formatOptionalBlogDateFilter(filter?: BlogListFilter): string | undefined {
+  if (filter?.year === undefined) {
+    if (filter?.month !== undefined || filter?.day !== undefined) {
+      throw new RangeError("`year` is required when `month` or `day` is specified")
+    }
+
+    return undefined
+  }
+
+  return formatBlogDateFilter({ year: filter.year, month: filter.month, day: filter.day })
+}
+
 type FindImagesInHtmlOutput = {
   /** Absolute URL of parent `<a>` element `href` attribute. This may or may not be a link to a higher resolution image. */
   anchorElementUrl?: string
