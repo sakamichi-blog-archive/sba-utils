@@ -95,7 +95,7 @@ describe("fetchSakuraBlogsHtml()", () => {
     vi.useRealTimers()
   })
 
-  it("applies page even when filter is not given", async () => {
+  it("applies page without a date filter", async () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     vi.stubGlobal(
@@ -152,7 +152,7 @@ describe("fetchSakuraBlogs()", () => {
     expect(url).toBe("https://sakurazaka46.com/s/s46/diary/blog/list?ima=3456")
   })
 
-  it("applies dy and page params when filter is given", async () => {
+  it("applies dy and page params from filter", async () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     vi.stubGlobal(
       "fetch",
