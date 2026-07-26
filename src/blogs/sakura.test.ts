@@ -53,7 +53,11 @@ describe("fetchSakuraBlogHtml()", () => {
 })
 
 describe("fetchSakuraBlogsHtml()", () => {
-  afterEach(() => vi.restoreAllMocks())
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => {
+    vi.useRealTimers()
+    vi.restoreAllMocks()
+  })
 
   it("throws FetchStatusError on non-200", async () => {
     vi.stubGlobal(
@@ -84,7 +88,6 @@ describe("fetchSakuraBlogsHtml()", () => {
   })
 
   it("omits page param when page is 0", async () => {
-    vi.useFakeTimers()
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     vi.stubGlobal(
       "fetch",
@@ -96,11 +99,9 @@ describe("fetchSakuraBlogsHtml()", () => {
     )
     const { url } = await fetchSakuraBlogsHtml({ year: 2026 })
     expect(url).toBe("https://sakurazaka46.com/s/s46/diary/blog/list?ima=3456&dy=2026")
-    vi.useRealTimers()
   })
 
   it("applies page", async () => {
-    vi.useFakeTimers()
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     vi.stubGlobal(
       "fetch",
@@ -112,7 +113,6 @@ describe("fetchSakuraBlogsHtml()", () => {
     )
     const { url } = await fetchSakuraBlogsHtml({ page: 1 })
     expect(url).toBe("https://sakurazaka46.com/s/s46/diary/blog/list?ima=3456&page=1")
-    vi.useRealTimers()
   })
 })
 
