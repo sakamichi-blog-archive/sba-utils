@@ -4,7 +4,7 @@ import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDatetimeJst } from "../shared/datetime"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import type { BlogListFilter, BlogWithHtml } from "./_types"
-import { findImagesInHtml, formatBlogDateFilter, getUidFromUrl } from "./_utils"
+import { findImagesInHtml, formatOptionalBlogDateFilter, getUidFromUrl } from "./_utils"
 
 export interface SakuraBlog {
   /** Publish date, without time info */
@@ -52,12 +52,8 @@ export async function fetchSakuraBlogsHtml(
   filter?: BlogListFilter
 ): Promise<{ html: string; url: string }> {
   const params = new URLSearchParams({ ima: getMmss() })
-  if (filter?.year !== undefined) {
-    params.set(
-      "dy",
-      formatBlogDateFilter({ year: filter.year, month: filter.month, day: filter.day })
-    )
-  }
+  const dy = formatOptionalBlogDateFilter(filter)
+  if (dy !== undefined) params.set("dy", dy)
   const page = filter?.page ?? 0
   if (page !== 0) params.set("page", String(page))
 
