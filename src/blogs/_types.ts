@@ -8,6 +8,8 @@ export interface BlogListFilter {
   day?: number
   /** 0-indexed */
   page?: number
+  /** Member ID used by official website (matches `Member.uid` from `@sakamichi-blog-archive/utils/members`) */
+  memberUid?: string
 }
 
 export interface Blog {
