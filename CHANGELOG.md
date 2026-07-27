@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.5.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.4.0...utils-v0.5.0) (2026-07-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* Support for filtering blogs by member ([#47](https://github.com/sakamichi-blog-archive/sba-utils/issues/47))
+
+### Features
+
+* Filter blogs by date and page ([#46](https://github.com/sakamichi-blog-archive/sba-utils/issues/46)) ([945d3ee](https://github.com/sakamichi-blog-archive/sba-utils/commit/945d3ee23d3b050f285e464a72558cb11ba6d006))
+* Support for filtering blogs by member ([#47](https://github.com/sakamichi-blog-archive/sba-utils/issues/47)) ([3b98071](https://github.com/sakamichi-blog-archive/sba-utils/commit/3b98071989ac80713442d4787b75cded9a4ef940))
+
+
+### Dependencies
+
+* Bump the all-non-major group with 2 updates ([#44](https://github.com/sakamichi-blog-archive/sba-utils/issues/44)) ([88dfea3](https://github.com/sakamichi-blog-archive/sba-utils/commit/88dfea345daf57a5bfa85f2f5eb4a1fcfe7e28b7))
+* Bump the all-non-major group with 5 updates ([#48](https://github.com/sakamichi-blog-archive/sba-utils/issues/48)) ([277a9be](https://github.com/sakamichi-blog-archive/sba-utils/commit/277a9bedbc2974bd50f1798017daaa71cbd0a35c))
+
 ## [0.4.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.3.0...utils-v0.4.0) (2026-07-22)
 
 
