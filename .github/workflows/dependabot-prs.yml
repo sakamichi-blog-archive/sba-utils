@@ -19,6 +19,7 @@ jobs:
     outputs:
       dependency-type: ${{ steps.dependabot-metadata.outputs.dependency-type }}
       update-type: ${{ steps.dependabot-metadata.outputs.update-type }}
+      package-ecosystem: ${{ steps.dependabot-metadata.outputs.package-ecosystem }}
     steps:
       - name: Fetch Dependabot metadata
         id: dependabot-metadata
@@ -32,8 +33,9 @@ jobs:
       needs.dependabot-metadata.result == 'success' &&
       needs.dependabot-metadata.outputs.dependency-type != '' &&
       needs.dependabot-metadata.outputs.update-type != '' &&
-      needs.dependabot-metadata.outputs.dependency-type != 'direct:production' &&
-      needs.dependabot-metadata.outputs.update-type != 'version-update:semver-major'
+      needs.dependabot-metadata.outputs.update-type != 'version-update:semver-major' &&
+      (needs.dependabot-metadata.outputs.dependency-type != 'direct:production' ||
+       needs.dependabot-metadata.outputs.package-ecosystem == 'github-actions')
     permissions:
       contents: write
       pull-requests: write
