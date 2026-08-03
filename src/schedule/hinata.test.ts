@@ -166,6 +166,30 @@ describe("parseHinataScheduleEventsHtml()", () => {
       true
     )
   })
+
+  it("falls back to the category class when the visible label is empty", () => {
+    const fallback = `
+      <div class="l-maincontents--schedule">
+        <p class="p-schedule__page_date">2026年 08月</p>
+        <ul>
+          <li class="p-schedule__list-group">
+            <div class="c-schedule__date--list"><span>1</span></div>
+            <ul class="p-schedule__list">
+              <li class="p-schedule__item">
+                <a href="/s/official/media/detail/1?ima=0000">
+                  <div class="p-schedule__head">
+                    <div class="c-schedule__category category_goods"></div>
+                    <div class="c-schedule__time--list"></div>
+                  </div>
+                  <p class="c-schedule__text">グッズ販売</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>`
+    expect(parseHinataScheduleEventsHtml(fallback)[0]?.category).toBe("グッズ")
+  })
 })
 
 describe("parseHinataScheduleEventHtml()", () => {
@@ -174,6 +198,27 @@ describe("parseHinataScheduleEventHtml()", () => {
 
   it("throws ParseError when article element not found", () => {
     expect(() => parseHinataScheduleEventHtml("<html></html>", url)).toThrow(ParseError)
+  })
+
+  it("returns undefined date when the detail page has none (e.g. birthdays)", () => {
+    const birthday = `
+      <main class="l-main"><section class="l-section"><div class="l-container"><div class="l-contents">
+        <div class="l-maincontents--schedule-detail">
+          <div class="p-article__info">
+            <div class="c-schedule__category category_birth">誕生日</div>
+            <div class="c-schedule__date"><b></b><span></span></div>
+          </div>
+          <h3 class="c-article__title">高井 俐香の誕生日</h3>
+          <div class="c-article__tag"></div>
+          <div class="p-article__text"></div>
+        </div>
+      </div></div></div></section></main>`
+    const event = parseHinataScheduleEventHtml(
+      birthday,
+      "https://www.hinatazaka46.com/s/official/media/detail/10222?ima=0000"
+    )
+    expect(event.date).toBeUndefined()
+    expect(event.category).toBe("誕生日")
   })
 
   it("parses detail fields correctly", () => {

@@ -4,7 +4,12 @@ import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss } from "../shared/datetime"
 import { FetchStatusError } from "../shared/errors"
 import type { ScheduleEventWithHtml, ScheduleFilter } from "./_types"
-import { formatScheduleDy, parseScheduleDate, parseScheduleTimeRange } from "./_utils"
+import {
+  formatScheduleDy,
+  parseScheduleDate,
+  parseScheduleTimeRange,
+  resolveCategoryFromClass
+} from "./_utils"
 
 const SCHEDULE_PAGE_URL = "https://sakurazaka46.com/s/s46/media/list"
 
@@ -52,14 +57,6 @@ export function getSakuraScheduleUrl(filter: ScheduleFilter): string {
   return `${SCHEDULE_PAGE_URL}?${params}`
 }
 
-/** Resolve a `cate-xxx` class attribute to its Japanese label */
-function resolveSakuraCategory(classAttr: string): string | undefined {
-  for (const key in SAKURA_SCHEDULE_CATEGORIES) {
-    if (classAttr.includes(`cate-${key}`)) return SAKURA_SCHEDULE_CATEGORIES[key]
-  }
-  return undefined
-}
-
 export function parseSakuraScheduleEventsHtml(html: string): ScheduleEventWithHtml[] {
   const $ = cheerio.load(html)
   const modals = $(".module-modal.js-schedule-detail")
@@ -70,9 +67,21 @@ export function parseSakuraScheduleEventsHtml(html: string): ScheduleEventWithHt
     const container = $(modal).find(".mordal-box .inner > div").first()
 
     const dateText = $(container).find(".txt p.date").text().trim()
+    let date: Date
+    try {
+      date = parseScheduleDate(dateText)
+    } catch (error) {
+      console.error(`Failed to parse date for modal index ${modalIndex}. Skipping.`, error)
+      continue
+    }
+
     const category =
       $(container).find(".txt p.type").first().text().trim() ||
-      resolveSakuraCategory($(container).attr("class") ?? "")
+      resolveCategoryFromClass(
+        $(container).attr("class") ?? "",
+        "cate-",
+        SAKURA_SCHEDULE_CATEGORIES
+      )
     const { timeStart, timeEnd } = parseScheduleTimeRange(dateText)
 
     const members: string[] = []
@@ -84,7 +93,7 @@ export function parseSakuraScheduleEventsHtml(html: string): ScheduleEventWithHt
 
     events.push({
       category,
-      date: parseScheduleDate(dateText),
+      date,
       group: "sakura",
       html: $(container).find(".txt p.lead").html()?.trim() ?? "",
       id: ($(modal).attr("class") ?? "").match(/count_(\d+)_/)?.[1],

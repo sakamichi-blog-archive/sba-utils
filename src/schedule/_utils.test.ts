@@ -36,6 +36,10 @@ describe("parseScheduleDate()", () => {
   it("throws ParseError when no date is present", () => {
     expect(() => parseScheduleDate("no date here")).toThrow(ParseError)
   })
+
+  it("normalizes full-width digits", () => {
+    expect(parseScheduleDate("２０２６.０８.０１").toISOString()).toBe("2026-07-31T15:00:00.000Z")
+  })
 })
 
 describe("normalizeTime()", () => {
@@ -49,6 +53,10 @@ describe("normalizeTime()", () => {
 
   it("returns undefined for blank input", () => {
     expect(normalizeTime("")).toBeUndefined()
+  })
+
+  it("normalizes full-width digits and colon", () => {
+    expect(normalizeTime("９：３０")).toBe("09:30")
   })
 })
 
@@ -77,5 +85,12 @@ describe("parseScheduleTimeRange()", () => {
 
   it("returns an empty object when there is no time", () => {
     expect(parseScheduleTimeRange("")).toEqual({})
+  })
+
+  it("parses a full-width range", () => {
+    expect(parseScheduleTimeRange("２２：００～２３：３０")).toEqual({
+      timeStart: "22:00",
+      timeEnd: "23:30"
+    })
   })
 })

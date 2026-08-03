@@ -4,7 +4,12 @@ import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss } from "../shared/datetime"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import type { ScheduleEvent, ScheduleEventWithHtml, ScheduleFilter } from "./_types"
-import { formatScheduleDy, parseScheduleDate, parseScheduleTimeRange } from "./_utils"
+import {
+  formatScheduleDy,
+  parseScheduleDate,
+  parseScheduleTimeRange,
+  resolveCategoryFromClass
+} from "./_utils"
 
 const SCHEDULE_PAGE_URL = "https://www.hinatazaka46.com/s/official/media/list"
 const SCHEDULE_DETAIL_URL = "https://www.hinatazaka46.com/s/official/media/detail"
@@ -89,14 +94,6 @@ export function getHinataScheduleEventUrl(id: string): string {
   return `${SCHEDULE_DETAIL_URL}/${id}?ima=${getMmss()}`
 }
 
-/** Resolve a `category_xxx` class attribute to its Japanese label */
-function resolveHinataCategory(classAttr: string): string | undefined {
-  for (const key in HINATA_SCHEDULE_CATEGORIES) {
-    if (classAttr.includes(`category_${key}`)) return HINATA_SCHEDULE_CATEGORIES[key]
-  }
-  return undefined
-}
-
 export function parseHinataScheduleEventsHtml(html: string): ScheduleEvent[] {
   const $ = cheerio.load(html)
 
@@ -116,7 +113,13 @@ export function parseHinataScheduleEventsHtml(html: string): ScheduleEvent[] {
     const day = $(dayGroup).find(".c-schedule__date--list span").first().text().replace(/\D/g, "")
     if (day === "") continue
 
-    const date = parseScheduleDate(`${year}/${month}/${day}`)
+    let date: Date
+    try {
+      date = parseScheduleDate(`${year}/${month}/${day}`)
+    } catch (error) {
+      console.error(`Failed to parse date for day index ${dayIndex}. Skipping.`, error)
+      continue
+    }
 
     const elements = $(dayGroup).find("ul.p-schedule__list li.p-schedule__item > a")
     for (let elementIndex = 0; elementIndex < elements.length; elementIndex++) {
@@ -130,7 +133,12 @@ export function parseHinataScheduleEventsHtml(html: string): ScheduleEvent[] {
       const url = new URL(href, SCHEDULE_PAGE_URL)
       const categoryElement = $(element).find(".p-schedule__head .c-schedule__category").first()
       const category =
-        categoryElement.text().trim() || resolveHinataCategory(categoryElement.attr("class") ?? "")
+        categoryElement.text().trim() ||
+        resolveCategoryFromClass(
+          categoryElement.attr("class") ?? "",
+          "category_",
+          HINATA_SCHEDULE_CATEGORIES
+        )
 
       const { timeStart, timeEnd } = parseScheduleTimeRange(
         $(element).find("div.p-schedule__head div.c-schedule__time--list").first().text().trim()
@@ -162,7 +170,12 @@ export function parseHinataScheduleEventHtml(html: string, url: string): HinataS
 
   const categoryElement = $(articleElement).find(".p-article__info .c-schedule__category")
   const category =
-    categoryElement.text().trim() || resolveHinataCategory(categoryElement.attr("class") ?? "")
+    categoryElement.text().trim() ||
+    resolveCategoryFromClass(
+      categoryElement.attr("class") ?? "",
+      "category_",
+      HINATA_SCHEDULE_CATEGORIES
+    )
 
   const dateText = $(articleElement).find(".p-article__info .c-schedule__date b").text().trim()
   const { timeStart, timeEnd } = parseScheduleTimeRange(

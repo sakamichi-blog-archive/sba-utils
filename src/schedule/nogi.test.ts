@@ -70,9 +70,9 @@ describe("parseNogiScheduleEventsJs()", () => {
     expect(() => parseNogiScheduleEventsJs("other({})")).toThrow(ParseError)
   })
 
-  it("resolves member IDs to spaced names via the members dataset", () => {
+  it("resolves member IDs to names via the members dataset", () => {
     const [first] = parseNogiScheduleEventsJs(js)
-    expect(first?.members).toEqual(["五百城 茉央", "奥田 いろは"])
+    expect(first?.members).toEqual(["五百城茉央", "奥田いろは"])
   })
 
   it("falls back to the raw category key when unknown", () => {
@@ -90,8 +90,8 @@ describe("parseNogiScheduleEventsJs()", () => {
           "html": "<p>Event detail placeholder.</p>",
           "id": "107136",
           "members": [
-            "五百城 茉央",
-            "奥田 いろは",
+            "五百城茉央",
+            "奥田いろは",
           ],
           "timeEnd": undefined,
           "timeStart": undefined,
@@ -105,7 +105,7 @@ describe("parseNogiScheduleEventsJs()", () => {
           "html": "<p>Broadcast detail placeholder.</p>",
           "id": "107140",
           "members": [
-            "岩本 蓮加",
+            "岩本蓮加",
           ],
           "timeEnd": "10:00",
           "timeStart": "09:30",

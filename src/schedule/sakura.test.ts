@@ -74,6 +74,22 @@ describe("parseSakuraScheduleEventsHtml()", () => {
     expect(events[1]?.members).toEqual(["向井純葉"])
   })
 
+  it("falls back to the container class when the visible label is empty", () => {
+    const fallback = `
+      <main class="site-main">
+        <div class="module-modal js-schedule-detail count_1_01">
+          <div class="mordal-box"><div class="inner"><div class="cate-goods"><div class="txt">
+            <p class="date">2026.08.01</p>
+            <p class="type"></p>
+            <h2 class="title">グッズ販売</h2>
+            <div class="memlist"></div>
+            <p class="lead"></p>
+          </div></div></div></div>
+        </div>
+      </main>`
+    expect(parseSakuraScheduleEventsHtml(fallback)[0]?.category).toBe("グッズ")
+  })
+
   it("parses event fields correctly", () => {
     expect(parseSakuraScheduleEventsHtml(html)).toMatchInlineSnapshot(`
       [

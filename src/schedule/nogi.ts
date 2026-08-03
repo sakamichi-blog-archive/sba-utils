@@ -98,17 +98,26 @@ export function parseNogiScheduleEventsJs(js: string): ScheduleEventWithHtml[] {
   }
 
   const { data } = scheduleApiSchema.parse(functionArgument)
+  const events: ScheduleEventWithHtml[] = []
 
-  return data.map<ScheduleEventWithHtml>(event => {
+  for (const event of data) {
+    let date: Date
+    try {
+      date = parseScheduleDate(event.date)
+    } catch (error) {
+      console.error(`Failed to parse date for event ${event.code}. Skipping.`, error)
+      continue
+    }
+
     const members: string[] = []
     for (const memberId of event.arti_code.flat()) {
       const member = nogiMembers.find(_member => _member.uid === memberId)
-      if (member !== undefined) members.push(member.nameSpaced)
+      if (member !== undefined) members.push(member.name)
     }
 
-    return {
+    events.push({
       category: NOGI_SCHEDULE_CATEGORIES[event.cate] ?? event.cate,
-      date: parseScheduleDate(event.date),
+      date,
       group: "nogi",
       html: event.text.trim(),
       id: event.code,
@@ -117,6 +126,8 @@ export function parseNogiScheduleEventsJs(js: string): ScheduleEventWithHtml[] {
       timeStart: normalizeTime(event.start_time),
       title: event.title.trim(),
       url: new URL(event.link, SCHEDULE_PAGE_URL).href
-    }
-  })
+    })
+  }
+
+  return events
 }

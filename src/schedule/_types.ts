@@ -8,7 +8,11 @@ export interface ScheduleFilter {
 }
 
 export interface ScheduleEvent {
-  /** Category label as shown on the site (Japanese), e.g. `"ライブ/イベント"`. `undefined` when unknown */
+  /**
+   * Category label as shown on the site (Japanese), e.g. `"ライブ/イベント"`. `undefined` when the event
+   * carries no category. For `nogi` (whose API exposes only a category key), an unrecognized key is passed
+   * through verbatim rather than mapped to a label.
+   */
   category?: string
   /** Event date at JST midnight. Time of day, if any, is carried by {@link ScheduleEvent.timeStart} */
   date: Date
@@ -22,7 +26,8 @@ export interface ScheduleEvent {
    */
   id?: string
   /**
-   * Member names associated with the event, as shown on the site. Empty when none are listed.
+   * Member names associated with the event, with whitespace removed (e.g. `"五百城茉央"`). Empty when none
+   * are listed.
    *
    * `hinata` list events never populate this — use {@link fetchHinataScheduleEvent} for member details.
    */
