@@ -6,13 +6,9 @@ import { getMmss, parseDatetimeJst } from "../shared/datetime"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import { parseJsonpArgumentJson } from "../shared/jsonp"
 import { castStringToIntegerSchema } from "../shared/schemas"
+import { normalizeFullWidthNumbers } from "../shared/text"
 import type { BlogListFilter, BlogWithHtml } from "./_types"
-import {
-  findImagesInHtml,
-  formatBlogDateFilter,
-  getUidFromUrl,
-  normalizeFullWidthNumbers
-} from "./_utils"
+import { findImagesInHtml, formatBlogDateFilter, getUidFromUrl } from "./_utils"
 
 /** Date-filtered list page doesn't expose member name, unlike {@link BlogWithHtml} */
 export interface NogiBlogSummary {
