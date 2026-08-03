@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest"
 
 import { ParseError } from "../shared/errors"
-import { formatScheduleDy, normalizeTime, parseScheduleDate, parseScheduleTimeRange } from "./_utils"
+import {
+  formatScheduleDy,
+  normalizeTime,
+  parseScheduleDate,
+  parseScheduleTimeRange
+} from "./_utils"
 
 describe("formatScheduleDy()", () => {
   it("zero-pads the month", () => {
