@@ -20,6 +20,10 @@
     "./members": {
       "types": "./dist/members.d.mts",
       "import": "./dist/members.mjs"
+    },
+    "./schedule": {
+      "types": "./dist/schedule.d.mts",
+      "import": "./dist/schedule.mjs"
     }
   },
   "publishConfig": {
