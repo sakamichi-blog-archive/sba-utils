@@ -54,6 +54,34 @@ const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
 
 Some functions do not accept some of the properties, due to the external API.
 
+### Schedule
+
+```typescript
+import { fetchHinataScheduleEvents } from "@sakamichi-blog-archive/utils/schedule"
+```
+
+Fetch schedule events for a specific year and month:
+
+```typescript
+import { fetchHinataScheduleEvents } from "@sakamichi-blog-archive/utils/schedule"
+
+const { events } = await fetchHinataScheduleEvents({ year: 2026, month: 8 })
+```
+
+#### Available functions
+
+| Group  | Event list                          | Single event                               |
+| ------ | ----------------------------------- | ------------------------------------------ |
+| Hinata | `fetchHinataScheduleEvents(filter)` | `fetchHinataScheduleEvent(id)`             |
+| Nogi   | `fetchNogiScheduleEvents(filter)`   | — (built into `fetchNogiScheduleEvents`)   |
+| Sakura | `fetchSakuraScheduleEvents(filter)` | — (built into `fetchSakuraScheduleEvents`) |
+
+`filter` requires both `year` and `month` (1-based; January = 1).
+
+Each event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:mm`, JST), `category`, `members`, `title`, and `url`. Nogi and Sakura events additionally include the detail `html`.
+
+Hinata list events omit members and content — use `fetchHinataScheduleEvent(id)` for those. The `id` comes from each list event.
+
 ### Members
 
 ```typescript
