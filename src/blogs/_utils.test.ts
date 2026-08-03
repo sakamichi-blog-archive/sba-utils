@@ -4,7 +4,6 @@ import {
   findImagesInHtml,
   formatBlogDateFilter,
   formatOptionalBlogDateFilter,
-  parseJsonpArgumentJson,
   getUidFromUrl,
   normalizeFullWidthNumbers
 } from "./_utils"
@@ -157,15 +156,5 @@ describe("normalizeFullWidthNumbers()", () => {
 
   it("handles mixed string", () => {
     expect(normalizeFullWidthNumbers("第１回")).toBe("第1回")
-  })
-})
-
-describe("parseJsonpArgumentJson()", () => {
-  it("extracts single argument from function call", () => {
-    expect(parseJsonpArgumentJson('res({"key":"value"})', "res")).toEqual({ key: "value" })
-  })
-
-  it("returns undefined when function name does not match", () => {
-    expect(parseJsonpArgumentJson('res({"key":"value"})', "other")).toBeUndefined()
   })
 })
