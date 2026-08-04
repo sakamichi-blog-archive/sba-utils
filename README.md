@@ -80,7 +80,7 @@ const { events } = await fetchHinataScheduleEvents({ year: 2026, month: 8 })
 
 Each event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:mm`, JST), `category`, `members`, `title`, and `url`. Nogi and Sakura events additionally include the detail `html`.
 
-Hinata list events omit members and content — use `fetchHinataScheduleEvent(id)` for those. The `id` comes from each list event.
+Hinata list events omit members and content. Fetch a single event with `fetchHinataScheduleEvent(id)` to get its `html` and members; the `id` comes from each list event.
 
 ### Members
 
