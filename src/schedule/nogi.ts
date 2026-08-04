@@ -8,6 +8,11 @@ import { parseJsonpArgumentJson } from "../shared/jsonp"
 import type { ScheduleEventWithHtml, ScheduleFilter } from "./_types"
 import { formatScheduleDy, normalizeTime, parseScheduleDate } from "./_utils"
 
+/** Unlike {@link ScheduleEventWithHtml}, `url` is always present — the API gives every event a unique detail URL */
+export interface NogiScheduleEvent extends ScheduleEventWithHtml {
+  url: string
+}
+
 const SCHEDULE_PAGE_URL = "https://www.nogizaka46.com/s/n46/media/list"
 const SCHEDULE_API_ENDPOINT = "https://www.nogizaka46.com/s/n46/api/list/schedule"
 
@@ -53,7 +58,7 @@ const scheduleApiSchema = z.object({
 })
 
 export async function fetchNogiScheduleEvents(filter: ScheduleFilter): Promise<{
-  events: ScheduleEventWithHtml[]
+  events: NogiScheduleEvent[]
   js: string
   url: string
 }> {
@@ -92,14 +97,14 @@ export function getNogiScheduleUrl(filter: ScheduleFilter, ima = getMmss()): str
   return `${SCHEDULE_API_ENDPOINT}?${params}`
 }
 
-export function parseNogiScheduleEventsJs(js: string): ScheduleEventWithHtml[] {
+export function parseNogiScheduleEventsJs(js: string): NogiScheduleEvent[] {
   const functionArgument = parseJsonpArgumentJson(js, "res")
   if (functionArgument === undefined) {
     throw new ParseError("Failed to find JavaScript function argument")
   }
 
   const { data } = scheduleApiSchema.parse(functionArgument)
-  const events: ScheduleEventWithHtml[] = []
+  const events: NogiScheduleEvent[] = []
 
   for (const event of data) {
     let date: Date

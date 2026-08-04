@@ -11,6 +11,11 @@ import {
   resolveCategoryFromClass
 } from "./_utils"
 
+/** Unlike {@link ScheduleEventWithHtml}, `url` is always absent — the detail lives in an on-page modal with no standalone URL */
+export interface SakuraScheduleEvent extends ScheduleEventWithHtml {
+  url?: undefined
+}
+
 const SCHEDULE_PAGE_URL = "https://sakurazaka46.com/s/s46/media/list"
 
 /** Maps `cate-xxx` class keys to Japanese labels, used as a fallback when the visible label is empty */
@@ -26,7 +31,7 @@ const SAKURA_SCHEDULE_CATEGORIES: Record<string, string> = {
 }
 
 export async function fetchSakuraScheduleEvents(filter: ScheduleFilter): Promise<{
-  events: ScheduleEventWithHtml[]
+  events: SakuraScheduleEvent[]
   html: string
   url: string
 }> {
@@ -57,10 +62,10 @@ export function getSakuraScheduleUrl(filter: ScheduleFilter): string {
   return `${SCHEDULE_PAGE_URL}?${params}`
 }
 
-export function parseSakuraScheduleEventsHtml(html: string): ScheduleEventWithHtml[] {
+export function parseSakuraScheduleEventsHtml(html: string): SakuraScheduleEvent[] {
   const $ = cheerio.load(html)
   const modals = $(".module-modal.js-schedule-detail")
-  const events: ScheduleEventWithHtml[] = []
+  const events: SakuraScheduleEvent[] = []
 
   for (let modalIndex = 0; modalIndex < modals.length; modalIndex++) {
     const modal = modals[modalIndex]

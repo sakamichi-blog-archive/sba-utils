@@ -6,6 +6,7 @@ export {
   fetchHinataScheduleEventsHtml,
   getHinataScheduleEventUrl,
   getHinataScheduleUrl,
+  type HinataScheduleEvent,
   type HinataScheduleEventDetail,
   parseHinataScheduleEventHtml,
   parseHinataScheduleEventsHtml
@@ -14,11 +15,13 @@ export {
   fetchNogiScheduleEvents,
   fetchNogiScheduleEventsJs,
   getNogiScheduleUrl,
+  type NogiScheduleEvent,
   parseNogiScheduleEventsJs
 } from "./nogi"
 export {
   fetchSakuraScheduleEvents,
   fetchSakuraScheduleEventsHtml,
   getSakuraScheduleUrl,
-  parseSakuraScheduleEventsHtml
+  parseSakuraScheduleEventsHtml,
+  type SakuraScheduleEvent
 } from "./sakura"
