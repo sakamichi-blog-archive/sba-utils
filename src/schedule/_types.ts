@@ -28,8 +28,6 @@ export interface ScheduleEvent {
   /**
    * Member names associated with the event, with whitespace removed (e.g. `"五百城茉央"`). Empty when none
    * are listed.
-   *
-   * `hinata` list events omit this field entirely — use `fetchHinataScheduleEvent` for member details.
    */
   members: string[]
   /** Start time in `HH:mm` (JST) */
