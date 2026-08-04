@@ -65,9 +65,10 @@ export async function fetchNogiScheduleEventsJs(filter: ScheduleFilter): Promise
   js: string
   url: string
 }> {
-  const url = getNogiScheduleUrl(filter)
+  const ima = getMmss()
+  const url = getNogiScheduleUrl(filter, ima)
   const dy = formatScheduleDy(filter)
-  const referer = `${SCHEDULE_PAGE_URL}?${new URLSearchParams({ ima: getMmss(), dy })}`
+  const referer = `${SCHEDULE_PAGE_URL}?${new URLSearchParams({ ima, dy })}`
   const response = await fetch(url, {
     headers: {
       Referer: referer,
@@ -82,9 +83,9 @@ export async function fetchNogiScheduleEventsJs(filter: ScheduleFilter): Promise
   return { js: await response.text(), url }
 }
 
-export function getNogiScheduleUrl(filter: ScheduleFilter): string {
+export function getNogiScheduleUrl(filter: ScheduleFilter, ima = getMmss()): string {
   const params = new URLSearchParams({
-    ima: getMmss(),
+    ima,
     dy: formatScheduleDy(filter),
     callback: "res"
   })
