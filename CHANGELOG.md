@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.6.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.5.0...utils-v0.6.0) (2026-08-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* Change schedule utils types ([#54](https://github.com/sakamichi-blog-archive/sba-utils/issues/54))
+
+### Features
+
+* Add schedule utils ([#53](https://github.com/sakamichi-blog-archive/sba-utils/issues/53)) ([d850cbe](https://github.com/sakamichi-blog-archive/sba-utils/commit/d850cbed1332cd4e34321ceadd4b50d020e3a38a))
+
+
+### Bug fixes
+
+* Change schedule utils types ([#54](https://github.com/sakamichi-blog-archive/sba-utils/issues/54)) ([4a1af60](https://github.com/sakamichi-blog-archive/sba-utils/commit/4a1af60cb7f2466d89dc7bcafb840fb37b327a2d))
+
+
+### Dependencies
+
+* Bump the all-non-major group with 2 updates ([#51](https://github.com/sakamichi-blog-archive/sba-utils/issues/51)) ([4d35bea](https://github.com/sakamichi-blog-archive/sba-utils/commit/4d35bea92dc138d8c152e359cbffce00b594c60b))
+
 ## [0.5.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.4.0...utils-v0.5.0) (2026-07-27)
 
 
