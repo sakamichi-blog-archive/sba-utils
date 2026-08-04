@@ -26,13 +26,19 @@ const HINATA_SCHEDULE_CATEGORIES: Record<string, string> = {
   ticket: "チケット"
 }
 
+/**
+ * A Hinata schedule list event. Unlike the other groups' list events, these carry no `html` or `members`;
+ * fetch a single event with {@link fetchHinataScheduleEvent} to get those (see {@link HinataScheduleEventDetail}).
+ */
+export type HinataScheduleEvent = Omit<ScheduleEvent, "members">
+
 /** Unlike {@link ScheduleEventWithHtml}, `date` may be absent (e.g. birthdays) — take it from the list event instead */
 export interface HinataScheduleEventDetail extends Omit<ScheduleEventWithHtml, "date"> {
   date?: Date
 }
 
 export async function fetchHinataScheduleEvents(filter: ScheduleFilter): Promise<{
-  events: ScheduleEvent[]
+  events: HinataScheduleEvent[]
   html: string
   url: string
 }> {
@@ -94,7 +100,7 @@ export function getHinataScheduleEventUrl(id: string): string {
   return `${SCHEDULE_DETAIL_URL}/${id}?ima=${getMmss()}`
 }
 
-export function parseHinataScheduleEventsHtml(html: string): ScheduleEvent[] {
+export function parseHinataScheduleEventsHtml(html: string): HinataScheduleEvent[] {
   const $ = cheerio.load(html)
 
   const pageDate = $(".l-maincontents--schedule .p-schedule__page_date")
@@ -105,7 +111,7 @@ export function parseHinataScheduleEventsHtml(html: string): ScheduleEvent[] {
   if (yearMonth === null) throw new ParseError(`Cannot parse schedule year/month: ${pageDate}`)
 
   const [, year, month] = yearMonth
-  const events: ScheduleEvent[] = []
+  const events: HinataScheduleEvent[] = []
 
   const dayGroups = $(".l-maincontents--schedule ul .p-schedule__list-group")
   for (let dayIndex = 0; dayIndex < dayGroups.length; dayIndex++) {
@@ -149,7 +155,6 @@ export function parseHinataScheduleEventsHtml(html: string): ScheduleEvent[] {
         date,
         group: "hinata",
         id: url.pathname.match(/\/detail\/([^/?]+)/)?.[1],
-        members: [],
         timeEnd,
         timeStart,
         title: $(element).find("p.c-schedule__text").first().text().trim(),
