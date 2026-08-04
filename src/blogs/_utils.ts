@@ -88,23 +88,3 @@ export function getUidFromUrl(url: string | URL): number | undefined {
   if (match === null) return undefined
   return Number(match[1])
 }
-
-/**
- * Convert full-width numbers to half-width
- * @see {@link https://www.yoheim.net/blog.php?q=20191101}
- */
-export function normalizeFullWidthNumbers(name: string): string {
-  return name.replace(/[０-９]/g, str => String.fromCharCode(str.charCodeAt(0) - 0xfee0))
-}
-
-/** Parse JSON argument from JSONP callback string */
-export function parseJsonpArgumentJson(js: string, functionName: string): unknown {
-  const match = js.trim().match(new RegExp(`^${functionName}\\(([\\s\\S]+)\\);?\\s*$`))
-  if (match === null) return undefined
-
-  try {
-    return JSON.parse(match[1]!)
-  } catch {
-    return undefined
-  }
-}

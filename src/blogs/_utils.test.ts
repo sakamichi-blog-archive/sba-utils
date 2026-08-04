@@ -4,9 +4,7 @@ import {
   findImagesInHtml,
   formatBlogDateFilter,
   formatOptionalBlogDateFilter,
-  parseJsonpArgumentJson,
-  getUidFromUrl,
-  normalizeFullWidthNumbers
+  getUidFromUrl
 } from "./_utils"
 
 describe("formatBlogDateFilter()", () => {
@@ -143,29 +141,5 @@ describe("getUidFromUrl()", () => {
 
   it("returns undefined when URL is not a blog URL", () => {
     expect(getUidFromUrl("https://www.nogizaka46.com/s/n46/diary/list")).toBeUndefined()
-  })
-})
-
-describe("normalizeFullWidthNumbers()", () => {
-  it("converts full-width digits to half-width", () => {
-    expect(normalizeFullWidthNumbers("２０２４年")).toBe("2024年")
-  })
-
-  it("leaves half-width digits unchanged", () => {
-    expect(normalizeFullWidthNumbers("2024")).toBe("2024")
-  })
-
-  it("handles mixed string", () => {
-    expect(normalizeFullWidthNumbers("第１回")).toBe("第1回")
-  })
-})
-
-describe("parseJsonpArgumentJson()", () => {
-  it("extracts single argument from function call", () => {
-    expect(parseJsonpArgumentJson('res({"key":"value"})', "res")).toEqual({ key: "value" })
-  })
-
-  it("returns undefined when function name does not match", () => {
-    expect(parseJsonpArgumentJson('res({"key":"value"})', "other")).toBeUndefined()
   })
 })
