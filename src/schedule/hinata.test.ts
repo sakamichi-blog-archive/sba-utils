@@ -129,7 +129,6 @@ describe("parseHinataScheduleEventsHtml()", () => {
           "date": 2026-07-31T15:00:00.000Z,
           "group": "hinata",
           "id": "10222",
-          "members": [],
           "timeEnd": undefined,
           "timeStart": undefined,
           "title": "高井 俐香の誕生日",
@@ -140,7 +139,6 @@ describe("parseHinataScheduleEventsHtml()", () => {
           "date": 2026-07-31T15:00:00.000Z,
           "group": "hinata",
           "id": "10333",
-          "members": [],
           "timeEnd": undefined,
           "timeStart": "18:00",
           "title": "テレビ番組の出演",
@@ -151,7 +149,6 @@ describe("parseHinataScheduleEventsHtml()", () => {
           "date": 2026-08-01T15:00:00.000Z,
           "group": "hinata",
           "id": "10444",
-          "members": [],
           "timeEnd": "15:00",
           "timeStart": "13:00",
           "title": "握手会",
@@ -161,10 +158,8 @@ describe("parseHinataScheduleEventsHtml()", () => {
     `)
   })
 
-  it("leaves members empty on list events", () => {
-    expect(parseHinataScheduleEventsHtml(html).every(event => event.members.length === 0)).toBe(
-      true
-    )
+  it("omits members from list events", () => {
+    expect(parseHinataScheduleEventsHtml(html).every(event => !("members" in event))).toBe(true)
   })
 
   it("falls back to the category class when the visible label is empty", () => {

@@ -30,7 +30,7 @@ const HINATA_SCHEDULE_CATEGORIES: Record<string, string> = {
  * A Hinata schedule list event. Unlike the other groups' list events, these carry no `html` or `members`;
  * fetch a single event with {@link fetchHinataScheduleEvent} to get those (see {@link HinataScheduleEventDetail}).
  */
-export type HinataScheduleEvent = ScheduleEvent
+export type HinataScheduleEvent = Omit<ScheduleEvent, "members">
 
 /** Unlike {@link ScheduleEventWithHtml}, `date` may be absent (e.g. birthdays) — take it from the list event instead */
 export interface HinataScheduleEventDetail extends Omit<ScheduleEventWithHtml, "date"> {
@@ -155,7 +155,6 @@ export function parseHinataScheduleEventsHtml(html: string): HinataScheduleEvent
         date,
         group: "hinata",
         id: url.pathname.match(/\/detail\/([^/?]+)/)?.[1],
-        members: [],
         timeEnd,
         timeStart,
         title: $(element).find("p.c-schedule__text").first().text().trim(),

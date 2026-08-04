@@ -11,10 +11,8 @@ import {
   resolveCategoryFromClass
 } from "./_utils"
 
-/** Unlike {@link ScheduleEventWithHtml}, `url` is always absent — the detail lives in an on-page modal with no standalone URL */
-export interface SakuraScheduleEvent extends ScheduleEventWithHtml {
-  url?: undefined
-}
+/** Unlike {@link ScheduleEventWithHtml}, has no `url` — the detail lives in an on-page modal with no standalone URL */
+export type SakuraScheduleEvent = Omit<ScheduleEventWithHtml, "url">
 
 const SCHEDULE_PAGE_URL = "https://sakurazaka46.com/s/s46/media/list"
 
