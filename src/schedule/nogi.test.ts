@@ -5,6 +5,7 @@ import { readFixture } from "../test/utils"
 import {
   fetchNogiScheduleEvents,
   fetchNogiScheduleEventsJs,
+  getNogiScheduleEventUrl,
   getNogiScheduleUrl,
   parseNogiScheduleEventsJs
 } from "./nogi"
@@ -59,6 +60,18 @@ describe("getNogiScheduleUrl()", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     expect(getNogiScheduleUrl({ year: 2026, month: 8 })).toBe(
       "https://www.nogizaka46.com/s/n46/api/list/schedule?ima=3456&dy=202608&callback=res"
+    )
+  })
+})
+
+describe("getNogiScheduleEventUrl()", () => {
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => vi.useRealTimers())
+
+  it("builds the detail URL from an id", () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    expect(getNogiScheduleEventUrl("107136")).toBe(
+      "https://www.nogizaka46.com/s/n46/media/detail/107136?ima=3456"
     )
   })
 })

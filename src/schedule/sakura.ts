@@ -55,7 +55,14 @@ export async function fetchSakuraScheduleEventsHtml(filter: ScheduleFilter): Pro
   return { html: await response.text(), url }
 }
 
-export function getSakuraScheduleUrl(filter: ScheduleFilter): string {
+/**
+ * Build the schedule listing URL for a month, or — when `day` is given — for a specific date.
+ *
+ * Sakura events have no standalone detail URL (the detail is an on-page modal), so a date-scoped listing
+ * is the closest thing to a per-event link: pass the `year`/`month`/`day` of a {@link SakuraScheduleEvent}'s
+ * date to deep-link to the listing that contains it. The page still shows the whole month.
+ */
+export function getSakuraScheduleUrl(filter: ScheduleFilter & { day?: number }): string {
   const params = new URLSearchParams({ ima: getMmss(), dy: formatScheduleDy(filter) })
   return `${SCHEDULE_PAGE_URL}?${params}`
 }

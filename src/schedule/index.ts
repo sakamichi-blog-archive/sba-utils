@@ -14,6 +14,7 @@ export {
 export {
   fetchNogiScheduleEvents,
   fetchNogiScheduleEventsJs,
+  getNogiScheduleEventUrl,
   getNogiScheduleUrl,
   type NogiScheduleEvent,
   parseNogiScheduleEventsJs

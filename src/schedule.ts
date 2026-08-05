@@ -9,6 +9,7 @@ export {
   fetchSakuraScheduleEventsHtml,
   getHinataScheduleEventUrl,
   getHinataScheduleUrl,
+  getNogiScheduleEventUrl,
   getNogiScheduleUrl,
   getSakuraScheduleUrl,
   type HinataScheduleEvent,

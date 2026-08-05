@@ -16,6 +16,10 @@ describe("formatScheduleDy()", () => {
   it("does not pad an already double-digit month", () => {
     expect(formatScheduleDy({ year: 2026, month: 12 })).toBe("202612")
   })
+
+  it("appends a zero-padded day when given", () => {
+    expect(formatScheduleDy({ year: 2026, month: 9, day: 1 })).toBe("20260901")
+  })
 })
 
 describe("parseScheduleDate()", () => {

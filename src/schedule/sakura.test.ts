@@ -59,6 +59,13 @@ describe("getSakuraScheduleUrl()", () => {
       "https://sakurazaka46.com/s/s46/media/list?ima=3456&dy=202608"
     )
   })
+
+  it("includes the day in dy when given", () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    expect(getSakuraScheduleUrl({ year: 2026, month: 9, day: 1 })).toBe(
+      "https://sakurazaka46.com/s/s46/media/list?ima=3456&dy=20260901"
+    )
+  })
 })
 
 describe("parseSakuraScheduleEventsHtml()", () => {
