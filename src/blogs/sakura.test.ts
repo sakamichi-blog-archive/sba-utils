@@ -22,7 +22,7 @@ describe("fetchSakuraBlog()", () => {
         .fn()
         .mockResolvedValue({ status: 404, url: "https://example.com", body: { cancel: vi.fn() } })
     )
-    await expect(fetchSakuraBlog(300001)).rejects.toBeInstanceOf(FetchStatusError)
+    await expect(fetchSakuraBlog("300001")).rejects.toBeInstanceOf(FetchStatusError)
   })
 })
 
@@ -36,7 +36,7 @@ describe("fetchSakuraBlogHtml()", () => {
         .fn()
         .mockResolvedValue({ status: 500, url: "https://example.com", body: { cancel: vi.fn() } })
     )
-    await expect(fetchSakuraBlogHtml(300001)).rejects.toBeInstanceOf(FetchStatusError)
+    await expect(fetchSakuraBlogHtml("300001")).rejects.toBeInstanceOf(FetchStatusError)
   })
 
   it("returns html and url on 200", async () => {
@@ -48,7 +48,7 @@ describe("fetchSakuraBlogHtml()", () => {
         url: "https://sakurazaka46.com/s/s46/diary/detail/300001?ima=0000&cd=blog"
       })
     )
-    await expect(fetchSakuraBlogHtml(300001)).resolves.toMatchObject({ html: "<html></html>" })
+    await expect(fetchSakuraBlogHtml("300001")).resolves.toMatchObject({ html: "<html></html>" })
   })
 })
 
@@ -154,14 +154,14 @@ describe("fetchSakuraBlogs()", () => {
           "date": 2026-06-17T15:00:00.000Z,
           "memberName": "遠藤 理子",
           "title": "",
-          "uid": 69842,
+          "uid": "69842",
           "url": "https://sakurazaka46.com/s/s46/diary/detail/69842?ima=0000&cd=blog",
         },
         {
           "date": 2026-06-18T15:00:00.000Z,
           "memberName": "小田倉 麗奈",
           "title": "(ㅍ‐ㅍ  )",
-          "uid": 69854,
+          "uid": "69854",
           "url": "https://sakurazaka46.com/s/s46/diary/detail/69854?ima=0000&cd=blog",
         },
       ]
@@ -191,7 +191,7 @@ describe("getSakuraBlogUrl()", () => {
 
   it("returns correct URL", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
-    expect(getSakuraBlogUrl(300001)).toBe(
+    expect(getSakuraBlogUrl("300001")).toBe(
       "https://sakurazaka46.com/s/s46/diary/detail/300001?ima=3456&cd=blog"
     )
   })
@@ -211,7 +211,7 @@ describe("parseSakuraBlogHtml()", () => {
 
   it("parses single blog fields correctly", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
-    expect(parseSakuraBlogHtml(html, getSakuraBlogUrl(69791))).toMatchInlineSnapshot(`
+    expect(parseSakuraBlogHtml(html, getSakuraBlogUrl("69791"))).toMatchInlineSnapshot(`
       {
         "datetime": 2026-06-15T10:20:00.000Z,
         "html": "<p>
@@ -238,7 +238,7 @@ describe("parseSakuraBlogHtml()", () => {
         ],
         "memberName": "勝又 春",
         "title": "カメラ始めました＿",
-        "uid": 69791,
+        "uid": "69791",
         "url": "https://sakurazaka46.com/s/s46/diary/detail/69791?ima=3456&cd=blog",
       }
     `)
@@ -251,8 +251,8 @@ describe("parseSakuraBlogsHtml()", () => {
   it("returns blogs in chronological order", () => {
     const blogs = parseSakuraBlogsHtml(html)
     expect(blogs).toHaveLength(2)
-    expect(blogs[0]?.uid).toBe(69842)
-    expect(blogs[1]?.uid).toBe(69854)
+    expect(blogs[0]?.uid).toBe("69842")
+    expect(blogs[1]?.uid).toBe("69854")
   })
 
   it("parses blog fields correctly", () => {
@@ -262,7 +262,7 @@ describe("parseSakuraBlogsHtml()", () => {
         "date": 2026-06-17T15:00:00.000Z,
         "memberName": "遠藤 理子",
         "title": "",
-        "uid": 69842,
+        "uid": "69842",
         "url": "https://sakurazaka46.com/s/s46/diary/detail/69842?ima=0000&cd=blog",
       }
     `)
@@ -271,7 +271,7 @@ describe("parseSakuraBlogsHtml()", () => {
         "date": 2026-06-18T15:00:00.000Z,
         "memberName": "小田倉 麗奈",
         "title": "(ㅍ‐ㅍ  )",
-        "uid": 69854,
+        "uid": "69854",
         "url": "https://sakurazaka46.com/s/s46/diary/detail/69854?ima=0000&cd=blog",
       }
     `)

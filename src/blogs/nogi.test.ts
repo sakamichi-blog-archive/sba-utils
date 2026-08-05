@@ -26,7 +26,7 @@ describe("fetchNogiBlog()", () => {
         .fn()
         .mockResolvedValue({ status: 404, url: "https://example.com", body: { cancel: vi.fn() } })
     )
-    await expect(fetchNogiBlog(200001)).rejects.toBeInstanceOf(FetchStatusError)
+    await expect(fetchNogiBlog("200001")).rejects.toBeInstanceOf(FetchStatusError)
   })
 })
 
@@ -40,7 +40,7 @@ describe("fetchNogiBlogHtml()", () => {
         .fn()
         .mockResolvedValue({ status: 500, url: "https://example.com", body: { cancel: vi.fn() } })
     )
-    await expect(fetchNogiBlogHtml(200001)).rejects.toBeInstanceOf(FetchStatusError)
+    await expect(fetchNogiBlogHtml("200001")).rejects.toBeInstanceOf(FetchStatusError)
   })
 })
 
@@ -76,7 +76,7 @@ describe("fetchNogiBlogs()", () => {
           ],
           "memberName": "矢田 萌華",
           "title": "吾輩は猫である。名前は",
-          "uid": 104629,
+          "uid": "104629",
           "url": "https://www.nogizaka46.com/s/n46/diary/detail/104629?ima=0123",
         },
         {
@@ -96,7 +96,7 @@ describe("fetchNogiBlogs()", () => {
           ],
           "memberName": "鈴木 佑捺",
           "title": "不思議な味覚",
-          "uid": 104665,
+          "uid": "104665",
           "url": "https://www.nogizaka46.com/s/n46/diary/detail/104665?ima=0123",
         },
       ]
@@ -192,7 +192,7 @@ describe("getNogiBlogUrl()", () => {
 
   it("returns correct URL", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
-    expect(getNogiBlogUrl(200001)).toBe(
+    expect(getNogiBlogUrl("200001")).toBe(
       "https://www.nogizaka46.com/s/n46/diary/detail/200001?ima=3456"
     )
   })
@@ -212,7 +212,7 @@ describe("parseNogiBlogHtml()", () => {
 
   it("parses single blog fields correctly", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
-    expect(parseNogiBlogHtml(html, getNogiBlogUrl(104629))).toMatchInlineSnapshot(`
+    expect(parseNogiBlogHtml(html, getNogiBlogUrl("104629"))).toMatchInlineSnapshot(`
       {
         "datetime": 2026-06-07T08:18:00.000Z,
         "html": "<p><img src="/files/46/diary/n46/MEMBER/moblog/202606/mobPhoto1.jpg"></p>",
@@ -225,7 +225,7 @@ describe("parseNogiBlogHtml()", () => {
         ],
         "memberName": "矢田 萌華",
         "title": "吾輩は猫である。名前は",
-        "uid": 104629,
+        "uid": "104629",
         "url": "https://www.nogizaka46.com/s/n46/diary/detail/104629?ima=3456",
       }
     `)
@@ -238,8 +238,8 @@ describe("parseNogiBlogsJs()", () => {
   it("returns blogs in chronological order", () => {
     const blogs = parseNogiBlogsJs(js)
     expect(blogs).toHaveLength(2)
-    expect(blogs[0]?.uid).toBe(104629)
-    expect(blogs[1]?.uid).toBe(104665)
+    expect(blogs[0]?.uid).toBe("104629")
+    expect(blogs[1]?.uid).toBe("104665")
   })
 
   it("parses blog fields correctly", () => {
@@ -257,7 +257,7 @@ describe("parseNogiBlogsJs()", () => {
         ],
         "memberName": "矢田 萌華",
         "title": "吾輩は猫である。名前は",
-        "uid": 104629,
+        "uid": "104629",
         "url": "https://www.nogizaka46.com/s/n46/diary/detail/104629?ima=0123",
       }
     `)
@@ -279,7 +279,7 @@ describe("parseNogiBlogsJs()", () => {
         ],
         "memberName": "鈴木 佑捺",
         "title": "不思議な味覚",
-        "uid": 104665,
+        "uid": "104665",
         "url": "https://www.nogizaka46.com/s/n46/diary/detail/104665?ima=0123",
       }
     `)
@@ -319,13 +319,13 @@ describe("fetchNogiBlogsByDate()", () => {
         {
           "datetime": 2026-07-01T04:34:00.000Z,
           "title": "",
-          "uid": 104698,
+          "uid": "104698",
           "url": "https://www.nogizaka46.com/s/n46/diary/detail/104698?ima=0000&cd=MEMBER",
         },
         {
           "datetime": 2026-07-01T11:53:00.000Z,
           "title": "夏の思い出",
-          "uid": 104700,
+          "uid": "104700",
           "url": "https://www.nogizaka46.com/s/n46/diary/detail/104700?ima=0000&cd=MEMBER",
         },
       ]
@@ -395,8 +395,8 @@ describe("parseNogiBlogsByDateHtml()", () => {
   it("returns blogs in chronological order", () => {
     const blogs = parseNogiBlogsByDateHtml(html)
     expect(blogs).toHaveLength(2)
-    expect(blogs[0]?.uid).toBe(104698)
-    expect(blogs[1]?.uid).toBe(104700)
+    expect(blogs[0]?.uid).toBe("104698")
+    expect(blogs[1]?.uid).toBe("104700")
   })
 
   it("parses blog fields correctly", () => {
@@ -405,7 +405,7 @@ describe("parseNogiBlogsByDateHtml()", () => {
       {
         "datetime": 2026-07-01T04:34:00.000Z,
         "title": "",
-        "uid": 104698,
+        "uid": "104698",
         "url": "https://www.nogizaka46.com/s/n46/diary/detail/104698?ima=0000&cd=MEMBER",
       }
     `)
@@ -413,7 +413,7 @@ describe("parseNogiBlogsByDateHtml()", () => {
       {
         "datetime": 2026-07-01T11:53:00.000Z,
         "title": "夏の思い出",
-        "uid": 104700,
+        "uid": "104700",
         "url": "https://www.nogizaka46.com/s/n46/diary/detail/104700?ima=0000&cd=MEMBER",
       }
     `)

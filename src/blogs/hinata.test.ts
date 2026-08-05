@@ -22,7 +22,7 @@ describe("fetchHinataBlog()", () => {
         .fn()
         .mockResolvedValue({ status: 404, url: "https://example.com", body: { cancel: vi.fn() } })
     )
-    await expect(fetchHinataBlog(100001)).rejects.toBeInstanceOf(FetchStatusError)
+    await expect(fetchHinataBlog("100001")).rejects.toBeInstanceOf(FetchStatusError)
   })
 })
 
@@ -36,7 +36,7 @@ describe("fetchHinataBlogHtml()", () => {
         .fn()
         .mockResolvedValue({ status: 500, url: "https://example.com", body: { cancel: vi.fn() } })
     )
-    await expect(fetchHinataBlogHtml(100001)).rejects.toBeInstanceOf(FetchStatusError)
+    await expect(fetchHinataBlogHtml("100001")).rejects.toBeInstanceOf(FetchStatusError)
   })
 })
 
@@ -74,7 +74,7 @@ describe("fetchHinataBlogs()", () => {
           ],
           "memberName": "佐藤 優羽",
           "title": "何色の花火を待っているのか。",
-          "uid": 69781,
+          "uid": "69781",
           "url": "https://www.hinatazaka46.com/s/official/diary/detail/69781?ima=0000&cd=member",
         },
         {
@@ -97,7 +97,7 @@ describe("fetchHinataBlogs()", () => {
           ],
           "memberName": "鶴崎 仁香",
           "title": "夢の未来。",
-          "uid": 69855,
+          "uid": "69855",
           "url": "https://www.hinatazaka46.com/s/official/diary/detail/69855?ima=0000&cd=member",
         },
       ]
@@ -203,7 +203,7 @@ describe("fetchHinataBlogsHtml()", () => {
 
 describe("getHinataBlogUrl()", () => {
   it("returns correct URL", () => {
-    expect(getHinataBlogUrl(100001)).toBe(
+    expect(getHinataBlogUrl("100001")).toBe(
       "https://www.hinatazaka46.com/s/official/diary/detail/100001?ima=0000&cd=member"
     )
   })
@@ -248,7 +248,7 @@ describe("parseHinataBlogHtml()", () => {
         ],
         "memberName": "佐藤 優羽",
         "title": "何色の花火を待っているのか。",
-        "uid": 69781,
+        "uid": "69781",
         "url": "https://www.hinatazaka46.com/s/official/diary/detail/69781?ima=0000&cd=member",
       }
     `)
@@ -261,8 +261,8 @@ describe("parseHinataBlogsHtml()", () => {
   it("returns blogs in chronological order", () => {
     const blogs = parseHinataBlogsHtml(html)
     expect(blogs).toHaveLength(2)
-    expect(blogs[0]?.uid).toBe(69781)
-    expect(blogs[1]?.uid).toBe(69855)
+    expect(blogs[0]?.uid).toBe("69781")
+    expect(blogs[1]?.uid).toBe("69855")
   })
 
   it("parses blog fields correctly", () => {
@@ -282,7 +282,7 @@ describe("parseHinataBlogsHtml()", () => {
         ],
         "memberName": "佐藤 優羽",
         "title": "何色の花火を待っているのか。",
-        "uid": 69781,
+        "uid": "69781",
         "url": "https://www.hinatazaka46.com/s/official/diary/detail/69781?ima=0000&cd=member",
       }
     `)
@@ -307,7 +307,7 @@ describe("parseHinataBlogsHtml()", () => {
         ],
         "memberName": "鶴崎 仁香",
         "title": "夢の未来。",
-        "uid": 69855,
+        "uid": "69855",
         "url": "https://www.hinatazaka46.com/s/official/diary/detail/69855?ima=0000&cd=member",
       }
     `)

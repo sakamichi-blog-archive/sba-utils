@@ -17,7 +17,7 @@ export interface Blog {
   /** Potentially spaced */
   memberName: string
   title: string
-  uid: number
+  uid: string
   url: string
 }
 

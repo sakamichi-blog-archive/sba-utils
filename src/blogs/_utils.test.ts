@@ -117,25 +117,25 @@ describe("findImagesInHtml()", () => {
 describe("getUidFromUrl()", () => {
   it("extracts uid from nogi URL", () => {
     expect(getUidFromUrl("https://www.nogizaka46.com/s/n46/diary/detail/104660?ima=2926")).toBe(
-      104660
+      "104660"
     )
   })
 
   it("extracts uid from hinata URL", () => {
     expect(
       getUidFromUrl("https://www.hinatazaka46.com/s/official/diary/detail/12345?ima=0000")
-    ).toBe(12345)
+    ).toBe("12345")
   })
 
   it("extracts uid from sakura URL", () => {
     expect(
       getUidFromUrl("https://sakurazaka46.com/s/s46/diary/detail/67890?ima=1234&cd=blog")
-    ).toBe(67890)
+    ).toBe("67890")
   })
 
   it("extracts uid from URL object", () => {
     expect(getUidFromUrl(new URL("https://www.nogizaka46.com/s/n46/diary/detail/104660"))).toBe(
-      104660
+      "104660"
     )
   })
 
