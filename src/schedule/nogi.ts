@@ -99,8 +99,10 @@ export function getNogiScheduleUrl(filter: ScheduleFilter, ima = getMmss()): str
 }
 
 /**
- * Build the detail-page URL for a single event by its {@link NogiScheduleEvent.id}. The parsed
- * {@link NogiScheduleEvent.url} carries extra breadcrumb params, but the id alone resolves the same page.
+ * Build the detail-page URL for a single event by its {@link NogiScheduleEvent.id}. The id alone resolves
+ * the correct event, but the URL omits the `pri1=YYYYMM` month breadcrumb that the API's link includes, so
+ * the detail page's back-to-list navigation falls back to the current month. Use {@link NogiScheduleEvent.url}
+ * when that context matters.
  */
 export function getNogiScheduleEventUrl(id: string): string {
   return `${SCHEDULE_DETAIL_URL}/${id}?ima=${getMmss()}`
