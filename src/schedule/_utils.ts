@@ -3,9 +3,11 @@ import { ParseError } from "../shared/errors"
 import { normalizeFullWidthNumbers } from "../shared/text"
 import type { ScheduleFilter } from "./_types"
 
-/** Format a year/month into a site `dy=` query value (`YYYYMM`) */
-export function formatScheduleDy(filter: ScheduleFilter): string {
-  return `${filter.year}${String(filter.month).padStart(2, "0")}`
+/** Format a year/month (and optional day) into a site `dy=` query value (`YYYYMM` or `YYYYMMDD`) */
+export function formatScheduleDy(filter: ScheduleFilter & { day?: number }): string {
+  let dy = `${filter.year}${String(filter.month).padStart(2, "0")}`
+  if (filter.day !== undefined) dy += String(filter.day).padStart(2, "0")
+  return dy
 }
 
 /**
