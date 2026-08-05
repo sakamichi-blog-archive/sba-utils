@@ -15,6 +15,7 @@ export interface NogiScheduleEvent extends ScheduleEventWithHtml {
 
 const SCHEDULE_PAGE_URL = "https://www.nogizaka46.com/s/n46/media/list"
 const SCHEDULE_API_ENDPOINT = "https://www.nogizaka46.com/s/n46/api/list/schedule"
+const SCHEDULE_DETAIL_URL = "https://www.nogizaka46.com/s/n46/media/detail"
 
 /** Maps API `cate` keys to the Japanese labels shown on the site */
 const NOGI_SCHEDULE_CATEGORIES: Record<string, string> = {
@@ -95,6 +96,14 @@ export function getNogiScheduleUrl(filter: ScheduleFilter, ima = getMmss()): str
     callback: "res"
   })
   return `${SCHEDULE_API_ENDPOINT}?${params}`
+}
+
+/**
+ * Build the detail-page URL for a single event by its {@link NogiScheduleEvent.id}. The parsed
+ * {@link NogiScheduleEvent.url} carries extra breadcrumb params, but the id alone resolves the same page.
+ */
+export function getNogiScheduleEventUrl(id: string): string {
+  return `${SCHEDULE_DETAIL_URL}/${id}?ima=${getMmss()}`
 }
 
 export function parseNogiScheduleEventsJs(js: string): NogiScheduleEvent[] {
