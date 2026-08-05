@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.6.0...utils-v0.7.0) (2026-08-05)
+
+
+### Features
+
+* Add getNogiScheduleEventUrl() and add day support to getSakuraScheduleUrl() ([#58](https://github.com/sakamichi-blog-archive/sba-utils/issues/58)) ([46f675a](https://github.com/sakamichi-blog-archive/sba-utils/commit/46f675a64f5c22efb16782cc01d08f2981ba5e68))
+
+
+### Bug fixes
+
+* **github:** Match github_actions ecosystem in auto-merge condition ([#56](https://github.com/sakamichi-blog-archive/sba-utils/issues/56)) ([2ae759e](https://github.com/sakamichi-blog-archive/sba-utils/commit/2ae759e3003b7d53cc8e89e62f3f88f4e8b44c99))
+
 ## [0.6.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.5.0...utils-v0.6.0) (2026-08-04)
 
 
