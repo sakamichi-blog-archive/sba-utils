@@ -9,13 +9,13 @@ import { findImagesInHtml, formatOptionalBlogDateFilter, getUidFromUrl } from ".
 const BLOGS_PAGE_URL = "https://www.hinatazaka46.com/s/official/diary/member/list"
 
 export async function fetchHinataBlog(
-  uid: number
+  uid: string
 ): Promise<{ blog: BlogWithHtml; html: string; url: string }> {
   const { html, url } = await fetchHinataBlogHtml(uid)
   return { blog: parseHinataBlogHtml(html, url), html, url }
 }
 
-export async function fetchHinataBlogHtml(uid: number): Promise<{ html: string; url: string }> {
+export async function fetchHinataBlogHtml(uid: string): Promise<{ html: string; url: string }> {
   const url = getHinataBlogUrl(uid)
   const response = await fetch(url, {
     headers: {
@@ -63,7 +63,7 @@ export async function fetchHinataBlogsHtml(
   return { html: await response.text(), url }
 }
 
-export function getHinataBlogUrl(uid: number): string {
+export function getHinataBlogUrl(uid: string): string {
   return `https://www.hinatazaka46.com/s/official/diary/detail/${uid}?ima=0000&cd=member`
 }
 

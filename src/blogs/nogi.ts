@@ -5,7 +5,7 @@ import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDatetimeJst } from "../shared/datetime"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import { parseJsonpArgumentJson } from "../shared/jsonp"
-import { castStringToIntegerSchema } from "../shared/schemas"
+import { integerStringSchema } from "../shared/schemas"
 import { normalizeFullWidthNumbers } from "../shared/text"
 import type { BlogListFilter, BlogWithHtml } from "./_types"
 import { findImagesInHtml, formatBlogDateFilter, getUidFromUrl } from "./_utils"
@@ -14,7 +14,7 @@ import { findImagesInHtml, formatBlogDateFilter, getUidFromUrl } from "./_utils"
 export interface NogiBlogSummary {
   datetime: Date
   title: string
-  uid: number
+  uid: string
   url: string
 }
 
@@ -33,7 +33,7 @@ const getBlogsFunctionArgumentSchema = z.object({
   data: z.array(
     z.object({
       /** UID */
-      code: castStringToIntegerSchema,
+      code: integerStringSchema,
       /** Local datetime in `YYYY/MM/DD HH:mm:ss` format */
       date: z.string(),
       /** URL */
@@ -49,13 +49,13 @@ const getBlogsFunctionArgumentSchema = z.object({
 })
 
 export async function fetchNogiBlog(
-  uid: number
+  uid: string
 ): Promise<{ blog: BlogWithHtml; html: string; url: string }> {
   const { html, url } = await fetchNogiBlogHtml(uid)
   return { blog: parseNogiBlogHtml(html, url), html, url }
 }
 
-export async function fetchNogiBlogHtml(uid: number): Promise<{ html: string; url: string }> {
+export async function fetchNogiBlogHtml(uid: string): Promise<{ html: string; url: string }> {
   const url = getNogiBlogUrl(uid)
   const response = await fetch(url, {
     headers: {
@@ -130,7 +130,7 @@ export async function fetchNogiBlogsJs(filter?: NogiBlogsFilter): Promise<{
   return { js: await response.text(), url }
 }
 
-export function getNogiBlogUrl(uid: number): string {
+export function getNogiBlogUrl(uid: string): string {
   return `https://www.nogizaka46.com/s/n46/diary/detail/${uid}?ima=${getMmss()}`
 }
 

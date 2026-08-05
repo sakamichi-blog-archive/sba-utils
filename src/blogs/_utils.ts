@@ -82,9 +82,9 @@ export function findImagesInHtml(html: string, blogUrl: string | URL): FindImage
 }
 
 /** Extract blog UID from blog URL */
-export function getUidFromUrl(url: string | URL): number | undefined {
+export function getUidFromUrl(url: string | URL): string | undefined {
   const { pathname } = url instanceof URL ? url : new URL(url)
   const match = pathname.match(/\/diary\/detail\/(\d+)/)
   if (match === null) return undefined
-  return Number(match[1])
+  return match[1]
 }

@@ -11,20 +11,20 @@ export interface SakuraBlog {
   date: Date
   memberName: string
   title: string
-  uid: number
+  uid: string
   url: string
 }
 
 const BLOGS_PAGE_URL = "https://sakurazaka46.com/s/s46/diary/blog/list"
 
 export async function fetchSakuraBlog(
-  uid: number
+  uid: string
 ): Promise<{ blog: BlogWithHtml; html: string; url: string }> {
   const { html, url } = await fetchSakuraBlogHtml(uid)
   return { blog: parseSakuraBlogHtml(html, url), html, url }
 }
 
-export async function fetchSakuraBlogHtml(uid: number): Promise<{ html: string; url: string }> {
+export async function fetchSakuraBlogHtml(uid: string): Promise<{ html: string; url: string }> {
   const url = getSakuraBlogUrl(uid)
   const response = await fetch(url, {
     headers: {
@@ -72,7 +72,7 @@ export async function fetchSakuraBlogsHtml(
   return { html: await response.text(), url }
 }
 
-export function getSakuraBlogUrl(uid: number): string {
+export function getSakuraBlogUrl(uid: string): string {
   return `https://sakurazaka46.com/s/s46/diary/detail/${uid}?ima=${getMmss()}&cd=blog`
 }
 
