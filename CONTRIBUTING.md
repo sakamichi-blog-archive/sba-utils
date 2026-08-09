@@ -163,15 +163,16 @@ pnpm is installed by mise, because Node.js 26 — the development runtime — no
 
 ### Updating pnpm version
 
-The version must be kept in sync in two places: the `pnpm` tool in `mise.toml` (used locally) and the `packageManager` field in `package.json` (used by `pnpm/action-setup` in CI).
-
-Corepack is still the easiest way to write `packageManager` with its integrity hash; run it through `npx` since it is no longer bundled:
+The version must be kept in sync in two places: the `pnpm` tool in `mise.toml` (used locally) and the `devEngines.packageManager` field in `package.json` (used by `pnpm/setup` in CI).
 
 ```sh
-npx corepack@latest use pnpm@latest
-mise use pnpm@<the version corepack wrote>
+mise use pnpm@latest
 mise lock
 ```
+
+Then set the same version in `devEngines.packageManager` in `package.json` and run
+`pnpm install` — pnpm records its own resolved version under
+`packageManagerDependencies` in `pnpm-lock.yaml`.
 
 ---
 
