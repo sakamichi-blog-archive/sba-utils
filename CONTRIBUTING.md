@@ -159,12 +159,18 @@ Always modify local config by adding `--local`; do not modify global config.
 
 ## pnpm
 
+pnpm is installed by mise, because Node.js 26 — the development runtime — no longer bundles Corepack.
+
 ### Updating pnpm version
 
-Use `corepack use` to update pnpm — this updates the `packageManager` field in `package.json` including the integrity hash:
+The version must be kept in sync in two places: the `pnpm` tool in `mise.toml` (used locally) and the `packageManager` field in `package.json` (used by `pnpm/action-setup` in CI).
+
+Corepack is still the easiest way to write `packageManager` with its integrity hash; run it through `npx` since it is no longer bundled:
 
 ```sh
-corepack use pnpm@latest
+npx corepack@latest use pnpm@latest
+mise use pnpm@<the version corepack wrote>
+mise lock
 ```
 
 ---
