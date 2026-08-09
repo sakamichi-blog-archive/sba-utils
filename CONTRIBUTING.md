@@ -170,7 +170,9 @@ mise use pnpm@latest
 mise lock
 ```
 
-Then set the same version in `devEngines.packageManager` in `package.json`.
+Then set the same version in `devEngines.packageManager` in `package.json` and run
+`pnpm install` — pnpm records its own resolved version under
+`packageManagerDependencies` in `pnpm-lock.yaml`.
 
 ---
 
