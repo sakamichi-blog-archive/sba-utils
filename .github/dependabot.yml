@@ -29,7 +29,7 @@ updates:
         patterns: ["*"]
         update-types: [minor, patch]
       # Anything not matched above: dev and indirect dependencies.
-      rest-non-major:
+      non-prod-non-major:
         patterns: ["*"]
         update-types: [minor, patch]
     ignore:
