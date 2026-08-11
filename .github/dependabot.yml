@@ -28,8 +28,8 @@ updates:
         dependency-type: production
         patterns: ["*"]
         update-types: [minor, patch]
-      dev-non-major:
-        dependency-type: development
+      # Anything not matched above: dev and indirect dependencies.
+      rest-non-major:
         patterns: ["*"]
         update-types: [minor, patch]
     ignore:
