@@ -8,7 +8,7 @@ updates:
     cooldown:
       default-days: 3
     groups:
-      all-non-major:
+      non-major:
         patterns: ["*"]
         update-types: [minor, patch]
     schedule:
@@ -20,10 +20,15 @@ updates:
     directory: /
     commit-message:
       prefix: deps
+      prefix-development: chore
     cooldown:
       default-days: 3
     groups:
-      all-non-major:
+      prod-non-major:
+        dependency-type: production
+        patterns: ["*"]
+        update-types: [minor, patch]
+      non-prod-non-major: # Non-major dependency updates not matched by prod-non-major (development/indirect)
         patterns: ["*"]
         update-types: [minor, patch]
     ignore:
