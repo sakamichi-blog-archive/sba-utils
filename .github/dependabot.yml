@@ -28,7 +28,7 @@ updates:
         dependency-type: production
         patterns: ["*"]
         update-types: [minor, patch]
-      non-prod-non-major: # Non-major updates for development/indirect dependencies
+      non-prod-non-major: # Non-major dependency updates not matched by prod-non-major (development/indirect)
         patterns: ["*"]
         update-types: [minor, patch]
     ignore:
