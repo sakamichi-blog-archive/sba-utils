@@ -20,10 +20,16 @@ updates:
     directory: /
     commit-message:
       prefix: deps
+      prefix-development: chore
     cooldown:
       default-days: 3
     groups:
-      all-non-major:
+      prod-non-major:
+        dependency-type: production
+        patterns: ["*"]
+        update-types: [minor, patch]
+      dev-non-major:
+        dependency-type: development
         patterns: ["*"]
         update-types: [minor, patch]
     ignore:
