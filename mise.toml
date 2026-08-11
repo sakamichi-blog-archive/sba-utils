@@ -1,6 +1,7 @@
 [settings]
-install_before = "3d"
+auto_install = false
 lockfile = true
+minimum_release_age = "3d"
 pin = true
 
 [tools]
