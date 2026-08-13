@@ -10,7 +10,10 @@ import type { News, NewsDetail, NewsFilter } from "./_types"
 const NEWS_PAGE_URL = "https://sakurazaka46.com/s/s46/news/list"
 const NEWS_DETAIL_URL = "https://sakurazaka46.com/s/s46/news/detail"
 
-/** Maps `cate-xxx` class keys to Japanese labels, used as a fallback when the visible label is empty */
+/**
+ * Maps `cate-xxx` class keys to Japanese labels, used as a fallback when the visible label is empty and
+ * the page's own category nav could not be read.
+ */
 const SAKURA_NEWS_CATEGORIES: Record<string, string> = {
   audition: "オーディション",
   event: "イベント情報",
@@ -96,9 +99,35 @@ export function getSakuraNewsDetailUrl(id: string): string {
   return `${NEWS_DETAIL_URL}/${id}?ima=${getMmss()}`
 }
 
+/**
+ * Parse the page's own category nav into a `cate-xxx` key to label map. Returns an empty object when the
+ * nav is absent, in which case callers fall back to {@link SAKURA_NEWS_CATEGORIES}.
+ */
+export function parseSakuraNewsCategoriesHtml(html: string): Record<string, string> {
+  const $ = cheerio.load(html)
+  const categories: Record<string, string> = {}
+
+  const elements = $(".com-hero-nav li")
+  for (let elementIndex = 0; elementIndex < elements.length; elementIndex++) {
+    const element = elements[elementIndex]
+    // The "ALL" and member-select links carry no `cd=` and are not categories
+    if (!($(element).find("a").first().attr("href") ?? "").includes("cd=")) continue
+
+    const key = ($(element).attr("class") ?? "")
+      .split(/\s+/)
+      .find(token => token.startsWith("cate-"))
+      ?.slice("cate-".length)
+    const label = $(element).find("a").first().text().trim()
+    if (key !== undefined && key !== "" && label !== "") categories[key] = label
+  }
+
+  return categories
+}
+
 /** Parse a news listing page. Returned oldest first, reversing the site's newest-first order. */
 export function parseSakuraNewsHtml(html: string): News[] {
   const $ = cheerio.load(html)
+  const categories = { ...SAKURA_NEWS_CATEGORIES, ...parseSakuraNewsCategoriesHtml(html) }
   const elements = $("ul.com-news-part li.box")
   const news: News[] = []
 
@@ -129,7 +158,7 @@ export function parseSakuraNewsHtml(html: string): News[] {
     news.push({
       category:
         $(element).find("div.title-part p.type").first().text().trim() ||
-        resolveCategoryFromClass($(element).attr("class") ?? "", "cate-", SAKURA_NEWS_CATEGORIES),
+        resolveCategoryFromClass($(element).attr("class") ?? "", "cate-", categories),
       date,
       group: "sakura",
       id,
@@ -149,6 +178,8 @@ export function parseSakuraNewsDetailHtml(html: string, url: string): NewsDetail
   const articleElement = $(".news-detailcont .post .com-news-part > div").first()
   if (articleElement.length === 0) throw new ParseError("Article element not found in HTML")
 
+  const categories = { ...SAKURA_NEWS_CATEGORIES, ...parseSakuraNewsCategoriesHtml(html) }
+
   const members: string[] = []
   const memberElements = $(articleElement).find("div.taglist span")
   for (let memberIndex = 0; memberIndex < memberElements.length; memberIndex++) {
@@ -159,11 +190,7 @@ export function parseSakuraNewsDetailHtml(html: string, url: string): NewsDetail
   return {
     category:
       $(articleElement).find("div.title-part p.type").first().text().trim() ||
-      resolveCategoryFromClass(
-        $(articleElement).attr("class") ?? "",
-        "cate-",
-        SAKURA_NEWS_CATEGORIES
-      ),
+      resolveCategoryFromClass($(articleElement).attr("class") ?? "", "cate-", categories),
     date: parseDateJst($(articleElement).find("div.title-part p.date").first().text().trim()),
     group: "sakura",
     html: $(articleElement).find("div.article").first().html()?.trim() ?? "",

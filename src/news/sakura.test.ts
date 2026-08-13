@@ -9,6 +9,7 @@ import {
   fetchSakuraNewsHtml,
   getSakuraNewsDetailUrl,
   getSakuraNewsUrl,
+  parseSakuraNewsCategoriesHtml,
   parseSakuraNewsDetailHtml,
   parseSakuraNewsHtml
 } from "./sakura"
@@ -167,6 +168,19 @@ describe("parseSakuraNewsHtml()", () => {
 
   it("returns an empty array when there is no news list", () => {
     expect(parseSakuraNewsHtml("<html></html>")).toEqual([])
+  })
+})
+
+describe("parseSakuraNewsCategoriesHtml()", () => {
+  it("parses the category nav, skipping the ALL and member-select links", () => {
+    expect(parseSakuraNewsCategoriesHtml(readFixture("sakura-news.html"))).toEqual({
+      goods: "グッズ",
+      media: "メディア"
+    })
+  })
+
+  it("returns an empty object when there is no category nav", () => {
+    expect(parseSakuraNewsCategoriesHtml("<html></html>")).toEqual({})
   })
 })
 

@@ -4,6 +4,7 @@ export {
   fetchHinataNewsDetailHtml,
   fetchHinataNewsHtml,
   fetchNogiNews,
+  fetchNogiNewsCategories,
   fetchNogiNewsJs,
   fetchSakuraNews,
   fetchSakuraNewsDetail,
@@ -21,9 +22,12 @@ export {
   type NewsGroup,
   type NewsWithHtml,
   type NogiNews,
+  parseHinataNewsCategoriesHtml,
   parseHinataNewsDetailHtml,
   parseHinataNewsHtml,
+  parseNogiNewsCategoriesHtml,
   parseNogiNewsJs,
+  parseSakuraNewsCategoriesHtml,
   parseSakuraNewsDetailHtml,
   parseSakuraNewsHtml
 } from "./news/index"

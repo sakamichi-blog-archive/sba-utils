@@ -9,6 +9,7 @@ import {
   fetchHinataNewsHtml,
   getHinataNewsDetailUrl,
   getHinataNewsUrl,
+  parseHinataNewsCategoriesHtml,
   parseHinataNewsDetailHtml,
   parseHinataNewsHtml
 } from "./hinata"
@@ -167,6 +168,26 @@ describe("parseHinataNewsHtml()", () => {
 
   it("returns an empty array when there is no news list", () => {
     expect(parseHinataNewsHtml("<html></html>")).toEqual([])
+  })
+})
+
+describe("parseHinataNewsCategoriesHtml()", () => {
+  it("parses the category nav, skipping the ALL link", () => {
+    expect(parseHinataNewsCategoriesHtml(readFixture("hinata-news.html"))).toEqual({
+      fanclubonly: "ファンクラブ",
+      media: "メディア",
+      other: "その他"
+    })
+  })
+
+  it("returns an empty object when there is no category nav", () => {
+    expect(parseHinataNewsCategoriesHtml("<html></html>")).toEqual({})
+  })
+
+  it("keys on the class, not the cd query value, for fan club news", () => {
+    expect(
+      parseHinataNewsCategoriesHtml(readFixture("hinata-news.html"))["fanclub"]
+    ).toBeUndefined()
   })
 })
 

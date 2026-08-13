@@ -6,15 +6,18 @@ export {
   fetchHinataNewsHtml,
   getHinataNewsDetailUrl,
   getHinataNewsUrl,
+  parseHinataNewsCategoriesHtml,
   parseHinataNewsDetailHtml,
   parseHinataNewsHtml
 } from "./hinata"
 export {
   fetchNogiNews,
+  fetchNogiNewsCategories,
   fetchNogiNewsJs,
   getNogiNewsDetailUrl,
   getNogiNewsUrl,
   type NogiNews,
+  parseNogiNewsCategoriesHtml,
   parseNogiNewsJs
 } from "./nogi"
 export {
@@ -24,6 +27,7 @@ export {
   fetchSakuraNewsHtml,
   getSakuraNewsDetailUrl,
   getSakuraNewsUrl,
+  parseSakuraNewsCategoriesHtml,
   parseSakuraNewsDetailHtml,
   parseSakuraNewsHtml
 } from "./sakura"

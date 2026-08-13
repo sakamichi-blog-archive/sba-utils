@@ -95,6 +95,26 @@ Every news item exposes `date` (JST midnight), `category`, `id`, `title`, and an
 
 News is returned oldest first, reversing the order shown on the sites.
 
+#### Categories
+
+`category` is the Japanese label shown on the site. Labels are read from each site's own category nav at runtime, so a category added or renamed upstream is picked up without a release; a small built-in map is kept only as a fallback.
+
+For Hinata and Sakura the nav ships in the same document as the news itself, so this costs nothing. Nogi's API returns category keys only, so `fetchNogiNews` fetches the listing page alongside it — two requests per call. If that request fails it falls back to the built-in map rather than failing the fetch, and a key present in neither is passed through verbatim.
+
+To resolve labels yourself, or to avoid the second Nogi request, use the map directly:
+
+```typescript
+import {
+  fetchNogiNewsCategories,
+  fetchNogiNewsJs,
+  parseNogiNewsJs
+} from "@sakamichi-blog-archive/utils/news"
+
+const categories = await fetchNogiNewsCategories()
+const { js } = await fetchNogiNewsJs({ year: 2026, month: 6 })
+const news = parseNogiNewsJs(js, categories) // reuse `categories` across calls
+```
+
 ### Schedule
 
 ```typescript

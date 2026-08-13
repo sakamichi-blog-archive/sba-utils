@@ -4,9 +4,11 @@ import { FetchStatusError, ParseError } from "../shared/errors"
 import { readFixture } from "../test/utils"
 import {
   fetchNogiNews,
+  fetchNogiNewsCategories,
   fetchNogiNewsJs,
   getNogiNewsDetailUrl,
   getNogiNewsUrl,
+  parseNogiNewsCategoriesHtml,
   parseNogiNewsJs
 } from "./nogi"
 
@@ -21,11 +23,19 @@ describe("fetchNogiNews()", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue({
+      vi.fn().mockImplementation((requestUrl: string) => ({
         status: 200,
-        text: vi.fn().mockResolvedValue(readFixture("nogi-news.jsonp")),
+        text: vi
+          .fn()
+          .mockResolvedValue(
+            readFixture(
+              requestUrl.includes("/api/list/news")
+                ? "nogi-news.jsonp"
+                : "nogi-news-categories.html"
+            )
+          ),
         body: { cancel: vi.fn() }
-      })
+      }))
     )
     const { news, js, url } = await fetchNogiNews({ year: 2026, month: 6 })
     expect(news).toHaveLength(3)
@@ -103,6 +113,59 @@ describe("getNogiNewsDetailUrl()", () => {
   })
 })
 
+describe("fetchNogiNewsCategories()", () => {
+  afterEach(() => vi.restoreAllMocks())
+
+  it("returns the parsed category nav on 200", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue(readFixture("nogi-news-categories.html")),
+        body: { cancel: vi.fn() }
+      })
+    )
+    await expect(fetchNogiNewsCategories()).resolves.toMatchObject({ tv: "テレビ" })
+  })
+
+  it("falls back to the known categories on non-200 instead of throwing", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {})
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue({ status: 503, url: "https://example.com", body: { cancel: vi.fn() } })
+    )
+    await expect(fetchNogiNewsCategories()).resolves.toMatchObject({ tv: "テレビ" })
+  })
+
+  it("falls back to the known categories when the nav is absent", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue("<html></html>"),
+        body: { cancel: vi.fn() }
+      })
+    )
+    await expect(fetchNogiNewsCategories()).resolves.toMatchObject({ tv: "テレビ" })
+  })
+})
+
+describe("parseNogiNewsCategoriesHtml()", () => {
+  it("parses the category nav, skipping the ALL link", () => {
+    expect(parseNogiNewsCategoriesHtml(readFixture("nogi-news-categories.html"))).toEqual({
+      release: "CD/音楽配信/映像商品",
+      tv: "テレビ",
+      unknown_category: "新カテゴリー"
+    })
+  })
+
+  it("returns an empty object when there is no category nav", () => {
+    expect(parseNogiNewsCategoriesHtml("<html></html>")).toEqual({})
+  })
+})
+
 describe("parseNogiNewsJs()", () => {
   const js = readFixture("nogi-news.jsonp")
 
@@ -147,7 +210,12 @@ describe("parseNogiNewsJs()", () => {
     `)
   })
 
-  it("passes through an unrecognized category key verbatim", () => {
+  it("passes through a category key that is in neither map verbatim", () => {
     expect(parseNogiNewsJs(js)[1]?.category).toBe("unknown_category")
+  })
+
+  it("resolves categories from a supplied map, overriding the known categories", () => {
+    const categories = parseNogiNewsCategoriesHtml(readFixture("nogi-news-categories.html"))
+    expect(parseNogiNewsJs(js, categories)[1]?.category).toBe("新カテゴリー")
   })
 })

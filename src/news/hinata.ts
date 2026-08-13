@@ -10,11 +10,15 @@ import type { News, NewsDetail, NewsFilter } from "./_types"
 const NEWS_PAGE_URL = "https://www.hinatazaka46.com/s/official/news/list"
 const NEWS_DETAIL_URL = "https://www.hinatazaka46.com/s/official/news/detail"
 
-/** Maps `category_xxx` class keys to Japanese labels, used as a fallback when the visible label is empty */
+/**
+ * Maps `category_xxx` class keys to Japanese labels, used as a fallback when the visible label is empty
+ * and the page's own category nav could not be read. Note the fan club key is `fanclubonly`, which differs
+ * from the `cd=fanclub` query value the nav links use.
+ */
 const HINATA_NEWS_CATEGORIES: Record<string, string> = {
   audition: "オーディション",
   event: "イベント",
-  fanclub: "ファンクラブ",
+  fanclubonly: "ファンクラブ",
   goods: "グッズ",
   media: "メディア",
   other: "その他",
@@ -96,9 +100,35 @@ export function getHinataNewsDetailUrl(id: string): string {
   return `${NEWS_DETAIL_URL}/${id}?ima=${getMmss()}`
 }
 
+/**
+ * Parse the page's own category nav into a `category_xxx` key to label map. Returns an empty object when
+ * the nav is absent, in which case callers fall back to {@link HINATA_NEWS_CATEGORIES}.
+ */
+export function parseHinataNewsCategoriesHtml(html: string): Record<string, string> {
+  const $ = cheerio.load(html)
+  const categories: Record<string, string> = {}
+
+  const elements = $("ul.p-category__list a.c-button-category")
+  for (let elementIndex = 0; elementIndex < elements.length; elementIndex++) {
+    const element = elements[elementIndex]
+    // The "ALL" link carries no `cd=` and is not a category
+    if (!($(element).attr("href") ?? "").includes("cd=")) continue
+
+    const key = ($(element).attr("class") ?? "")
+      .split(/\s+/)
+      .find(token => token.startsWith("category_"))
+      ?.slice("category_".length)
+    const label = $(element).text().trim()
+    if (key !== undefined && key !== "" && label !== "") categories[key] = label
+  }
+
+  return categories
+}
+
 /** Parse a news listing page. Returned oldest first, reversing the site's newest-first order. */
 export function parseHinataNewsHtml(html: string): News[] {
   const $ = cheerio.load(html)
+  const categories = { ...HINATA_NEWS_CATEGORIES, ...parseHinataNewsCategoriesHtml(html) }
   const elements = $(".l-maincontents--news ul.p-news__list li.p-news__item > a")
   const news: News[] = []
 
@@ -131,11 +161,7 @@ export function parseHinataNewsHtml(html: string): News[] {
     news.push({
       category:
         categoryElement.text().trim() ||
-        resolveCategoryFromClass(
-          categoryElement.attr("class") ?? "",
-          "category_",
-          HINATA_NEWS_CATEGORIES
-        ),
+        resolveCategoryFromClass(categoryElement.attr("class") ?? "", "category_", categories),
       date,
       group: "hinata",
       id,
@@ -155,6 +181,7 @@ export function parseHinataNewsDetailHtml(html: string, url: string): NewsDetail
   const articleElement = $(".l-maincontents--news-detail").first()
   if (articleElement.length === 0) throw new ParseError("Article element not found in HTML")
 
+  const categories = { ...HINATA_NEWS_CATEGORIES, ...parseHinataNewsCategoriesHtml(html) }
   const categoryElement = $(articleElement).find(".p-article__info .c-news__category").first()
 
   const members: string[] = []
@@ -167,11 +194,7 @@ export function parseHinataNewsDetailHtml(html: string, url: string): NewsDetail
   return {
     category:
       categoryElement.text().trim() ||
-      resolveCategoryFromClass(
-        categoryElement.attr("class") ?? "",
-        "category_",
-        HINATA_NEWS_CATEGORIES
-      ),
+      resolveCategoryFromClass(categoryElement.attr("class") ?? "", "category_", categories),
     date: parseDateJst($(articleElement).find(".p-article__info time.c-news__date").text().trim()),
     group: "hinata",
     html: $(articleElement).find(".p-article__text").html()?.trim() ?? "",
