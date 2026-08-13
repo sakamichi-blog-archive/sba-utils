@@ -1,15 +1,12 @@
 import * as cheerio from "cheerio"
 
 import { USER_AGENT_DESKTOP } from "../shared/constants"
-import { getMmss } from "../shared/datetime"
+import { getMmss, parseDateJst } from "../shared/datetime"
+import { formatDy } from "../shared/dy"
 import { FetchStatusError } from "../shared/errors"
+import { resolveCategoryFromClass } from "../shared/html"
 import type { ScheduleEventWithHtml, ScheduleFilter } from "./_types"
-import {
-  formatScheduleDy,
-  parseScheduleDate,
-  parseScheduleTimeRange,
-  resolveCategoryFromClass
-} from "./_utils"
+import { parseScheduleTimeRange } from "./_utils"
 
 /** Unlike {@link ScheduleEventWithHtml}, has no `url` — the detail lives in an on-page modal with no standalone URL */
 export type SakuraScheduleEvent = Omit<ScheduleEventWithHtml, "url">
@@ -63,7 +60,7 @@ export async function fetchSakuraScheduleEventsHtml(filter: ScheduleFilter): Pro
  * date to deep-link to the listing that contains it. The page still shows the whole month.
  */
 export function getSakuraScheduleUrl(filter: ScheduleFilter & { day?: number }): string {
-  const params = new URLSearchParams({ ima: getMmss(), dy: formatScheduleDy(filter) })
+  const params = new URLSearchParams({ ima: getMmss(), dy: formatDy(filter) })
   return `${SCHEDULE_PAGE_URL}?${params}`
 }
 
@@ -79,7 +76,7 @@ export function parseSakuraScheduleEventsHtml(html: string): SakuraScheduleEvent
     const dateText = $(container).find(".txt p.date").text().trim()
     let date: Date
     try {
-      date = parseScheduleDate(dateText)
+      date = parseDateJst(dateText)
     } catch (error) {
       console.error(`Failed to parse date for modal index ${modalIndex}. Skipping.`, error)
       continue

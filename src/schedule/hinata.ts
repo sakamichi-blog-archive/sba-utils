@@ -1,15 +1,12 @@
 import * as cheerio from "cheerio"
 
 import { USER_AGENT_DESKTOP } from "../shared/constants"
-import { getMmss } from "../shared/datetime"
+import { getMmss, parseDateJst } from "../shared/datetime"
+import { formatDy } from "../shared/dy"
 import { FetchStatusError, ParseError } from "../shared/errors"
+import { resolveCategoryFromClass } from "../shared/html"
 import type { ScheduleEvent, ScheduleEventWithHtml, ScheduleFilter } from "./_types"
-import {
-  formatScheduleDy,
-  parseScheduleDate,
-  parseScheduleTimeRange,
-  resolveCategoryFromClass
-} from "./_utils"
+import { parseScheduleTimeRange } from "./_utils"
 
 const SCHEDULE_PAGE_URL = "https://www.hinatazaka46.com/s/official/media/list"
 const SCHEDULE_DETAIL_URL = "https://www.hinatazaka46.com/s/official/media/detail"
@@ -92,7 +89,7 @@ export async function fetchHinataScheduleEventHtml(id: string): Promise<{
 }
 
 export function getHinataScheduleUrl(filter: ScheduleFilter): string {
-  const params = new URLSearchParams({ ima: getMmss(), dy: formatScheduleDy(filter) })
+  const params = new URLSearchParams({ ima: getMmss(), dy: formatDy(filter) })
   return `${SCHEDULE_PAGE_URL}?${params}`
 }
 
@@ -121,7 +118,7 @@ export function parseHinataScheduleEventsHtml(html: string): HinataScheduleEvent
 
     let date: Date
     try {
-      date = parseScheduleDate(`${year}/${month}/${day}`)
+      date = parseDateJst(`${year}/${month}/${day}`)
     } catch (error) {
       console.error(`Failed to parse date for day index ${dayIndex}. Skipping.`, error)
       continue
@@ -196,7 +193,7 @@ export function parseHinataScheduleEventHtml(html: string, url: string): HinataS
 
   return {
     category,
-    date: dateText !== "" ? parseScheduleDate(dateText) : undefined,
+    date: dateText !== "" ? parseDateJst(dateText) : undefined,
     group: "hinata",
     html: $(articleElement).find(".p-article__text").html()?.trim() ?? "",
     id: new URL(url).pathname.match(/\/detail\/([^/?]+)/)?.[1],

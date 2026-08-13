@@ -3,12 +3,13 @@ import * as z from "zod"
 
 import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDatetimeJst } from "../shared/datetime"
+import { formatDy } from "../shared/dy"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import { parseJsonpArgumentJson } from "../shared/jsonp"
 import { integerStringSchema } from "../shared/schemas"
 import { normalizeFullWidthNumbers } from "../shared/text"
 import type { BlogListFilter, BlogWithHtml } from "./_types"
-import { findImagesInHtml, formatBlogDateFilter, getUidFromUrl } from "./_utils"
+import { findImagesInHtml, getUidFromUrl } from "./_utils"
 
 /** Date-filtered list page doesn't expose member name, unlike {@link BlogWithHtml} */
 export interface NogiBlogSummary {
@@ -137,7 +138,7 @@ export function getNogiBlogUrl(uid: string): string {
 export function getNogiBlogsByDateUrl(filter: NogiBlogsByDateFilter): string {
   const params = new URLSearchParams({
     ima: getMmss(),
-    dy: formatBlogDateFilter({ year: filter.year, month: filter.month, day: filter.day })
+    dy: formatDy({ year: filter.year, month: filter.month, day: filter.day })
   })
   const page = filter.page ?? 0
   if (page !== 0) params.set("page", String(page))

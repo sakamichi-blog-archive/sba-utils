@@ -2,11 +2,12 @@ import * as z from "zod"
 
 import { members as nogiMembers } from "../members/nogi"
 import { USER_AGENT_DESKTOP } from "../shared/constants"
-import { getMmss } from "../shared/datetime"
+import { getMmss, parseDateJst } from "../shared/datetime"
+import { formatDy } from "../shared/dy"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import { parseJsonpArgumentJson } from "../shared/jsonp"
 import type { ScheduleEventWithHtml, ScheduleFilter } from "./_types"
-import { formatScheduleDy, normalizeTime, parseScheduleDate } from "./_utils"
+import { normalizeTime } from "./_utils"
 
 /** Unlike {@link ScheduleEventWithHtml}, `url` is always present — the API gives every event a unique detail URL */
 export interface NogiScheduleEvent extends ScheduleEventWithHtml {
@@ -73,7 +74,7 @@ export async function fetchNogiScheduleEventsJs(filter: ScheduleFilter): Promise
 }> {
   const ima = getMmss()
   const url = getNogiScheduleUrl(filter, ima)
-  const dy = formatScheduleDy(filter)
+  const dy = formatDy(filter)
   const referer = `${SCHEDULE_PAGE_URL}?${new URLSearchParams({ ima, dy })}`
   const response = await fetch(url, {
     headers: {
@@ -92,7 +93,7 @@ export async function fetchNogiScheduleEventsJs(filter: ScheduleFilter): Promise
 export function getNogiScheduleUrl(filter: ScheduleFilter, ima = getMmss()): string {
   const params = new URLSearchParams({
     ima,
-    dy: formatScheduleDy(filter),
+    dy: formatDy(filter),
     callback: "res"
   })
   return `${SCHEDULE_API_ENDPOINT}?${params}`
@@ -120,7 +121,7 @@ export function parseNogiScheduleEventsJs(js: string): NogiScheduleEvent[] {
   for (const event of data) {
     let date: Date
     try {
-      date = parseScheduleDate(event.date)
+      date = parseDateJst(event.date)
     } catch (error) {
       console.error(`Failed to parse date for event ${event.code}. Skipping.`, error)
       continue

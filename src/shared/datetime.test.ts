@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { getMmss, parseDatetimeJst } from "./datetime"
+import { getMmss, parseDateJst, parseDatetimeJst } from "./datetime"
 import { ParseError } from "./errors"
 
 describe("getMmss()", () => {
@@ -15,6 +15,28 @@ describe("getMmss()", () => {
   it("zero-pads minutes and seconds", () => {
     vi.setSystemTime(new Date("2026-06-20T12:05:07+09:00"))
     expect(getMmss()).toBe("0507")
+  })
+})
+
+describe("parseDateJst()", () => {
+  it("parses a dot-separated date", () => {
+    expect(parseDateJst("2026.08.01").toISOString()).toBe("2026-07-31T15:00:00.000Z")
+  })
+
+  it("parses a hyphen-separated date", () => {
+    expect(parseDateJst("2026-08-01").toISOString()).toBe("2026-07-31T15:00:00.000Z")
+  })
+
+  it("parses the date portion of a string with a trailing time", () => {
+    expect(parseDateJst("2026.08.02  22:00～23:30").toISOString()).toBe("2026-08-01T15:00:00.000Z")
+  })
+
+  it("throws ParseError when no date is present", () => {
+    expect(() => parseDateJst("no date here")).toThrow(ParseError)
+  })
+
+  it("normalizes full-width digits", () => {
+    expect(parseDateJst("２０２６.０８.０１").toISOString()).toBe("2026-07-31T15:00:00.000Z")
   })
 })
 
