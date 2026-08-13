@@ -1,6 +1,9 @@
 export type NewsGroup = "hinata" | "nogi" | "sakura"
 
-/** Throws `RangeError` at fetch time if `month` is given without `year`. Omit both to get the current month. */
+/**
+ * Throws `RangeError` at fetch time if `month` is given without `year`. Omit both to get the site's default
+ * listing: the most recent news, which spans several months rather than the current one.
+ */
 export interface NewsFilter {
   /** Full year, e.g. `2026`. Required if `month` is given */
   year?: number

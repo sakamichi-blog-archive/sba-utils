@@ -24,7 +24,8 @@ const SAKURA_NEWS_CATEGORIES: Record<string, string> = {
 }
 
 /**
- * Fetch a month of Sakura news, oldest first. Omit `filter` for the current month.
+ * Fetch a month of Sakura news, oldest first. Omit `filter` for the site's default listing of most recent
+ * news, which spans several months rather than the current one.
  *
  * List news carry no `html` or `members`; fetch a single news with {@link fetchSakuraNewsDetail} to get those.
  */
@@ -82,7 +83,7 @@ export async function fetchSakuraNewsDetailHtml(id: string): Promise<{
   return { html: await response.text(), url }
 }
 
-/** Build the news listing URL for a month, or — when `filter` is omitted — for the current month */
+/** Build the news listing URL for a month, or — when `filter` is omitted — for the most recent news */
 export function getSakuraNewsUrl(filter?: NewsFilter): string {
   const params = new URLSearchParams({ ima: getMmss() })
   const dy = formatOptionalDy(filter)
