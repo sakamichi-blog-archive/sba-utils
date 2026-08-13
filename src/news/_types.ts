@@ -33,9 +33,12 @@ export interface News {
 export interface NewsWithHtml extends News {
   /** Detail content HTML */
   html: string
+}
+
+export interface NewsDetail extends NewsWithHtml {
   /**
    * Member names associated with the news, with whitespace removed (e.g. `"金村美玖"`). Empty when none
-   * are listed.
+   * are listed. Only `hinata` and `sakura` list members; `nogi` exposes none.
    */
   members: string[]
 }

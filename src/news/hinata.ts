@@ -5,7 +5,7 @@ import { getMmss, parseDateJst } from "../shared/datetime"
 import { formatOptionalDy } from "../shared/dy"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import { resolveCategoryFromClass } from "../shared/html"
-import type { News, NewsFilter, NewsWithHtml } from "./_types"
+import type { News, NewsDetail, NewsFilter } from "./_types"
 
 const NEWS_PAGE_URL = "https://www.hinatazaka46.com/s/official/news/list"
 const NEWS_DETAIL_URL = "https://www.hinatazaka46.com/s/official/news/detail"
@@ -56,7 +56,7 @@ export async function fetchHinataNewsHtml(filter?: NewsFilter): Promise<{
 }
 
 export async function fetchHinataNewsDetail(id: string): Promise<{
-  newsDetail: NewsWithHtml
+  newsDetail: NewsDetail
   html: string
   url: string
 }> {
@@ -146,7 +146,7 @@ export function parseHinataNewsHtml(html: string): News[] {
   return news.reverse() // oxlint-disable-line unicorn/no-array-reverse
 }
 
-export function parseHinataNewsDetailHtml(html: string, url: string): NewsWithHtml {
+export function parseHinataNewsDetailHtml(html: string, url: string): NewsDetail {
   const id = getIdFromUrl(url)
   if (id === undefined) throw new ParseError(`Cannot extract id from URL: ${url}`)
 
