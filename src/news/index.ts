@@ -13,11 +13,14 @@ export {
 export {
   fetchNogiNews,
   fetchNogiNewsCategories,
+  fetchNogiNewsDetail,
+  fetchNogiNewsDetailHtml,
   fetchNogiNewsJs,
   getNogiNewsDetailUrl,
   getNogiNewsUrl,
   type NogiNews,
   parseNogiNewsCategoriesHtml,
+  parseNogiNewsDetailHtml,
   parseNogiNewsJs
 } from "./nogi"
 export {

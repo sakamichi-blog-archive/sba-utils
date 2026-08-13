@@ -5,6 +5,7 @@ import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDateJst, parseDatetimeJst } from "../shared/datetime"
 import { formatOptionalDy } from "../shared/dy"
 import { FetchStatusError, ParseError } from "../shared/errors"
+import { resolveCategoryFromClass } from "../shared/html"
 import { parseJsonpArgumentJson } from "../shared/jsonp"
 import type { NewsFilter, NewsWithHtml } from "./_types"
 
@@ -80,6 +81,40 @@ export async function fetchNogiNews(filter?: NewsFilter): Promise<{
     fetchNogiNewsCategories(filter)
   ])
   return { news: parseNogiNewsJs(js, categories), js, url }
+}
+
+/**
+ * Fetch a single Nogi news by id.
+ *
+ * Unlike {@link fetchNogiNews}, this reaches a news of any age without knowing which month it falls in.
+ * The detail page shows a date but no time of day, so the result carries no `datetime` — take it from
+ * {@link NogiNews.datetime} when you have the listing entry. The page lists no members.
+ */
+export async function fetchNogiNewsDetail(id: string): Promise<{
+  newsDetail: NewsWithHtml
+  html: string
+  url: string
+}> {
+  const { html, url } = await fetchNogiNewsDetailHtml(id)
+  return { newsDetail: parseNogiNewsDetailHtml(html, url), html, url }
+}
+
+export async function fetchNogiNewsDetailHtml(id: string): Promise<{
+  html: string
+  url: string
+}> {
+  const url = getNogiNewsDetailUrl(id)
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent": USER_AGENT_DESKTOP
+    }
+  })
+  if (response.status !== 200) {
+    await response.body?.cancel()
+    throw new FetchStatusError(response.status, response.url)
+  }
+
+  return { html: await response.text(), url }
 }
 
 /**
@@ -175,6 +210,34 @@ export function parseNogiNewsCategoriesHtml(html: string): Record<string, string
   return categories
 }
 
+export function parseNogiNewsDetailHtml(html: string, url: string): NewsWithHtml {
+  const id = getIdFromUrl(url)
+  if (id === undefined) throw new ParseError(`Cannot extract id from URL: ${url}`)
+
+  const $ = cheerio.load(html)
+  const headerElement = $("main .post_header").first()
+  if (headerElement.length === 0) throw new ParseError("Article element not found in HTML")
+
+  const categoryElement = $(headerElement).find(".post_header_cat .cat_name").first()
+
+  return {
+    category:
+      categoryElement.text().trim() ||
+      resolveCategoryFromClass(
+        $(headerElement).find(".post_header_cat .cat_icon").attr("class") ?? "",
+        "i--",
+        NOGI_NEWS_CATEGORIES
+      ),
+    date: parseDateJst($(headerElement).find(".post_header_data span").first().text().trim()),
+    group: "nogi",
+    // `.post_body_in` excludes the prev/next nav and latest-news list that share `.post_body`
+    html: $("main .post_body .post_body_in").first().html()?.trim() ?? "",
+    id,
+    title: $(headerElement).find("h1").first().text().trim(),
+    url
+  }
+}
+
 /**
  * Parse a news API response. Returned oldest first, reversing the API's newest-first order.
  *
@@ -217,4 +280,10 @@ export function parseNogiNewsJs(
   }
 
   return news.reverse() // oxlint-disable-line unicorn/no-array-reverse
+}
+
+/** Extract news id from a news detail URL */
+function getIdFromUrl(url: string | URL): string | undefined {
+  const { pathname } = url instanceof URL ? url : new URL(url)
+  return pathname.match(/\/news\/detail\/([^/?]+)/)?.[1]
 }

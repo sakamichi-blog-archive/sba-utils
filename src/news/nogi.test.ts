@@ -5,10 +5,13 @@ import { readFixture } from "../test/utils"
 import {
   fetchNogiNews,
   fetchNogiNewsCategories,
+  fetchNogiNewsDetail,
+  fetchNogiNewsDetailHtml,
   fetchNogiNewsJs,
   getNogiNewsDetailUrl,
   getNogiNewsUrl,
   parseNogiNewsCategoriesHtml,
+  parseNogiNewsDetailHtml,
   parseNogiNewsJs
 } from "./nogi"
 
@@ -110,6 +113,43 @@ describe("getNogiNewsDetailUrl()", () => {
     expect(getNogiNewsDetailUrl("102051")).toBe(
       "https://www.nogizaka46.com/s/n46/news/detail/102051?ima=3456"
     )
+  })
+})
+
+describe("fetchNogiNewsDetail()", () => {
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => {
+    vi.useRealTimers()
+    vi.restoreAllMocks()
+  })
+
+  it("returns parsed news detail on 200", async () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue(readFixture("nogi-news-detail.html")),
+        body: { cancel: vi.fn() }
+      })
+    )
+    const { newsDetail, url } = await fetchNogiNewsDetail("102051")
+    expect(newsDetail.category).toBe("CD/音楽配信/映像商品")
+    expect(url).toBe("https://www.nogizaka46.com/s/n46/news/detail/102051?ima=3456")
+  })
+})
+
+describe("fetchNogiNewsDetailHtml()", () => {
+  afterEach(() => vi.restoreAllMocks())
+
+  it("throws FetchStatusError on non-200", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue({ status: 500, url: "https://example.com", body: { cancel: vi.fn() } })
+    )
+    await expect(fetchNogiNewsDetailHtml("102051")).rejects.toBeInstanceOf(FetchStatusError)
   })
 })
 
@@ -217,5 +257,53 @@ describe("parseNogiNewsJs()", () => {
   it("resolves categories from a supplied map, overriding the known categories", () => {
     const categories = parseNogiNewsCategoriesHtml(readFixture("nogi-news-categories.html"))
     expect(parseNogiNewsJs(js, categories)[1]?.category).toBe("新カテゴリー")
+  })
+})
+
+describe("parseNogiNewsDetailHtml()", () => {
+  const html = readFixture("nogi-news-detail.html")
+  const url = "https://www.nogizaka46.com/s/n46/news/detail/102051?ima=0000"
+
+  it("throws ParseError when the id cannot be extracted from the URL", () => {
+    expect(() => parseNogiNewsDetailHtml(html, "https://www.nogizaka46.com/")).toThrow(ParseError)
+  })
+
+  it("throws ParseError when article element not found", () => {
+    expect(() => parseNogiNewsDetailHtml("<html></html>", url)).toThrow(ParseError)
+  })
+
+  it("parses news detail correctly", () => {
+    expect(parseNogiNewsDetailHtml(html, url)).toMatchInlineSnapshot(`
+      {
+        "category": "CD/音楽配信/映像商品",
+        "date": 2026-06-29T15:00:00.000Z,
+        "group": "nogi",
+        "html": "ダミー本文です。<br>ぜひご確認ください。",
+        "id": "102051",
+        "title": "42ndシングル「是非に及ばず」発売記念スペシャル応募抽選",
+        "url": "https://www.nogizaka46.com/s/n46/news/detail/102051?ima=0000",
+      }
+    `)
+  })
+
+  it("excludes the prev/next nav and latest-news list from the content html", () => {
+    const { html: contentHtml } = parseNogiNewsDetailHtml(html, url)
+    expect(contentHtml).not.toContain("関連ニュース")
+    expect(contentHtml).not.toContain("次の記事")
+  })
+
+  it("falls back to the category icon class when the label is empty", () => {
+    const fallback = `
+      <main>
+        <header class="post_header">
+          <div class="post_header_cat">
+            <div class="cat_icon i--tv"></div>
+            <p class="cat_name"></p>
+          </div>
+          <h1>タイトル</h1>
+          <div class="post_header_data"><span>2026.06.30</span></div>
+        </header>
+      </main>`
+    expect(parseNogiNewsDetailHtml(fallback, url).category).toBe("テレビ")
   })
 })

@@ -78,11 +78,11 @@ const { news } = await fetchHinataNews()
 
 #### Available functions
 
-| Group  | News list                  | Single news                    |
-| ------ | -------------------------- | ------------------------------ |
-| Hinata | `fetchHinataNews(filter?)` | `fetchHinataNewsDetail(id)`    |
-| Nogi   | `fetchNogiNews(filter?)`   | — (built into `fetchNogiNews`) |
-| Sakura | `fetchSakuraNews(filter?)` | `fetchSakuraNewsDetail(id)`    |
+| Group  | News list                  | Single news                 |
+| ------ | -------------------------- | --------------------------- |
+| Hinata | `fetchHinataNews(filter?)` | `fetchHinataNewsDetail(id)` |
+| Nogi   | `fetchNogiNews(filter?)`   | `fetchNogiNewsDetail(id)`   |
+| Sakura | `fetchSakuraNews(filter?)` | `fetchSakuraNewsDetail(id)` |
 
 `filter` accepts `year` and `month` (1-based; January = 1). Setting `month` requires `year`. A filtered listing covers exactly that month, so there is no page size or offset to control.
 
@@ -90,8 +90,10 @@ Omitting `filter` does not fetch the current month — it returns the sites' def
 
 Every news item exposes `date` (JST midnight), `category`, `id`, `title`, and an absolute `url`. The remaining fields vary by group:
 
-- **Nogi** news also include `datetime` (the API is the only one that exposes a time of day) and the detail `html`, so no second request is needed. They carry no member names.
-- **Hinata** and **Sakura** list news omit `html` and `members` — fetch a single news with `fetchHinataNewsDetail(id)` / `fetchSakuraNewsDetail(id)` to get those. The `id` comes from each list item.
+- **Nogi** news also include `datetime` (the API is the only one that exposes a time of day) and the detail `html`, so the list alone is usually enough. They carry no member names, and `fetchNogiNewsDetail(id)` returns no `datetime` — the detail page shows a date only.
+- **Hinata** and **Sakura** list news omit `html` and `members` — fetch a single news to get those.
+
+`fetch*NewsDetail(id)` reaches a news of any age without knowing which month it falls in. The `id` comes from each list item.
 
 News is returned oldest first, reversing the order shown on the sites.
 
