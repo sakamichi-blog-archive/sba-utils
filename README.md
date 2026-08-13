@@ -54,6 +54,45 @@ const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
 
 Some functions do not accept some of the properties, due to the external API.
 
+### News
+
+```typescript
+import { fetchHinataNews } from "@sakamichi-blog-archive/utils/news"
+```
+
+Fetch news from a specific year and month:
+
+```typescript
+import { fetchHinataNews } from "@sakamichi-blog-archive/utils/news"
+
+const { news } = await fetchHinataNews({ year: 2026, month: 6 })
+```
+
+Omit the filter to fetch the current month:
+
+```typescript
+import { fetchHinataNews } from "@sakamichi-blog-archive/utils/news"
+
+const { news } = await fetchHinataNews()
+```
+
+#### Available functions
+
+| Group  | News list                  | Single news                    |
+| ------ | -------------------------- | ------------------------------ |
+| Hinata | `fetchHinataNews(filter?)` | `fetchHinataNewsDetail(id)`    |
+| Nogi   | `fetchNogiNews(filter?)`   | — (built into `fetchNogiNews`) |
+| Sakura | `fetchSakuraNews(filter?)` | `fetchSakuraNewsDetail(id)`    |
+
+`filter` accepts `year` and `month` (1-based; January = 1). Setting `month` requires `year`. Omit both for the current month — the site's own listing pages cover one month at a time, so there is no page size or offset to control.
+
+Every news item exposes `date` (JST midnight), `category`, `id`, `title`, and an absolute `url`. The remaining fields vary by group:
+
+- **Nogi** news also include `datetime` (the API is the only one that exposes a time of day) and the detail `html`, so no second request is needed. They carry no member names.
+- **Hinata** and **Sakura** list news omit `html` and `members` — fetch a single news with `fetchHinataNewsDetail(id)` / `fetchSakuraNewsDetail(id)` to get those. The `id` comes from each list item.
+
+News is returned oldest first, reversing the order shown on the sites.
+
 ### Schedule
 
 ```typescript
