@@ -22,11 +22,8 @@ export interface ScheduleEvent {
   /** Event date at JST midnight. Time of day, if any, is carried by {@link ScheduleEvent.timeStart} */
   date: Date
   /**
-   * Site-specific event identifier. Meaning differs per group:
-   *
-   * - `nogi`: unique per event
-   * - `hinata`: recurring events share the same id
-   * - `sakura`: recurring events share the same id
+   * Site-specific event identifier. A recurring event keeps a single id across all of its occurrences, in
+   * every group, so an id alone does not identify an entry in a month's listing.
    */
   id?: string
   /**
@@ -42,7 +39,8 @@ export interface ScheduleEvent {
   /**
    * Absolute URL. Meaning differs per group:
    *
-   * - `nogi`: unique per event
+   * - `nogi`: always present; a recurring event's occurrences share an id but each carries its own URL,
+   *   which pins the occurrence date in its query
    * - `hinata`: recurring events share the same URL
    * - `sakura`: `undefined` (the detail lives in an on-page modal with no standalone URL)
    */

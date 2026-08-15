@@ -8,6 +8,17 @@ export function getMmss(): string {
 }
 
 /**
+ * Split a `Date` into the calendar year/month/day it falls on in JST, regardless of the host's time zone.
+ * `month` is 1-based, matching the filters.
+ */
+export function getDatePartsJst(date: Date): { year: number; month: number; day: number } {
+  if (Number.isNaN(date.getTime())) throw new RangeError("Invalid date")
+
+  const jst = new Date(date.getTime() + 9 * 60 * 60 * 1000)
+  return { year: jst.getUTCFullYear(), month: jst.getUTCMonth() + 1, day: jst.getUTCDate() }
+}
+
+/**
  * Parse the date portion (`YYYY-MM-DD`, `YYYY/MM/DD`, or `YYYY.MM.DD`) of a string into a JST-midnight `Date`.
  * Full-width digits are normalized first.
  */

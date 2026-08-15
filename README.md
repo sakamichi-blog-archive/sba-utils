@@ -32,8 +32,8 @@ const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
 
 | Group  | Single blog            | Blog list                   | Blog list by date                 |
 | ------ | ---------------------- | --------------------------- | --------------------------------- |
-| Hinata | `fetchHinataBlog(uid)` | `fetchHinataBlogs(filter?)` | — (built into `fetchHinataBlogs`) |
 | Nogi   | `fetchNogiBlog(uid)`   | `fetchNogiBlogs(filter?)`   | `fetchNogiBlogsByDate(filter)`    |
+| Hinata | `fetchHinataBlog(uid)` | `fetchHinataBlogs(filter?)` | — (built into `fetchHinataBlogs`) |
 | Sakura | `fetchSakuraBlog(uid)` | `fetchSakuraBlogs(filter?)` | — (built into `fetchSakuraBlogs`) |
 
 `filter` consists of the following properties. They may be used simultaneously.
@@ -69,8 +69,8 @@ const { newsDetail } = await fetchHinataNewsDetail("M02770")
 
 | Group  | News list                  | Single news                 |
 | ------ | -------------------------- | --------------------------- |
-| Hinata | `fetchHinataNews(filter?)` | `fetchHinataNewsDetail(id)` |
 | Nogi   | `fetchNogiNews(filter?)`   | `fetchNogiNewsDetail(id)`   |
+| Hinata | `fetchHinataNews(filter?)` | `fetchHinataNewsDetail(id)` |
 | Sakura | `fetchSakuraNews(filter?)` | `fetchSakuraNewsDetail(id)` |
 
 `filter` accepts `year`, `month` (January = 1), `day`, and `page`. Setting `month` requires `year`, and setting `day` requires `month`.
@@ -97,7 +97,7 @@ Every news carries `categoryKey` and `categoryName`:
 - `categoryKey` — the site's own key, for example `"media"`. Stable across relabelling, so prefer it for storing and grouping.
 - `categoryName` — the Japanese label shown on the site, for example `"メディア"`, read straight off the item.
 
-`fetchNogiNews()` and `fetchNogiScheduleEvents()` each make an extra request to resolve category names. To reuse one map across several Nogi calls instead of refetching it, run the pieces directly — `fetchNogiNewsCategories()`, `fetchNogiNewsJs()` and `parseNogiNewsJs()` for news, or `fetchNogiScheduleCategories()`, `fetchNogiScheduleEventsJs()` and `parseNogiScheduleEventsJs()` for schedule:
+`fetchNogiNews()` and `fetchNogiScheduleEvents()` each make an extra request to resolve category names. To reuse one map across several calls instead of refetching it, run the pieces directly:
 
 ```typescript
 import {
@@ -109,6 +109,18 @@ import {
 const categories = await fetchNogiNewsCategories()
 const { js } = await fetchNogiNewsJs({ year: 2026, month: 6 })
 const news = parseNogiNewsJs(js, categories) // reuse `categories` across calls
+```
+
+```typescript
+import {
+  fetchNogiScheduleCategories,
+  fetchNogiScheduleEventsJs,
+  parseNogiScheduleEventsJs
+} from "@sakamichi-blog-archive/utils/schedule"
+
+const categories = await fetchNogiScheduleCategories()
+const { js } = await fetchNogiScheduleEventsJs({ year: 2026, month: 8 })
+const events = parseNogiScheduleEventsJs(js, categories) // reuse `categories` across calls
 ```
 
 ### Schedule
@@ -123,17 +135,31 @@ const { events } = await fetchHinataScheduleEvents({ year: 2026, month: 8 })
 
 | Group  | Event list                          | Single event                               |
 | ------ | ----------------------------------- | ------------------------------------------ |
+| Nogi   | `fetchNogiScheduleEvents(filter)`   | `fetchNogiScheduleEvent(id, date?)`        |
 | Hinata | `fetchHinataScheduleEvents(filter)` | `fetchHinataScheduleEvent(id)`             |
-| Nogi   | `fetchNogiScheduleEvents(filter)`   | — (built into `fetchNogiScheduleEvents`)   |
 | Sakura | `fetchSakuraScheduleEvents(filter)` | — (built into `fetchSakuraScheduleEvents`) |
 
-`filter` requires both `year` and `month` (1-based; January = 1).
+`filter` requires both `year` and `month` (January = 1).
 
-Every event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:mm`, JST), `categoryKey`/`categoryName`, and `title`. Categories work exactly as they do for news, including the extra request Nogi needs — see [Categories](#categories) above. The remaining fields vary by group:
+Every list event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:mm`, JST), `categoryKey`/`categoryName`, and `title`. Categories work exactly as news, including the extra request Nogi needs — see [Categories](#categories) above. The remaining fields vary by group:
 
-- **Nogi** events also include `members`, the detail `html`, and a unique `url`.
-- **Sakura** events also include `members` and the detail `html`, but no `url` (the detail is an on-page modal).
-- **Hinata** list events include a `url` but omit `members` and `html` — fetch a single event with `fetchHinataScheduleEvent(id)` to get those. The `id` comes from each list event.
+- **Nogi** list events include `members`, the detail `html`, and a `url`. Single event does not return `members`.
+- **Hinata** list events include a `url`. `members` and `html` are not included — fetch single event to get those. The `id` comes from each list event. Single event may omit `date` (birthdays show none), so take `date` from the list event.
+- **Sakura** list events include `members` and the detail `html`, but no `url` (the detail is an on-page modal).
+
+A recurring event keeps one `id` across all of its occurrences, in every group. So `id` alone does not identify an entry in a month's listing.
+
+##### `fetchNogiScheduleEvent(id, date)`
+
+The function accepts occurrence date as 2nd parameter:
+
+```typescript
+import { fetchNogiScheduleEvent } from "@sakamichi-blog-archive/utils/schedule"
+
+const { event } = await fetchNogiScheduleEvent("107022", new Date("2026-08-08T00:00:00+09:00"))
+```
+
+Without `date` the page reports the date the event was **first listed**, and a birthday reports the year its entry was created. The site does not check the date against the event, so one the event does not fall on is displayed just the same.
 
 ### Members
 

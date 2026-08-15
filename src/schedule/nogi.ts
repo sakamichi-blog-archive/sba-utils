@@ -3,15 +3,26 @@ import * as z from "zod"
 
 import { members as nogiMembers } from "../members/nogi"
 import { USER_AGENT_DESKTOP } from "../shared/constants"
-import { getMmss, parseDateJst } from "../shared/datetime"
+import { getDatePartsJst, getMmss, parseDateJst } from "../shared/datetime"
 import { formatDy } from "../shared/dy"
 import { FetchStatusError, ParseError } from "../shared/errors"
+import { getCategoryKeyFromClass } from "../shared/html"
 import { parseJsonpArgumentJson } from "../shared/jsonp"
 import type { ScheduleEventWithHtml, ScheduleFilter } from "./_types"
-import { normalizeTime } from "./_utils"
+import { normalizeTime, parseScheduleTimeRange } from "./_utils"
 
-/** Unlike {@link ScheduleEventWithHtml}, `url` is always present — the API gives every event a unique detail URL */
+/** Unlike {@link ScheduleEventWithHtml}, `url` is always present — the API gives every event a detail URL */
 export interface NogiScheduleEvent extends ScheduleEventWithHtml {
+  url: string
+}
+
+/**
+ * A Nogi schedule event as rendered on its own detail page.
+ *
+ * Unlike {@link NogiScheduleEvent} it carries no `members`: the page names nobody, and the API's member
+ * data is only in the listing. Take `members` from the list event.
+ */
+export interface NogiScheduleEventDetail extends Omit<ScheduleEventWithHtml, "members"> {
   url: string
 }
 
@@ -26,7 +37,7 @@ const scheduleApiSchema = z.object({
       arti_code: z.array(z.array(z.string())),
       /** Category key */
       cate: z.string(),
-      /** UID, unique per event */
+      /** UID, repeated across a recurring event's occurrences */
       code: z.string(),
       /** `YYYY/MM/DD` format */
       date: z.string(),
@@ -70,6 +81,50 @@ export async function fetchNogiScheduleEvents(filter: ScheduleFilter): Promise<{
     js,
     url: getNogiScheduleUrl(filter, ima)
   }
+}
+
+/**
+ * Fetch a single schedule event by its {@link NogiScheduleEvent.id}.
+ *
+ * The page renders everything the listing does except `members`, so this is only worth calling when you
+ * have an id but no list event.
+ *
+ * An id identifies an event, not one occurrence of it, so pass `date` — the list event's
+ * {@link NogiScheduleEvent.date} — for anything recurring. Without it the page reports the date the event
+ * was first listed: a weekly radio show appearing under 2026/08/01 reports 2026/04/04, its first airing,
+ * and a `birthday` reports the year its entry was created rather than the year of birth.
+ */
+export async function fetchNogiScheduleEvent(
+  id: string,
+  date?: Date
+): Promise<{
+  event: NogiScheduleEventDetail
+  html: string
+  url: string
+}> {
+  const { html, url } = await fetchNogiScheduleEventHtml(id, date)
+  return { event: parseNogiScheduleEventHtml(html, url), html, url }
+}
+
+export async function fetchNogiScheduleEventHtml(
+  id: string,
+  date?: Date
+): Promise<{
+  html: string
+  url: string
+}> {
+  const url = getNogiScheduleEventUrl(id, date)
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent": USER_AGENT_DESKTOP
+    }
+  })
+  if (response.status !== 200) {
+    await response.body?.cancel()
+    throw new FetchStatusError(response.status, response.url)
+  }
+
+  return { html: await response.text(), url }
 }
 
 /**
@@ -164,13 +219,59 @@ function getNogiScheduleJsUrl(filter: ScheduleFilter, ima = getMmss()): string {
 }
 
 /**
- * Build the detail-page URL for a single event by its {@link NogiScheduleEvent.id}. The id alone resolves
- * the correct event, but the URL omits the `pri1=YYYYMM` month breadcrumb that the API's link includes, so
- * the detail page's back-to-list navigation falls back to the current month. Use {@link NogiScheduleEvent.url}
- * when that context matters.
+ * Build the detail-page URL for a single event by its {@link NogiScheduleEvent.id}.
+ *
+ * Pass `date` — the list event's {@link NogiScheduleEvent.date} — for a recurring event. The page renders
+ * whichever date the `wd00`/`wd01`/`wd02` parameters carry, so without it the page falls back to the date
+ * the event was first listed. The site echoes them without checking them against the event, so a date the
+ * event does not actually fall on is displayed just the same.
+ *
+ * The URL still omits the `pri1=YYYYMM` month breadcrumb that the API's link includes, so the detail page's
+ * back-to-list navigation falls back to the current month. Use {@link NogiScheduleEvent.url} when that
+ * context matters.
  */
-export function getNogiScheduleEventUrl(id: string): string {
-  return `${SCHEDULE_DETAIL_URL}/${id}?ima=${getMmss()}`
+export function getNogiScheduleEventUrl(id: string, date?: Date): string {
+  const params = new URLSearchParams({ ima: getMmss() })
+  if (date !== undefined) {
+    const { year, month, day } = getDatePartsJst(date)
+    params.set("wd00", String(year))
+    params.set("wd01", String(month).padStart(2, "0"))
+    params.set("wd02", String(day).padStart(2, "0"))
+  }
+
+  return `${SCHEDULE_DETAIL_URL}/${id}?${params}`
+}
+
+/**
+ * Parse a schedule event's detail page. `url` is the page the HTML came from; it supplies the returned
+ * `url` and `id`.
+ *
+ * Unlike the listing, the page displays its own category label, so no category map is needed.
+ */
+export function parseNogiScheduleEventHtml(html: string, url: string): NogiScheduleEventDetail {
+  const $ = cheerio.load(html)
+  const headerElement = $("header.m--dehd").first()
+  if (headerElement.length === 0) throw new ParseError("Header element not found in HTML")
+
+  const categoryElement = headerElement.find(".m--dehd__tag__i").first()
+  // The second `m--pstdata__p` is the content type ("SCHEDULE"), not a date
+  const dateText = headerElement.find(".m--pstdata__p").first().text().trim()
+  const { timeStart, timeEnd } = parseScheduleTimeRange(
+    headerElement.find(".m--dehd__sctm").first().text().trim()
+  )
+
+  return {
+    categoryKey: getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "i--") ?? "",
+    categoryName: headerElement.find(".m--dehd__tag__name").first().text().trim(),
+    date: parseDateJst(dateText),
+    // Scoped to the editable section: `.sd--de` alone also holds the prev/next nav and a LATEST list
+    html: $(".sd--de .m--scedit").first().html()?.trim() ?? "",
+    id: new URL(url).pathname.match(/\/detail\/([^/?]+)/)?.[1],
+    timeEnd,
+    timeStart,
+    title: headerElement.find("h1.c--dettl").first().text().trim(),
+    url
+  }
 }
 
 /**
