@@ -57,31 +57,19 @@ Some functions do not accept some of the properties, due to the external API.
 ### News
 
 ```typescript
-import { fetchHinataNews } from "@sakamichi-blog-archive/utils/news"
-```
+import { fetchHinataNews, fetchHinataNewsDetail } from "@sakamichi-blog-archive/utils/news"
 
-Fetch news from a specific year and month:
-
-```typescript
-import { fetchHinataNews } from "@sakamichi-blog-archive/utils/news"
-
+// Fetch news from a specific year and month
 const { news } = await fetchHinataNews({ year: 2026, month: 6 })
-```
 
-Narrow it to a single day with `day`:
-
-```typescript
-import { fetchHinataNews } from "@sakamichi-blog-archive/utils/news"
-
+// Narrow it to a single day with `day`
 const { news } = await fetchHinataNews({ year: 2026, month: 6, day: 30 })
-```
 
-Omit the filter to fetch the most recent news:
-
-```typescript
-import { fetchHinataNews } from "@sakamichi-blog-archive/utils/news"
-
+// Omit the filter to fetch the most recent news
 const { news } = await fetchHinataNews()
+
+// Fetch news by ID
+const news = await fetchHinataNewsDetail("M02770")
 ```
 
 #### Available functions
@@ -92,9 +80,9 @@ const { news } = await fetchHinataNews()
 | Nogi   | `fetchNogiNews(filter?)`   | `fetchNogiNewsDetail(id)`   |
 | Sakura | `fetchSakuraNews(filter?)` | `fetchSakuraNewsDetail(id)` |
 
-`filter` accepts `year`, `month` (1-based; January = 1), and `day`. Setting `month` requires `year`, and setting `day` requires `month`. A filtered listing covers exactly that month or day, so there is no page size or offset to control.
+`filter` accepts `year`, `month` (January = 1), and `day`. Setting `month` requires `year`, and setting `day` requires `month`. A filtered listing covers exactly that month or day, so there is no page size or offset to control.
 
-Omitting `filter` does not fetch the current month — it returns the sites' default listing of most recent news, currently the latest 200 items, which spans several months. Pass `year`/`month` when you need a specific month.
+Omitting `filter` does not fetch the current month — it returns the sites' default listing of most recent news, currently the latest 200 items, which spans several months.
 
 Every news item exposes `date` (JST midnight), `categoryKey`/`categoryName`, `id`, `title`, and an absolute `url`. The remaining fields vary by group:
 
@@ -109,27 +97,13 @@ News is returned oldest first, reversing the order shown on the sites.
 
 Every news carries `categoryKey` and `categoryName`:
 
-- `categoryKey` — the site's own key, e.g. `"media"`. Stable across relabelling, so prefer it for storing and filtering.
-- `categoryName` — the Japanese label shown on the site, e.g. `"メディア"`, read straight off the item.
+- `categoryKey` — the site's own key, for example `"media"`. Stable across relabelling, so prefer it for storing and filtering.
+- `categoryName` — the Japanese label shown on the site, for example `"メディア"`, read straight off the item.
 
-Both are always present, with one exception: Nogi's listing API returns the key alone, so `NogiNews.categoryName` is optional — a key too new to appear in the site's category nav resolves to no label. `fetchNogiNewsDetail` has no such gap, since the detail page renders the label.
-
-The split matters because labels move: `shakehands` was 握手会 and is now ミート＆グリート, while the key stayed put.
-
-Labels come from the sites themselves, never from a list baked into this package. Hinata and Sakura render the label on every item, list and detail alike, so it is read straight off the page at no extra cost. Nogi's listing API returns the key alone, so its listing page is fetched alongside to read the category nav — one extra request, and only there; its detail page renders the label like everyone else's.
-
-Nothing falls back to a guess. Whatever the site does not give is an empty string: a category the nav does not cover, or a label the page leaves blank, yields an empty `categoryName` rather than dropping the item or throwing.
-
-An unreachable page is different, and does throw. If Nogi's listing page cannot be fetched, `fetchNogiNews` and `fetchNogiScheduleEvents` reject with `FetchStatusError` rather than quietly returning everything unlabelled — you get an error you can retry, not a silent gap in the data. A page that loads but carries no nav is treated as the soft case.
-
-To resolve labels yourself, or to reuse one map across several Nogi calls instead of refetching it, pass it in:
+`fetchNogiNews()` makes an extra request to resolve category names. To reuse one map across several Nogi calls instead of refetching it, run `fetchNogiNewsCategories()`, `fetchNogiNewsJs()`, and `parseNogiNewsJs()` directly:
 
 ```typescript
-import {
-  fetchNogiNewsCategories,
-  fetchNogiNewsJs,
-  parseNogiNewsJs
-} from "@sakamichi-blog-archive/utils/news"
+import { fetchNogiNewsCategories, fetchNogiNewsJs, parseNogiNewsJs } from "@sakamichi-blog-archive/utils/news"
 
 const categories = await fetchNogiNewsCategories()
 const { js } = await fetchNogiNewsJs({ year: 2026, month: 6 })
