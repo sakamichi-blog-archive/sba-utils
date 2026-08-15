@@ -88,13 +88,13 @@ describe("parseNogiScheduleEventsJs()", () => {
     expect(first?.members).toEqual(["五百城茉央", "奥田いろは"])
   })
 
-  it("exposes the key with no name when the key is in neither map", () => {
+  it("exposes keys but no names when no category map is supplied", () => {
     const events = parseNogiScheduleEventsJs(js)
     expect(events[2]?.categoryKey).toBe("special")
     expect(events[2]?.categoryName).toBeUndefined()
   })
 
-  it("resolves names from a supplied map, overriding the known categories", () => {
+  it("resolves names from a supplied map", () => {
     const events = parseNogiScheduleEventsJs(js, { special: "特別企画" })
     expect(events[2]?.categoryName).toBe("特別企画")
   })
@@ -104,7 +104,7 @@ describe("parseNogiScheduleEventsJs()", () => {
       [
         {
           "categoryKey": "live",
-          "categoryName": "ライブ/イベント",
+          "categoryName": undefined,
           "date": 2026-07-31T15:00:00.000Z,
           "html": "<p>Event detail placeholder.</p>",
           "id": "107136",
@@ -119,7 +119,7 @@ describe("parseNogiScheduleEventsJs()", () => {
         },
         {
           "categoryKey": "tv",
-          "categoryName": "テレビ",
+          "categoryName": undefined,
           "date": 2026-08-01T15:00:00.000Z,
           "html": "<p>Broadcast detail placeholder.</p>",
           "id": "107140",

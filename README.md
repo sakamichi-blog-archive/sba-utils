@@ -116,11 +116,9 @@ Both are always present, with one exception: Nogi's listing API returns the key 
 
 The split matters because labels move: `shakehands` was 握手会 and is now ミート＆グリート, while the key stayed put.
 
-Labels are read from each site's own category nav at runtime, so a category added or renamed upstream is picked up without a release; a small built-in map is kept only as a fallback.
+Labels come from the sites themselves, never from a list baked into this package. Hinata and Sakura render the label on each item, with the page's own category nav as a backstop; both arrive in the document already being parsed, so they cost nothing. Nogi's listing API returns the key alone, so its listing page is fetched alongside to read the nav — one extra request per call, and if it fails those news carry a `categoryKey` but no `categoryName` rather than a possibly-wrong label.
 
-For Hinata and Sakura the nav ships in the same document as the news itself, so this costs nothing. Nogi's API returns category keys only, so `fetchNogiNews` fetches the listing page alongside it — two requests per call. If that request fails it falls back to the built-in map rather than failing the fetch, and a key present in neither is passed through verbatim.
-
-To resolve labels yourself, or to avoid the second Nogi request, use the map directly:
+To resolve labels yourself, or to reuse one map across several Nogi calls instead of refetching it, pass it in:
 
 ```typescript
 import {
@@ -158,7 +156,7 @@ const { events } = await fetchHinataScheduleEvents({ year: 2026, month: 8 })
 
 `filter` requires both `year` and `month` (1-based; January = 1).
 
-Every event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:mm`, JST), `categoryKey`/`categoryName`, and `title`. Categories work exactly as they do for news, including the second request Nogi needs — see [Categories](#categories) above. The remaining fields vary by group:
+Every event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:mm`, JST), `categoryKey`/`categoryName`, and `title`. Categories work exactly as they do for news, including the extra request Nogi needs — see [Categories](#categories) above. The remaining fields vary by group:
 
 - **Nogi** events also include `members`, the detail `html`, and a unique `url`, and are the only ones whose `categoryName` is optional — the API returns the key alone.
 - **Sakura** events also include `members` and the detail `html`, but no `url` (the detail is an on-page modal).

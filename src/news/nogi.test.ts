@@ -180,7 +180,7 @@ describe("fetchNogiNewsCategories()", () => {
     await expect(fetchNogiNewsCategories()).resolves.toMatchObject({ tv: "テレビ" })
   })
 
-  it("falls back to the known categories on non-200 instead of throwing", async () => {
+  it("returns an empty map on non-200 instead of throwing", async () => {
     vi.spyOn(console, "error").mockImplementation(() => {})
     vi.stubGlobal(
       "fetch",
@@ -188,10 +188,10 @@ describe("fetchNogiNewsCategories()", () => {
         .fn()
         .mockResolvedValue({ status: 503, url: "https://example.com", body: { cancel: vi.fn() } })
     )
-    await expect(fetchNogiNewsCategories()).resolves.toMatchObject({ tv: "テレビ" })
+    await expect(fetchNogiNewsCategories()).resolves.toEqual({})
   })
 
-  it("falls back to the known categories when the nav is absent", async () => {
+  it("returns an empty map when the nav is absent", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue({
@@ -200,7 +200,7 @@ describe("fetchNogiNewsCategories()", () => {
         body: { cancel: vi.fn() }
       })
     )
-    await expect(fetchNogiNewsCategories()).resolves.toMatchObject({ tv: "テレビ" })
+    await expect(fetchNogiNewsCategories()).resolves.toEqual({})
   })
 })
 
@@ -230,7 +230,7 @@ describe("parseNogiNewsJs()", () => {
       [
         {
           "categoryKey": "tv",
-          "categoryName": "テレビ",
+          "categoryName": undefined,
           "date": 2026-05-31T15:00:00.000Z,
           "datetime": 2026-05-31T15:44:51.000Z,
           "html": "<p>Broadcast detail placeholder.</p>",
@@ -250,7 +250,7 @@ describe("parseNogiNewsJs()", () => {
         },
         {
           "categoryKey": "release",
-          "categoryName": "CD/音楽配信/映像商品",
+          "categoryName": undefined,
           "date": 2026-06-29T15:00:00.000Z,
           "datetime": 2026-06-30T12:00:00.000Z,
           "html": "<p>News detail placeholder.</p>",
@@ -262,12 +262,12 @@ describe("parseNogiNewsJs()", () => {
     `)
   })
 
-  it("exposes the key with no name when the key is in neither map", () => {
+  it("exposes keys but no names when no category map is supplied", () => {
     expect(parseNogiNewsJs(js)[1]?.categoryKey).toBe("unknown_category")
-    expect(parseNogiNewsJs(js)[1]?.categoryName).toBeUndefined()
+    expect(parseNogiNewsJs(js).every(news => news.categoryName === undefined)).toBe(true)
   })
 
-  it("resolves names from a supplied map, overriding the known categories", () => {
+  it("resolves names from a supplied map", () => {
     const categories = parseNogiNewsCategoriesHtml(readFixture("nogi-news-categories.html"))
     expect(parseNogiNewsJs(js, categories)[1]?.categoryName).toBe("新カテゴリー")
   })
@@ -305,7 +305,7 @@ describe("parseNogiNewsDetailHtml()", () => {
     expect(contentHtml).not.toContain("次の記事")
   })
 
-  it("falls back to the known category name when the label is empty", () => {
+  it("throws ParseError when the label is empty", () => {
     const fallback = `
       <main>
         <header class="post_header">
@@ -317,6 +317,6 @@ describe("parseNogiNewsDetailHtml()", () => {
           <div class="post_header_data"><span>2026.06.30</span></div>
         </header>
       </main>`
-    expect(parseNogiNewsDetailHtml(fallback, url).categoryName).toBe("テレビ")
+    expect(() => parseNogiNewsDetailHtml(fallback, url)).toThrow(ParseError)
   })
 })

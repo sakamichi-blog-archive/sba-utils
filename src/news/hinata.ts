@@ -12,23 +12,6 @@ const NEWS_PAGE_URL = "https://www.hinatazaka46.com/s/official/news/list"
 const NEWS_DETAIL_URL = "https://www.hinatazaka46.com/s/official/news/detail"
 
 /**
- * Maps `category_xxx` class keys to Japanese labels, used as a fallback when the visible label is empty
- * and the page's own category nav could not be read. Note the fan club key is `fanclubonly`, which differs
- * from the `cd=fanclub` query value the nav links use.
- */
-const HINATA_NEWS_CATEGORIES: Record<string, string> = {
-  audition: "オーディション",
-  event: "イベント",
-  fanclubonly: "ファンクラブ",
-  goods: "グッズ",
-  media: "メディア",
-  other: "その他",
-  release: "リリース",
-  shakehands: "ミート＆グリート",
-  ticket: "チケット"
-}
-
-/**
  * Fetch a month — or a single day, with `day` — of Hinata news, oldest first. Omit `filter` for the
  * site's default listing of most recent news, which spans several months rather than the current one.
  *
@@ -103,7 +86,7 @@ export function getHinataNewsDetailUrl(id: string): string {
 
 /**
  * Parse the page's own category nav into a `category_xxx` key to label map. Returns an empty object when
- * the nav is absent, in which case callers fall back to {@link HINATA_NEWS_CATEGORIES}.
+ * the nav is absent; items carry their own label, so this only backstops one that is blank.
  */
 export function parseHinataNewsCategoriesHtml(html: string): Record<string, string> {
   return parseHinataCategoryNav(html)
@@ -112,7 +95,7 @@ export function parseHinataNewsCategoriesHtml(html: string): Record<string, stri
 /** Parse a news listing page. Returned oldest first, reversing the site's newest-first order. */
 export function parseHinataNewsHtml(html: string): News[] {
   const $ = cheerio.load(html)
-  const categories = { ...HINATA_NEWS_CATEGORIES, ...parseHinataNewsCategoriesHtml(html) }
+  const categories = parseHinataNewsCategoriesHtml(html)
   const elements = $(".l-maincontents--news ul.p-news__list li.p-news__item > a")
   const news: News[] = []
 
@@ -174,7 +157,7 @@ export function parseHinataNewsDetailHtml(html: string, url: string): NewsDetail
   const articleElement = $(".l-maincontents--news-detail").first()
   if (articleElement.length === 0) throw new ParseError("Article element not found in HTML")
 
-  const categories = { ...HINATA_NEWS_CATEGORIES, ...parseHinataNewsCategoriesHtml(html) }
+  const categories = parseHinataNewsCategoriesHtml(html)
   const categoryElement = $(articleElement).find(".p-article__info .c-news__category").first()
   const categoryKey = getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_")
   if (categoryKey === undefined) throw new ParseError("Category not found in HTML")

@@ -12,22 +12,6 @@ const NEWS_PAGE_URL = "https://sakurazaka46.com/s/s46/news/list"
 const NEWS_DETAIL_URL = "https://sakurazaka46.com/s/s46/news/detail"
 
 /**
- * Maps `cate-xxx` class keys to Japanese labels, used as a fallback when the visible label is empty and
- * the page's own category nav could not be read.
- */
-const SAKURA_NEWS_CATEGORIES: Record<string, string> = {
-  audition: "オーディション",
-  event: "イベント情報",
-  fanclub: "ファンクラブ",
-  goods: "グッズ",
-  media: "メディア",
-  other: "その他",
-  release: "リリース",
-  shakehands: "ミート＆グリート",
-  ticket: "チケット"
-}
-
-/**
  * Fetch a month — or a single day, with `day` — of Sakura news, oldest first. Omit `filter` for the
  * site's default listing of most recent news, which spans several months rather than the current one.
  *
@@ -102,7 +86,7 @@ export function getSakuraNewsDetailUrl(id: string): string {
 
 /**
  * Parse the page's own category nav into a `cate-xxx` key to label map. Returns an empty object when the
- * nav is absent, in which case callers fall back to {@link SAKURA_NEWS_CATEGORIES}.
+ * nav is absent; items carry their own label, so this only backstops one that is blank.
  */
 export function parseSakuraNewsCategoriesHtml(html: string): Record<string, string> {
   return parseSakuraCategoryNav(html)
@@ -111,7 +95,7 @@ export function parseSakuraNewsCategoriesHtml(html: string): Record<string, stri
 /** Parse a news listing page. Returned oldest first, reversing the site's newest-first order. */
 export function parseSakuraNewsHtml(html: string): News[] {
   const $ = cheerio.load(html)
-  const categories = { ...SAKURA_NEWS_CATEGORIES, ...parseSakuraNewsCategoriesHtml(html) }
+  const categories = parseSakuraNewsCategoriesHtml(html)
   const elements = $("ul.com-news-part li.box")
   const news: News[] = []
 
@@ -173,7 +157,7 @@ export function parseSakuraNewsDetailHtml(html: string, url: string): NewsDetail
   const articleElement = $(".news-detailcont .post .com-news-part > div").first()
   if (articleElement.length === 0) throw new ParseError("Article element not found in HTML")
 
-  const categories = { ...SAKURA_NEWS_CATEGORIES, ...parseSakuraNewsCategoriesHtml(html) }
+  const categories = parseSakuraNewsCategoriesHtml(html)
   const categoryKey = getCategoryKeyFromClass($(articleElement).attr("class") ?? "", "cate-")
   if (categoryKey === undefined) throw new ParseError("Category not found in HTML")
 

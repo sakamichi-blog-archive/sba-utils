@@ -27,29 +27,6 @@ const NEWS_API_ENDPOINT = "https://www.nogizaka46.com/s/n46/api/list/news"
 const NEWS_DETAIL_URL = "https://www.nogizaka46.com/s/n46/news/detail"
 
 /**
- * Maps API `cate` keys to the Japanese labels shown on the site, used as a fallback when the listing page's
- * own category nav could not be read.
- */
-const NOGI_NEWS_CATEGORIES: Record<string, string> = {
-  book: "書籍",
-  goods: "グッズ",
-  live: "ライブ/イベント",
-  meet: "握手会",
-  meetandgreet: "ミート＆グリート",
-  mobile: "モバイル・アプリ",
-  movie: "映画",
-  musical: "舞台/ミュージカル",
-  other: "その他",
-  photo_book: "写真集",
-  radio: "ラジオ",
-  release: "CD/音楽配信/映像商品",
-  streaming: "映像配信サービス",
-  tieup: "タイアップ・CM",
-  tv: "テレビ",
-  web: "WEB"
-}
-
-/**
  * The API also returns `arti_code`, which — unlike the schedule API's field of the same name — does not
  * hold member IDs, so it is ignored. Nogi news expose no member data.
  */
@@ -77,7 +54,7 @@ const newsApiSchema = z.object({
  *
  * Unlike the other groups, the listing already carries each news' detail `html`, so there is no separate
  * detail fetch. The API exposes only category keys, so the listing page is fetched alongside it to resolve
- * their labels; if that request fails, {@link NOGI_NEWS_CATEGORIES} is used instead.
+ * their labels; if that request fails, the news carry a `categoryKey` but no `categoryName`.
  */
 export async function fetchNogiNews(filter?: NewsFilter): Promise<{
   news: NogiNews[]
@@ -126,8 +103,8 @@ export async function fetchNogiNewsDetailHtml(id: string): Promise<{
 }
 
 /**
- * Fetch the listing page's category nav and parse it into a `cate` key to label map. Falls back to
- * {@link NOGI_NEWS_CATEGORIES} — never throws — so that a news fetch is not lost to a label lookup.
+ * Fetch the listing page's category nav and parse it into a `cate` key to label map. Returns an empty
+ * object rather than throwing, so that a news fetch is never lost to a label lookup.
  */
 export async function fetchNogiNewsCategories(
   filter?: NewsFilter
@@ -147,11 +124,10 @@ export async function fetchNogiNewsCategories(
       throw new FetchStatusError(response.status, response.url)
     }
 
-    const categories = parseNogiNewsCategoriesHtml(await response.text())
-    return Object.keys(categories).length === 0 ? NOGI_NEWS_CATEGORIES : categories
+    return parseNogiNewsCategoriesHtml(await response.text())
   } catch (error) {
-    console.error("Failed to fetch news categories. Falling back to known categories.", error)
-    return NOGI_NEWS_CATEGORIES
+    console.error("Failed to fetch news categories. News will carry no category name.", error)
+    return {}
   }
 }
 
@@ -221,8 +197,8 @@ export function parseNogiNewsDetailHtml(html: string, url: string): NewsWithHtml
   )
   if (categoryKey === undefined) throw new ParseError("Category not found in HTML")
 
-  const categoryName = categoryElement.text().trim() || NOGI_NEWS_CATEGORIES[categoryKey]
-  if (categoryName === undefined || categoryName === "") {
+  const categoryName = categoryElement.text().trim()
+  if (categoryName === "") {
     throw new ParseError(`Cannot resolve category name for key: ${categoryKey}`)
   }
 
@@ -242,12 +218,9 @@ export function parseNogiNewsDetailHtml(html: string, url: string): NewsWithHtml
  * Parse a news API response. Returned oldest first, reversing the API's newest-first order.
  *
  * Pass `categories` — from {@link fetchNogiNewsCategories} or {@link parseNogiNewsCategoriesHtml} — to
- * resolve category keys against the site's current labels instead of {@link NOGI_NEWS_CATEGORIES}.
+ * resolve category keys to the labels the site displays. Without it the news carry no `categoryName`.
  */
-export function parseNogiNewsJs(
-  js: string,
-  categories: Record<string, string> = NOGI_NEWS_CATEGORIES
-): NogiNews[] {
+export function parseNogiNewsJs(js: string, categories: Record<string, string> = {}): NogiNews[] {
   const functionArgument = parseJsonpArgumentJson(js, "res")
   if (functionArgument === undefined) {
     throw new ParseError("Failed to find JavaScript function argument")

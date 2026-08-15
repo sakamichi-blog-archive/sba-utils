@@ -12,19 +12,6 @@ import { parseScheduleTimeRange } from "./_utils"
 const SCHEDULE_PAGE_URL = "https://www.hinatazaka46.com/s/official/media/list"
 const SCHEDULE_DETAIL_URL = "https://www.hinatazaka46.com/s/official/media/detail"
 
-/** Maps `category_xxx` class keys to Japanese labels, used as a fallback when the visible label is empty */
-const HINATA_SCHEDULE_CATEGORIES: Record<string, string> = {
-  // The nav filters on `birth`, but events themselves carry `birthday`
-  birthday: "誕生日",
-  event: "イベント",
-  goods: "グッズ",
-  media: "メディア",
-  other: "その他",
-  release: "リリース",
-  shakehands: "ミート＆グリート",
-  ticket: "チケット"
-}
-
 /**
  * A Hinata schedule list event. Unlike the other groups' list events, these carry no `html` or `members`;
  * fetch a single event with {@link fetchHinataScheduleEvent} to get those (see {@link HinataScheduleEventDetail}).
@@ -101,7 +88,7 @@ export function getHinataScheduleEventUrl(id: string): string {
 
 /**
  * Parse the page's own category nav into a `category_xxx` key to label map. Returns an empty object when
- * the nav is absent, in which case callers fall back to {@link HINATA_SCHEDULE_CATEGORIES}.
+ * the nav is absent; events carry their own label, so this only backstops one that is blank.
  */
 export function parseHinataScheduleCategoriesHtml(html: string): Record<string, string> {
   return parseHinataCategoryNav(html)
@@ -118,7 +105,7 @@ export function parseHinataScheduleEventsHtml(html: string): HinataScheduleEvent
   if (yearMonth === null) throw new ParseError(`Cannot parse schedule year/month: ${pageDate}`)
 
   const [, year, month] = yearMonth
-  const categories = { ...HINATA_SCHEDULE_CATEGORIES, ...parseHinataScheduleCategoriesHtml(html) }
+  const categories = parseHinataScheduleCategoriesHtml(html)
   const events: HinataScheduleEvent[] = []
 
   const dayGroups = $(".l-maincontents--schedule ul .p-schedule__list-group")
@@ -180,7 +167,7 @@ export function parseHinataScheduleEventHtml(html: string, url: string): HinataS
   ).first()
   if (articleElement.length === 0) throw new ParseError("Article element not found in HTML")
 
-  const categories = { ...HINATA_SCHEDULE_CATEGORIES, ...parseHinataScheduleCategoriesHtml(html) }
+  const categories = parseHinataScheduleCategoriesHtml(html)
   const categoryElement = $(articleElement).find(".p-article__info .c-schedule__category")
   const categoryKey = getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_")
   if (categoryKey === undefined) throw new ParseError("Category not found in HTML")

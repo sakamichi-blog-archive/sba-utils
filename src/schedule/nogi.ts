@@ -24,26 +24,6 @@ const SCHEDULE_PAGE_URL = "https://www.nogizaka46.com/s/n46/media/list"
 const SCHEDULE_API_ENDPOINT = "https://www.nogizaka46.com/s/n46/api/list/schedule"
 const SCHEDULE_DETAIL_URL = "https://www.nogizaka46.com/s/n46/media/detail"
 
-/** Maps API `cate` keys to the Japanese labels shown on the site */
-const NOGI_SCHEDULE_CATEGORIES: Record<string, string> = {
-  birthday: "誕生日",
-  book: "書籍",
-  live: "ライブ/イベント",
-  meet: "握手会",
-  meetandgreet: "ミート&グリート",
-  mobile: "モバイル・アプリ",
-  movie: "映画",
-  musical: "舞台/ミュージカル",
-  other: "その他",
-  photo_book: "写真集",
-  radio: "ラジオ",
-  release: "CD/音楽配信/映像商品",
-  streaming: "映像配信サービス",
-  tieup: "タイアップ・CM",
-  tv: "テレビ",
-  web: "WEB"
-}
-
 const scheduleApiSchema = z.object({
   data: z.array(
     z.object({
@@ -71,8 +51,8 @@ const scheduleApiSchema = z.object({
 
 /**
  * Fetch a month of Nogi schedule events. The API exposes only category keys, so the listing page is
- * fetched alongside it to resolve their labels; if that request fails, {@link NOGI_SCHEDULE_CATEGORIES} is
- * used instead.
+ * fetched alongside it to resolve their labels; if that request fails, the events carry a `categoryKey`
+ * but no `categoryName`.
  */
 export async function fetchNogiScheduleEvents(filter: ScheduleFilter): Promise<{
   events: NogiScheduleEvent[]
@@ -87,8 +67,8 @@ export async function fetchNogiScheduleEvents(filter: ScheduleFilter): Promise<{
 }
 
 /**
- * Fetch the listing page's category nav and parse it into a `cate` key to label map. Falls back to
- * {@link NOGI_SCHEDULE_CATEGORIES} — never throws — so that a schedule fetch is not lost to a label lookup.
+ * Fetch the listing page's category nav and parse it into a `cate` key to label map. Returns an empty
+ * object rather than throwing, so that a schedule fetch is never lost to a label lookup.
  */
 export async function fetchNogiScheduleCategories(
   filter: ScheduleFilter
@@ -105,11 +85,10 @@ export async function fetchNogiScheduleCategories(
       throw new FetchStatusError(response.status, response.url)
     }
 
-    const categories = parseNogiScheduleCategoriesHtml(await response.text())
-    return Object.keys(categories).length === 0 ? NOGI_SCHEDULE_CATEGORIES : categories
+    return parseNogiScheduleCategoriesHtml(await response.text())
   } catch (error) {
-    console.error("Failed to fetch schedule categories. Falling back to known categories.", error)
-    return NOGI_SCHEDULE_CATEGORIES
+    console.error("Failed to fetch schedule categories. Events will carry no category name.", error)
+    return {}
   }
 }
 
@@ -166,11 +145,11 @@ export function getNogiScheduleEventUrl(id: string): string {
  * Parse a schedule API response.
  *
  * Pass `categories` — from {@link fetchNogiScheduleCategories} or {@link parseNogiScheduleCategoriesHtml} —
- * to resolve category keys against the site's current labels instead of {@link NOGI_SCHEDULE_CATEGORIES}.
+ * to resolve category keys to the labels the site displays. Without it the events carry no `categoryName`.
  */
 export function parseNogiScheduleEventsJs(
   js: string,
-  categories: Record<string, string> = NOGI_SCHEDULE_CATEGORIES
+  categories: Record<string, string> = {}
 ): NogiScheduleEvent[] {
   const functionArgument = parseJsonpArgumentJson(js, "res")
   if (functionArgument === undefined) {

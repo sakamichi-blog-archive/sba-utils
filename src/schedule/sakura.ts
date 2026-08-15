@@ -14,18 +14,6 @@ export type SakuraScheduleEvent = Omit<ScheduleEventWithHtml, "url">
 
 const SCHEDULE_PAGE_URL = "https://sakurazaka46.com/s/s46/media/list"
 
-/** Maps `cate-xxx` class keys to Japanese labels, used as a fallback when the visible label is empty */
-const SAKURA_SCHEDULE_CATEGORIES: Record<string, string> = {
-  birthday: "誕生日",
-  event: "イベント情報",
-  goods: "グッズ",
-  media: "メディア",
-  other: "その他",
-  release: "リリース",
-  shakehands: "ミート＆グリート",
-  ticket: "チケット"
-}
-
 export async function fetchSakuraScheduleEvents(filter: ScheduleFilter): Promise<{
   events: SakuraScheduleEvent[]
   html: string
@@ -67,7 +55,7 @@ export function getSakuraScheduleUrl(filter: ScheduleFilter & { day?: number }):
 
 /**
  * Parse the page's own category nav into a `cate-xxx` key to label map. Returns an empty object when the
- * nav is absent, in which case callers fall back to {@link SAKURA_SCHEDULE_CATEGORIES}.
+ * nav is absent; events carry their own label, so this only backstops one that is blank.
  */
 export function parseSakuraScheduleCategoriesHtml(html: string): Record<string, string> {
   return parseSakuraCategoryNav(html)
@@ -75,7 +63,7 @@ export function parseSakuraScheduleCategoriesHtml(html: string): Record<string, 
 
 export function parseSakuraScheduleEventsHtml(html: string): SakuraScheduleEvent[] {
   const $ = cheerio.load(html)
-  const categories = { ...SAKURA_SCHEDULE_CATEGORIES, ...parseSakuraScheduleCategoriesHtml(html) }
+  const categories = parseSakuraScheduleCategoriesHtml(html)
   const modals = $(".module-modal.js-schedule-detail")
   const events: SakuraScheduleEvent[] = []
 

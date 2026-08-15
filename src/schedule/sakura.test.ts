@@ -81,8 +81,13 @@ describe("parseSakuraScheduleEventsHtml()", () => {
     expect(events[1]?.members).toEqual(["向井純葉"])
   })
 
-  it("falls back to the container class when the visible label is empty", () => {
+  it("falls back to the page's category nav when the visible label is empty", () => {
     const fallback = `
+      <div class="com-hero-nav">
+        <ul>
+          <li class="cate-goods"><a href="/s/s46/media/list?ima=0000&cd=goods">グッズ</a></li>
+        </ul>
+      </div>
       <main class="site-main">
         <div class="module-modal js-schedule-detail count_1_01">
           <div class="mordal-box"><div class="inner"><div class="cate-goods"><div class="txt">
