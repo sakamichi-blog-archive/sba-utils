@@ -89,9 +89,11 @@ export async function fetchNogiScheduleEvents(filter: ScheduleFilter): Promise<{
  * The page renders everything the listing does except `members`, so this is only worth calling when you
  * have an id but no list event.
  *
- * Beware the `date`: an id identifies an event, not one occurrence of it, and the page always shows the
- * event's original date. A weekly radio show listed under 2026/08/01 reports the date it first aired, and a
- * `birthday` reports the member's year of birth. Take `date` from the list event whenever you have one.
+ * Beware the `date`: an id identifies an event, not one occurrence of it, so the page reports the date the
+ * event was first listed rather than the occurrence you looked up — a weekly radio show appearing under
+ * 2026/08/01 reports 2026/04/04, its first airing. `birthday` events keep the member's month and day but
+ * carry an unreliable year, usually the one the entry was created in. Take `date` from the list event
+ * whenever you have one.
  */
 export async function fetchNogiScheduleEvent(id: string): Promise<{
   event: NogiScheduleEventDetail
