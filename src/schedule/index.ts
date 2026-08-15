@@ -1,4 +1,4 @@
-export type { ScheduleEvent, ScheduleEventWithHtml, ScheduleFilter, ScheduleGroup } from "./_types"
+export type { ScheduleEvent, ScheduleEventWithHtml, ScheduleFilter } from "./_types"
 export {
   fetchHinataScheduleEvent,
   fetchHinataScheduleEventHtml,

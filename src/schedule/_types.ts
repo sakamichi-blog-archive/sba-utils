@@ -1,5 +1,3 @@
-export type ScheduleGroup = "hinata" | "nogi" | "sakura"
-
 export interface ScheduleFilter {
   /** Full year, e.g. `2026` */
   year: number
@@ -16,7 +14,6 @@ export interface ScheduleEvent {
   category?: string
   /** Event date at JST midnight. Time of day, if any, is carried by {@link ScheduleEvent.timeStart} */
   date: Date
-  group: ScheduleGroup
   /**
    * Site-specific event identifier. Meaning differs per group:
    *

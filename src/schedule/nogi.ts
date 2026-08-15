@@ -136,7 +136,6 @@ export function parseNogiScheduleEventsJs(js: string): NogiScheduleEvent[] {
     events.push({
       category: NOGI_SCHEDULE_CATEGORIES[event.cate] ?? event.cate,
       date,
-      group: "nogi",
       html: event.text.trim(),
       id: event.code,
       members,

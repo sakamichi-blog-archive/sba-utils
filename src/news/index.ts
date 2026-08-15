@@ -1,4 +1,4 @@
-export type { News, NewsDetail, NewsFilter, NewsGroup, NewsWithHtml } from "./_types"
+export type { News, NewsDetail, NewsFilter, NewsWithHtml } from "./_types"
 export {
   fetchHinataNews,
   fetchHinataNewsDetail,

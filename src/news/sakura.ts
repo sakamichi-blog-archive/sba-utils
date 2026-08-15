@@ -27,8 +27,8 @@ const SAKURA_NEWS_CATEGORIES: Record<string, string> = {
 }
 
 /**
- * Fetch a month — or a single day, with `day` — of Sakura news, oldest first. Omit `filter` for the site's default listing of most recent
- * news, which spans several months rather than the current one.
+ * Fetch a month — or a single day, with `day` — of Sakura news, oldest first. Omit `filter` for the
+ * site's default listing of most recent news, which spans several months rather than the current one.
  *
  * List news carry no `html` or `members`; fetch a single news with {@link fetchSakuraNewsDetail} to get those.
  */
@@ -163,7 +163,6 @@ export function parseSakuraNewsHtml(html: string): News[] {
       categoryName:
         $(element).find("div.title-part p.type").first().text().trim() || categories[categoryKey],
       date,
-      group: "sakura",
       id,
       title: $(element).find("p.lead").first().text().trim(),
       url: url.href
@@ -198,7 +197,6 @@ export function parseSakuraNewsDetailHtml(html: string, url: string): NewsDetail
       $(articleElement).find("div.title-part p.type").first().text().trim() ||
       categories[categoryKey],
     date: parseDateJst($(articleElement).find("div.title-part p.date").first().text().trim()),
-    group: "sakura",
     html: $(articleElement).find("div.article").first().html()?.trim() ?? "",
     id,
     members,

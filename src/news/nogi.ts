@@ -65,8 +65,8 @@ const newsApiSchema = z.object({
 })
 
 /**
- * Fetch a month — or a single day, with `day` — of Nogi news, oldest first. Omit `filter` for the site's default listing of most recent
- * news, which spans several months rather than the current one.
+ * Fetch a month — or a single day, with `day` — of Nogi news, oldest first. Omit `filter` for the
+ * site's default listing of most recent news, which spans several months rather than the current one.
  *
  * Unlike the other groups, the listing already carries each news' detail `html`, so there is no separate
  * detail fetch. The API exposes only category keys, so the listing page is fetched alongside it to resolve
@@ -230,7 +230,6 @@ export function parseNogiNewsDetailHtml(html: string, url: string): NewsWithHtml
     categoryKey,
     categoryName: categoryElement.text().trim() || NOGI_NEWS_CATEGORIES[categoryKey],
     date: parseDateJst($(headerElement).find(".post_header_data span").first().text().trim()),
-    group: "nogi",
     // `.post_body_in` excludes the prev/next nav and latest-news list that share `.post_body`
     html: $("main .post_body .post_body_in").first().html()?.trim() ?? "",
     id,
@@ -273,7 +272,6 @@ export function parseNogiNewsJs(
       categoryName: categories[item.cate],
       date,
       datetime,
-      group: "nogi",
       html: item.text.trim(),
       id: item.code,
       title: item.title.trim(),

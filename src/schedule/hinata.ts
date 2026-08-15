@@ -150,7 +150,6 @@ export function parseHinataScheduleEventsHtml(html: string): HinataScheduleEvent
       events.push({
         category,
         date,
-        group: "hinata",
         id: url.pathname.match(/\/detail\/([^/?]+)/)?.[1],
         timeEnd,
         timeStart,
@@ -194,7 +193,6 @@ export function parseHinataScheduleEventHtml(html: string, url: string): HinataS
   return {
     category,
     date: dateText !== "" ? parseDateJst(dateText) : undefined,
-    group: "hinata",
     html: $(articleElement).find(".p-article__text").html()?.trim() ?? "",
     id: new URL(url).pathname.match(/\/detail\/([^/?]+)/)?.[1],
     members,

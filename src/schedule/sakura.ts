@@ -101,7 +101,6 @@ export function parseSakuraScheduleEventsHtml(html: string): SakuraScheduleEvent
     events.push({
       category,
       date,
-      group: "sakura",
       html: $(container).find(".txt p.lead").html()?.trim() ?? "",
       id: ($(modal).attr("class") ?? "").match(/count_(\d+)_/)?.[1],
       members,

@@ -99,7 +99,6 @@ describe("parseNogiScheduleEventsJs()", () => {
         {
           "category": "ライブ/イベント",
           "date": 2026-07-31T15:00:00.000Z,
-          "group": "nogi",
           "html": "<p>Event detail placeholder.</p>",
           "id": "107136",
           "members": [
@@ -114,7 +113,6 @@ describe("parseNogiScheduleEventsJs()", () => {
         {
           "category": "TV",
           "date": 2026-08-01T15:00:00.000Z,
-          "group": "nogi",
           "html": "<p>Broadcast detail placeholder.</p>",
           "id": "107140",
           "members": [
@@ -128,7 +126,6 @@ describe("parseNogiScheduleEventsJs()", () => {
         {
           "category": "special",
           "date": 2026-08-02T15:00:00.000Z,
-          "group": "nogi",
           "html": "<p>Placeholder.</p>",
           "id": "107150",
           "members": [],

@@ -127,7 +127,6 @@ describe("parseHinataScheduleEventsHtml()", () => {
         {
           "category": "誕生日",
           "date": 2026-07-31T15:00:00.000Z,
-          "group": "hinata",
           "id": "10222",
           "timeEnd": undefined,
           "timeStart": undefined,
@@ -137,7 +136,6 @@ describe("parseHinataScheduleEventsHtml()", () => {
         {
           "category": "メディア",
           "date": 2026-07-31T15:00:00.000Z,
-          "group": "hinata",
           "id": "10333",
           "timeEnd": undefined,
           "timeStart": "18:00",
@@ -147,7 +145,6 @@ describe("parseHinataScheduleEventsHtml()", () => {
         {
           "category": "イベント",
           "date": 2026-08-01T15:00:00.000Z,
-          "group": "hinata",
           "id": "10444",
           "timeEnd": "15:00",
           "timeStart": "13:00",
@@ -221,7 +218,6 @@ describe("parseHinataScheduleEventHtml()", () => {
       {
         "category": "メディア",
         "date": 2026-07-31T15:00:00.000Z,
-        "group": "hinata",
         "html": "<p>Broadcast detail placeholder.</p>",
         "id": "10333",
         "members": [

@@ -21,7 +21,6 @@ export {
   type News,
   type NewsDetail,
   type NewsFilter,
-  type NewsGroup,
   type NewsWithHtml,
   type NogiNews,
   parseHinataNewsCategoriesHtml,

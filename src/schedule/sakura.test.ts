@@ -103,7 +103,6 @@ describe("parseSakuraScheduleEventsHtml()", () => {
         {
           "category": "ライブ",
           "date": 2026-07-31T15:00:00.000Z,
-          "group": "sakura",
           "html": "<a href="https://example.com/">Event detail placeholder.</a>",
           "id": "11602",
           "members": [],
@@ -114,7 +113,6 @@ describe("parseSakuraScheduleEventsHtml()", () => {
         {
           "category": "メディア",
           "date": 2026-08-01T15:00:00.000Z,
-          "group": "sakura",
           "html": "Radio detail placeholder.",
           "id": "10472",
           "members": [

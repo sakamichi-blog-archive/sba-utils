@@ -1,5 +1,3 @@
-export type NewsGroup = "hinata" | "nogi" | "sakura"
-
 /**
  * Throws `RangeError` at fetch time if `month` is given without `year`, or `day` without `month`. Omit all
  * of them to get the site's default listing: the most recent news, which spans several months rather than
@@ -32,7 +30,6 @@ export interface News {
    * {@link NogiNews.datetime}.
    */
   date: Date
-  group: NewsGroup
   /** Site-specific news identifier, unique per news */
   id: string
   title: string

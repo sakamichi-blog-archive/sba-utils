@@ -28,8 +28,8 @@ const HINATA_NEWS_CATEGORIES: Record<string, string> = {
 }
 
 /**
- * Fetch a month — or a single day, with `day` — of Hinata news, oldest first. Omit `filter` for the site's default listing of most recent
- * news, which spans several months rather than the current one.
+ * Fetch a month — or a single day, with `day` — of Hinata news, oldest first. Omit `filter` for the
+ * site's default listing of most recent news, which spans several months rather than the current one.
  *
  * List news carry no `html` or `members`; fetch a single news with {@link fetchHinataNewsDetail} to get those.
  */
@@ -164,7 +164,6 @@ export function parseHinataNewsHtml(html: string): News[] {
       categoryKey,
       categoryName: categoryElement.text().trim() || categories[categoryKey],
       date,
-      group: "hinata",
       id,
       title: $(element).find("p.c-news__text").first().text().trim(),
       url: url.href
@@ -198,7 +197,6 @@ export function parseHinataNewsDetailHtml(html: string, url: string): NewsDetail
     categoryKey,
     categoryName: categoryElement.text().trim() || categories[categoryKey],
     date: parseDateJst($(articleElement).find(".p-article__info time.c-news__date").text().trim()),
-    group: "hinata",
     html: $(articleElement).find(".p-article__text").html()?.trim() ?? "",
     id,
     members,
