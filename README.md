@@ -32,8 +32,8 @@ const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
 
 | Group  | Single blog            | Blog list                   | Blog list by date                 |
 | ------ | ---------------------- | --------------------------- | --------------------------------- |
-| Hinata | `fetchHinataBlog(uid)` | `fetchHinataBlogs(filter?)` | — (built into `fetchHinataBlogs`) |
 | Nogi   | `fetchNogiBlog(uid)`   | `fetchNogiBlogs(filter?)`   | `fetchNogiBlogsByDate(filter)`    |
+| Hinata | `fetchHinataBlog(uid)` | `fetchHinataBlogs(filter?)` | — (built into `fetchHinataBlogs`) |
 | Sakura | `fetchSakuraBlog(uid)` | `fetchSakuraBlogs(filter?)` | — (built into `fetchSakuraBlogs`) |
 
 `filter` consists of the following properties. They may be used simultaneously.
@@ -69,8 +69,8 @@ const { newsDetail } = await fetchHinataNewsDetail("M02770")
 
 | Group  | News list                  | Single news                 |
 | ------ | -------------------------- | --------------------------- |
-| Hinata | `fetchHinataNews(filter?)` | `fetchHinataNewsDetail(id)` |
 | Nogi   | `fetchNogiNews(filter?)`   | `fetchNogiNewsDetail(id)`   |
+| Hinata | `fetchHinataNews(filter?)` | `fetchHinataNewsDetail(id)` |
 | Sakura | `fetchSakuraNews(filter?)` | `fetchSakuraNewsDetail(id)` |
 
 `filter` accepts `year`, `month` (January = 1), `day`, and `page`. Setting `month` requires `year`, and setting `day` requires `month`.
@@ -123,8 +123,8 @@ const { events } = await fetchHinataScheduleEvents({ year: 2026, month: 8 })
 
 | Group  | Event list                          | Single event                               |
 | ------ | ----------------------------------- | ------------------------------------------ |
-| Hinata | `fetchHinataScheduleEvents(filter)` | `fetchHinataScheduleEvent(id)`             |
 | Nogi   | `fetchNogiScheduleEvents(filter)`   | `fetchNogiScheduleEvent(id)`               |
+| Hinata | `fetchHinataScheduleEvents(filter)` | `fetchHinataScheduleEvent(id)`             |
 | Sakura | `fetchSakuraScheduleEvents(filter)` | — (built into `fetchSakuraScheduleEvents`) |
 
 `filter` requires both `year` and `month` (1-based; January = 1).
@@ -132,8 +132,8 @@ const { events } = await fetchHinataScheduleEvents({ year: 2026, month: 8 })
 Every event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:mm`, JST), `categoryKey`/`categoryName`, and `title`. Categories work exactly as they do for news, including the extra request Nogi needs — see [Categories](#categories) above. The remaining fields vary by group:
 
 - **Nogi** events also include `members`, the detail `html`, and a unique `url`. Single event does not return `members`.
-- **Sakura** events also include `members` and the detail `html`, but no `url` (the detail is an on-page modal).
 - **Hinata** list events include a `url` but omit `members` and `html` — fetch a single event with `fetchHinataScheduleEvent(id)` to get those. The `id` comes from each list event.
+- **Sakura** events also include `members` and the detail `html`, but no `url` (the detail is an on-page modal).
 
 ### Members
 
