@@ -20,21 +20,11 @@ npm install @sakamichi-blog-archive/utils
 
 ```typescript
 import { fetchHinataBlogs } from "@sakamichi-blog-archive/utils/blogs"
-```
 
-Fetch blogs from a specific year, month, or day:
-
-```typescript
-import { fetchHinataBlogs } from "@sakamichi-blog-archive/utils/blogs"
-
+// Fetch blogs from a specific year, month, or day
 const { blogs } = await fetchHinataBlogs({ year: 2026, month: 7, day: 1 })
-```
 
-Fetch blogs from a specific member, using their member ID from the official website:
-
-```typescript
-import { fetchHinataBlogs } from "@sakamichi-blog-archive/utils/blogs"
-
+// Fetch blogs from a specific member, using their member ID from the official website
 const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
 ```
 
@@ -122,12 +112,6 @@ const news = parseNogiNewsJs(js, categories) // reuse `categories` across calls
 ```
 
 ### Schedule
-
-```typescript
-import { fetchHinataScheduleEvents } from "@sakamichi-blog-archive/utils/schedule"
-```
-
-Fetch schedule events for a specific year and month:
 
 ```typescript
 import { fetchHinataScheduleEvents } from "@sakamichi-blog-archive/utils/schedule"
