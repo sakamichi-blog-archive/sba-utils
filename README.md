@@ -143,9 +143,9 @@ const { events } = await fetchHinataScheduleEvents({ year: 2026, month: 8 })
 
 Every event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:mm`, JST), `categoryKey`/`categoryName`, and `title`. Categories work exactly as news, including the extra request Nogi needs — see [Categories](#categories) above. The remaining fields vary by group:
 
-- **Nogi** events also include `members`, the detail `html`, and a unique `url`. Single event does not return `members`.
-- **Hinata** list events include a `url` but omit `members` and `html` — fetch a single event with `fetchHinataScheduleEvent(id)` to get those. The `id` comes from each list event.
-- **Sakura** events include `members` and the detail `html`, but no `url` (the detail is an on-page modal).
+- **Nogi** list events include `members`, the detail `html`, and a unique `url`. Single event does not return `members`.
+- **Hinata** list events include a `url`. `members` and `html` are not included — fetch single event to get those. The `id` comes from each list event.
+- **Sakura** list events include `members` and the detail `html`, but no `url` (the detail is an on-page modal).
 
 ### Members
 
