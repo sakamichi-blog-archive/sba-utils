@@ -138,7 +138,8 @@ describe("parseSakuraNewsHtml()", () => {
     expect(parseSakuraNewsHtml(html)).toMatchInlineSnapshot(`
       [
         {
-          "category": "グッズ",
+          "categoryKey": "goods",
+          "categoryName": "グッズ",
           "date": 2026-06-04T15:00:00.000Z,
           "group": "sakura",
           "id": "G00087",
@@ -146,7 +147,8 @@ describe("parseSakuraNewsHtml()", () => {
           "url": "https://sakurazaka46.com/s/s46/news/detail/G00087?ima=0000",
         },
         {
-          "category": "リリース",
+          "categoryKey": "release",
+          "categoryName": "リリース",
           "date": 2026-06-09T15:00:00.000Z,
           "group": "sakura",
           "id": "R00312",
@@ -154,7 +156,8 @@ describe("parseSakuraNewsHtml()", () => {
           "url": "https://sakurazaka46.com/s/s46/news/detail/R00312?ima=0000",
         },
         {
-          "category": "メディア",
+          "categoryKey": "media",
+          "categoryName": "メディア",
           "date": 2026-06-29T15:00:00.000Z,
           "group": "sakura",
           "id": "M02129",
@@ -165,8 +168,16 @@ describe("parseSakuraNewsHtml()", () => {
     `)
   })
 
-  it("falls back to the category class when the visible label is empty", () => {
-    expect(parseSakuraNewsHtml(html)[0]?.category).toBe("グッズ")
+  it("falls back to the category nav label when the visible label is empty", () => {
+    expect(parseSakuraNewsHtml(html)[0]?.categoryName).toBe("グッズ")
+  })
+
+  it("always exposes a category key, even when the label is empty", () => {
+    expect(parseSakuraNewsHtml(html).map(news => news.categoryKey)).toEqual([
+      "goods",
+      "release",
+      "media"
+    ])
   })
 
   it("skips news with no href", () => {
@@ -206,7 +217,8 @@ describe("parseSakuraNewsDetailHtml()", () => {
   it("parses news detail correctly", () => {
     expect(parseSakuraNewsDetailHtml(html, url)).toMatchInlineSnapshot(`
       {
-        "category": "メディア",
+        "categoryKey": "media",
+        "categoryName": "メディア",
         "date": 2026-06-29T15:00:00.000Z,
         "group": "sakura",
         "html": "ダミー本文です。<br>ぜひご覧ください。",

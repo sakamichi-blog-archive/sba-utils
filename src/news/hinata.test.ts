@@ -138,7 +138,8 @@ describe("parseHinataNewsHtml()", () => {
     expect(parseHinataNewsHtml(html)).toMatchInlineSnapshot(`
       [
         {
-          "category": "その他",
+          "categoryKey": "other",
+          "categoryName": "その他",
           "date": 2026-06-06T15:00:00.000Z,
           "group": "hinata",
           "id": "O100281",
@@ -146,7 +147,8 @@ describe("parseHinataNewsHtml()", () => {
           "url": "https://www.hinatazaka46.com/s/official/news/detail/O100281?ima=0000",
         },
         {
-          "category": "メディア",
+          "categoryKey": "media",
+          "categoryName": "メディア",
           "date": 2026-06-29T15:00:00.000Z,
           "group": "hinata",
           "id": "M02742",
@@ -154,7 +156,8 @@ describe("parseHinataNewsHtml()", () => {
           "url": "https://www.hinatazaka46.com/s/official/news/detail/M02742?ima=0000",
         },
         {
-          "category": "リリース",
+          "categoryKey": "release",
+          "categoryName": "リリース",
           "date": 2026-06-29T15:00:00.000Z,
           "group": "hinata",
           "id": "R00555",
@@ -165,8 +168,16 @@ describe("parseHinataNewsHtml()", () => {
     `)
   })
 
-  it("falls back to the category class when the visible label is empty", () => {
-    expect(parseHinataNewsHtml(html)[0]?.category).toBe("その他")
+  it("falls back to the category nav label when the visible label is empty", () => {
+    expect(parseHinataNewsHtml(html)[0]?.categoryName).toBe("その他")
+  })
+
+  it("always exposes a category key, even when the label is empty", () => {
+    expect(parseHinataNewsHtml(html).map(news => news.categoryKey)).toEqual([
+      "other",
+      "media",
+      "release"
+    ])
   })
 
   it("skips news with no href", () => {
@@ -215,7 +226,8 @@ describe("parseHinataNewsDetailHtml()", () => {
   it("parses news detail correctly", () => {
     expect(parseHinataNewsDetailHtml(html, url)).toMatchInlineSnapshot(`
       {
-        "category": "メディア",
+        "categoryKey": "media",
+        "categoryName": "メディア",
         "date": 2026-06-29T15:00:00.000Z,
         "group": "hinata",
         "html": "<p><span>ダミー本文です。<br>ぜひチェックしてみてください。</span></p>",

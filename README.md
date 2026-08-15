@@ -96,7 +96,7 @@ const { news } = await fetchHinataNews()
 
 Omitting `filter` does not fetch the current month — it returns the sites' default listing of most recent news, currently the latest 200 items, which spans several months. Pass `year`/`month` when you need a specific month.
 
-Every news item exposes `date` (JST midnight), `category`, `id`, `title`, and an absolute `url`. The remaining fields vary by group:
+Every news item exposes `date` (JST midnight), `categoryKey`/`categoryName`, `id`, `title`, and an absolute `url`. The remaining fields vary by group:
 
 - **Nogi** news also include `datetime` (the API is the only one that exposes a time of day) and the detail `html`, so the list alone is usually enough. They carry no member names, and `fetchNogiNewsDetail(id)` returns no `datetime` — the detail page shows a date only.
 - **Hinata** and **Sakura** list news omit `html` and `members` — fetch a single news to get those.
@@ -107,7 +107,14 @@ News is returned oldest first, reversing the order shown on the sites.
 
 #### Categories
 
-`category` is the Japanese label shown on the site. Labels are read from each site's own category nav at runtime, so a category added or renamed upstream is picked up without a release; a small built-in map is kept only as a fallback.
+Every news carries `categoryKey` and `categoryName`:
+
+- `categoryKey` — the site's own key, e.g. `"media"`. Always present. Stable across relabelling, so prefer it for storing and filtering.
+- `categoryName` — the Japanese label shown on the site, e.g. `"メディア"`. `undefined` when a key is new enough that no label could be resolved for it.
+
+The split matters because labels move: `shakehands` was 握手会 and is now ミート＆グリート, while the key stayed put.
+
+Labels are read from each site's own category nav at runtime, so a category added or renamed upstream is picked up without a release; a small built-in map is kept only as a fallback.
 
 For Hinata and Sakura the nav ships in the same document as the news itself, so this costs nothing. Nogi's API returns category keys only, so `fetchNogiNews` fetches the listing page alongside it — two requests per call. If that request fails it falls back to the built-in map rather than failing the fetch, and a key present in neither is passed through verbatim.
 

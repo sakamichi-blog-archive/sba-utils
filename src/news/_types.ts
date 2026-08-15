@@ -16,11 +16,17 @@ export interface NewsFilter {
 
 export interface News {
   /**
-   * Category label as shown on the site (Japanese), e.g. `"メディア"`. `undefined` when the news carries
-   * no category. For `nogi` (whose API exposes only a category key), an unrecognized key is passed through
-   * verbatim rather than mapped to a label.
+   * Stable category key as used by the site, e.g. `"media"`. Taken from the `category_xxx`/`cate-xxx` class
+   * for `hinata`/`sakura` and from the API's `cate` field for `nogi`. Prefer this for storing and filtering:
+   * unlike {@link News.categoryName} it does not change when a category is relabelled.
    */
-  category?: string
+  categoryKey: string
+  /**
+   * Category label as shown on the site (Japanese), e.g. `"メディア"`. Read from the page, or from the
+   * site's category nav for `nogi`, whose API exposes only the key. `undefined` when a key is new enough
+   * that no label could be resolved for it.
+   */
+  categoryName?: string
   /**
    * Publication date at JST midnight. `nogi` also exposes the time of day via {@link News.datetime}; the
    * other groups publish the date only.

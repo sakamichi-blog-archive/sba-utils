@@ -4,7 +4,7 @@ import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDateJst } from "../shared/datetime"
 import { formatOptionalDy } from "../shared/dy"
 import { FetchStatusError, ParseError } from "../shared/errors"
-import { resolveCategoryFromClass } from "../shared/html"
+import { getCategoryKeyFromClass } from "../shared/html"
 import type { News, NewsDetail, NewsFilter } from "./_types"
 
 const NEWS_PAGE_URL = "https://www.hinatazaka46.com/s/official/news/list"
@@ -114,10 +114,7 @@ export function parseHinataNewsCategoriesHtml(html: string): Record<string, stri
     // The "ALL" link carries no `cd=` and is not a category
     if (!($(element).attr("href") ?? "").includes("cd=")) continue
 
-    const key = ($(element).attr("class") ?? "")
-      .split(/\s+/)
-      .find(token => token.startsWith("category_"))
-      ?.slice("category_".length)
+    const key = getCategoryKeyFromClass($(element).attr("class") ?? "", "category_")
     const label = $(element).text().trim()
     if (key !== undefined && key !== "" && label !== "") categories[key] = label
   }
@@ -157,11 +154,15 @@ export function parseHinataNewsHtml(html: string): News[] {
     }
 
     const categoryElement = $(element).find(".c-news__category").first()
+    const categoryKey = getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_")
+    if (categoryKey === undefined) {
+      console.error(`Failed to extract category key for news ${id}. Skipping.`)
+      continue
+    }
 
     news.push({
-      category:
-        categoryElement.text().trim() ||
-        resolveCategoryFromClass(categoryElement.attr("class") ?? "", "category_", categories),
+      categoryKey,
+      categoryName: categoryElement.text().trim() || categories[categoryKey],
       date,
       group: "hinata",
       id,
@@ -183,6 +184,8 @@ export function parseHinataNewsDetailHtml(html: string, url: string): NewsDetail
 
   const categories = { ...HINATA_NEWS_CATEGORIES, ...parseHinataNewsCategoriesHtml(html) }
   const categoryElement = $(articleElement).find(".p-article__info .c-news__category").first()
+  const categoryKey = getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_")
+  if (categoryKey === undefined) throw new ParseError("Category not found in HTML")
 
   const members: string[] = []
   const memberElements = $(articleElement).find(".c-article__tag > a")
@@ -192,9 +195,8 @@ export function parseHinataNewsDetailHtml(html: string, url: string): NewsDetail
   }
 
   return {
-    category:
-      categoryElement.text().trim() ||
-      resolveCategoryFromClass(categoryElement.attr("class") ?? "", "category_", categories),
+    categoryKey,
+    categoryName: categoryElement.text().trim() || categories[categoryKey],
     date: parseDateJst($(articleElement).find(".p-article__info time.c-news__date").text().trim()),
     group: "hinata",
     html: $(articleElement).find(".p-article__text").html()?.trim() ?? "",

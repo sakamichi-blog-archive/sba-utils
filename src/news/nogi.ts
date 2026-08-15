@@ -5,7 +5,7 @@ import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDateJst, parseDatetimeJst } from "../shared/datetime"
 import { formatOptionalDy } from "../shared/dy"
 import { FetchStatusError, ParseError } from "../shared/errors"
-import { resolveCategoryFromClass } from "../shared/html"
+import { getCategoryKeyFromClass } from "../shared/html"
 import { parseJsonpArgumentJson } from "../shared/jsonp"
 import type { NewsFilter, NewsWithHtml } from "./_types"
 
@@ -219,15 +219,15 @@ export function parseNogiNewsDetailHtml(html: string, url: string): NewsWithHtml
   if (headerElement.length === 0) throw new ParseError("Article element not found in HTML")
 
   const categoryElement = $(headerElement).find(".post_header_cat .cat_name").first()
+  const categoryKey = getCategoryKeyFromClass(
+    $(headerElement).find(".post_header_cat .cat_icon").attr("class") ?? "",
+    "i--"
+  )
+  if (categoryKey === undefined) throw new ParseError("Category not found in HTML")
 
   return {
-    category:
-      categoryElement.text().trim() ||
-      resolveCategoryFromClass(
-        $(headerElement).find(".post_header_cat .cat_icon").attr("class") ?? "",
-        "i--",
-        NOGI_NEWS_CATEGORIES
-      ),
+    categoryKey,
+    categoryName: categoryElement.text().trim() || NOGI_NEWS_CATEGORIES[categoryKey],
     date: parseDateJst($(headerElement).find(".post_header_data span").first().text().trim()),
     group: "nogi",
     // `.post_body_in` excludes the prev/next nav and latest-news list that share `.post_body`
@@ -268,7 +268,8 @@ export function parseNogiNewsJs(
     }
 
     news.push({
-      category: categories[item.cate] ?? item.cate,
+      categoryKey: item.cate,
+      categoryName: categories[item.cate],
       date,
       datetime,
       group: "nogi",

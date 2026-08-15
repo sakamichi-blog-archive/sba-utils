@@ -4,7 +4,7 @@ import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDateJst } from "../shared/datetime"
 import { formatOptionalDy } from "../shared/dy"
 import { FetchStatusError, ParseError } from "../shared/errors"
-import { resolveCategoryFromClass } from "../shared/html"
+import { getCategoryKeyFromClass } from "../shared/html"
 import type { News, NewsDetail, NewsFilter } from "./_types"
 
 const NEWS_PAGE_URL = "https://sakurazaka46.com/s/s46/news/list"
@@ -113,10 +113,7 @@ export function parseSakuraNewsCategoriesHtml(html: string): Record<string, stri
     // The "ALL" and member-select links carry no `cd=` and are not categories
     if (!($(element).find("a").first().attr("href") ?? "").includes("cd=")) continue
 
-    const key = ($(element).attr("class") ?? "")
-      .split(/\s+/)
-      .find(token => token.startsWith("cate-"))
-      ?.slice("cate-".length)
+    const key = getCategoryKeyFromClass($(element).attr("class") ?? "", "cate-")
     const label = $(element).find("a").first().text().trim()
     if (key !== undefined && key !== "" && label !== "") categories[key] = label
   }
@@ -146,6 +143,12 @@ export function parseSakuraNewsHtml(html: string): News[] {
       continue
     }
 
+    const categoryKey = getCategoryKeyFromClass($(element).attr("class") ?? "", "cate-")
+    if (categoryKey === undefined) {
+      console.error(`Failed to extract category key for news ${id}. Skipping.`)
+      continue
+    }
+
     const dateText = $(element).find("div.title-part p.date").first().text().trim()
     let date: Date
     try {
@@ -156,9 +159,9 @@ export function parseSakuraNewsHtml(html: string): News[] {
     }
 
     news.push({
-      category:
-        $(element).find("div.title-part p.type").first().text().trim() ||
-        resolveCategoryFromClass($(element).attr("class") ?? "", "cate-", categories),
+      categoryKey,
+      categoryName:
+        $(element).find("div.title-part p.type").first().text().trim() || categories[categoryKey],
       date,
       group: "sakura",
       id,
@@ -179,6 +182,8 @@ export function parseSakuraNewsDetailHtml(html: string, url: string): NewsDetail
   if (articleElement.length === 0) throw new ParseError("Article element not found in HTML")
 
   const categories = { ...SAKURA_NEWS_CATEGORIES, ...parseSakuraNewsCategoriesHtml(html) }
+  const categoryKey = getCategoryKeyFromClass($(articleElement).attr("class") ?? "", "cate-")
+  if (categoryKey === undefined) throw new ParseError("Category not found in HTML")
 
   const members: string[] = []
   const memberElements = $(articleElement).find("div.taglist span")
@@ -188,9 +193,10 @@ export function parseSakuraNewsDetailHtml(html: string, url: string): NewsDetail
   }
 
   return {
-    category:
+    categoryKey,
+    categoryName:
       $(articleElement).find("div.title-part p.type").first().text().trim() ||
-      resolveCategoryFromClass($(articleElement).attr("class") ?? "", "cate-", categories),
+      categories[categoryKey],
     date: parseDateJst($(articleElement).find("div.title-part p.date").first().text().trim()),
     group: "sakura",
     html: $(articleElement).find("div.article").first().html()?.trim() ?? "",

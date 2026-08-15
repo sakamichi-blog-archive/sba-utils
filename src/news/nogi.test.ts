@@ -145,7 +145,8 @@ describe("fetchNogiNewsDetail()", () => {
       })
     )
     const { newsDetail, url } = await fetchNogiNewsDetail("102051")
-    expect(newsDetail.category).toBe("CD/音楽配信/映像商品")
+    expect(newsDetail.categoryKey).toBe("release")
+    expect(newsDetail.categoryName).toBe("CD/音楽配信/映像商品")
     expect(url).toBe("https://www.nogizaka46.com/s/n46/news/detail/102051?ima=3456")
   })
 })
@@ -228,7 +229,8 @@ describe("parseNogiNewsJs()", () => {
     expect(parseNogiNewsJs(js)).toMatchInlineSnapshot(`
       [
         {
-          "category": "テレビ",
+          "categoryKey": "tv",
+          "categoryName": "テレビ",
           "date": 2026-05-31T15:00:00.000Z,
           "datetime": 2026-05-31T15:44:51.000Z,
           "group": "nogi",
@@ -238,7 +240,8 @@ describe("parseNogiNewsJs()", () => {
           "url": "https://www.nogizaka46.com/s/n46/news/detail/101977?ima=0140",
         },
         {
-          "category": "unknown_category",
+          "categoryKey": "unknown_category",
+          "categoryName": undefined,
           "date": 2026-06-14T15:00:00.000Z,
           "datetime": 2026-06-15T03:00:00.000Z,
           "group": "nogi",
@@ -248,7 +251,8 @@ describe("parseNogiNewsJs()", () => {
           "url": "https://www.nogizaka46.com/s/n46/news/detail/102040?ima=0140",
         },
         {
-          "category": "CD/音楽配信/映像商品",
+          "categoryKey": "release",
+          "categoryName": "CD/音楽配信/映像商品",
           "date": 2026-06-29T15:00:00.000Z,
           "datetime": 2026-06-30T12:00:00.000Z,
           "group": "nogi",
@@ -261,13 +265,14 @@ describe("parseNogiNewsJs()", () => {
     `)
   })
 
-  it("passes through a category key that is in neither map verbatim", () => {
-    expect(parseNogiNewsJs(js)[1]?.category).toBe("unknown_category")
+  it("exposes the key with no name when the key is in neither map", () => {
+    expect(parseNogiNewsJs(js)[1]?.categoryKey).toBe("unknown_category")
+    expect(parseNogiNewsJs(js)[1]?.categoryName).toBeUndefined()
   })
 
-  it("resolves categories from a supplied map, overriding the known categories", () => {
+  it("resolves names from a supplied map, overriding the known categories", () => {
     const categories = parseNogiNewsCategoriesHtml(readFixture("nogi-news-categories.html"))
-    expect(parseNogiNewsJs(js, categories)[1]?.category).toBe("新カテゴリー")
+    expect(parseNogiNewsJs(js, categories)[1]?.categoryName).toBe("新カテゴリー")
   })
 })
 
@@ -286,7 +291,8 @@ describe("parseNogiNewsDetailHtml()", () => {
   it("parses news detail correctly", () => {
     expect(parseNogiNewsDetailHtml(html, url)).toMatchInlineSnapshot(`
       {
-        "category": "CD/音楽配信/映像商品",
+        "categoryKey": "release",
+        "categoryName": "CD/音楽配信/映像商品",
         "date": 2026-06-29T15:00:00.000Z,
         "group": "nogi",
         "html": "ダミー本文です。<br>ぜひご確認ください。",
@@ -303,7 +309,7 @@ describe("parseNogiNewsDetailHtml()", () => {
     expect(contentHtml).not.toContain("次の記事")
   })
 
-  it("falls back to the category icon class when the label is empty", () => {
+  it("falls back to the known category name when the label is empty", () => {
     const fallback = `
       <main>
         <header class="post_header">
@@ -315,6 +321,6 @@ describe("parseNogiNewsDetailHtml()", () => {
           <div class="post_header_data"><span>2026.06.30</span></div>
         </header>
       </main>`
-    expect(parseNogiNewsDetailHtml(fallback, url).category).toBe("テレビ")
+    expect(parseNogiNewsDetailHtml(fallback, url).categoryName).toBe("テレビ")
   })
 })
