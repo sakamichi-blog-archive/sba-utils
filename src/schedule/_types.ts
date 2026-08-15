@@ -22,9 +22,8 @@ export interface ScheduleEvent {
   /** Event date at JST midnight. Time of day, if any, is carried by {@link ScheduleEvent.timeStart} */
   date: Date
   /**
-   * Site-specific event identifier. It identifies an event, not one occurrence of it — in every group a
-   * recurring event keeps a single id across all of its occurrences, so an id is not a key for a row in a
-   * month's listing.
+   * Site-specific event identifier. A recurring event keeps a single id across all of its occurrences, in
+   * every group, so an id alone does not identify an entry in a month's listing.
    */
   id?: string
   /**

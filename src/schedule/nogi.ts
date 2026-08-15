@@ -37,7 +37,7 @@ const scheduleApiSchema = z.object({
       arti_code: z.array(z.array(z.string())),
       /** Category key */
       cate: z.string(),
-      /** UID, unique per event */
+      /** UID, repeated across a recurring event's occurrences */
       code: z.string(),
       /** `YYYY/MM/DD` format */
       date: z.string(),
