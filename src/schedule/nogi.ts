@@ -1,7 +1,7 @@
+import * as cheerio from "cheerio"
 import * as z from "zod"
 
 import { members as nogiMembers } from "../members/nogi"
-import { parseNogiScheduleCategoryNav } from "../shared/categories"
 import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDateJst } from "../shared/datetime"
 import { formatDy } from "../shared/dy"
@@ -97,7 +97,21 @@ export async function fetchNogiScheduleCategories(
  * nav is absent.
  */
 export function parseNogiScheduleCategoriesHtml(html: string): Record<string, string> {
-  return parseNogiScheduleCategoryNav(html)
+  const $ = cheerio.load(html)
+  const categories: Record<string, string> = {}
+
+  // Unlike the news nav's anchors, the schedule filter is radio inputs paired with a `<label>`
+  const elements = $(`.js-catLink input[name="ct"]`)
+  for (let elementIndex = 0; elementIndex < elements.length; elementIndex++) {
+    const element = elements[elementIndex]
+    // The "ALL" input carries an empty `value` and is not a category
+    const key = $(element).attr("value") ?? ""
+    const id = $(element).attr("id")
+    const label = $(element).closest(".js-catLink").find(`label[for="${id}"]`).text().trim()
+    if (key !== "" && label !== "") categories[key] = label
+  }
+
+  return categories
 }
 
 export async function fetchNogiScheduleEventsJs(filter: ScheduleFilter): Promise<{

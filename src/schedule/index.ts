@@ -8,7 +8,6 @@ export {
   getHinataScheduleUrl,
   type HinataScheduleEvent,
   type HinataScheduleEventDetail,
-  parseHinataScheduleCategoriesHtml,
   parseHinataScheduleEventHtml,
   parseHinataScheduleEventsHtml
 } from "./hinata"
@@ -26,7 +25,6 @@ export {
   fetchSakuraScheduleEvents,
   fetchSakuraScheduleEventsHtml,
   getSakuraScheduleUrl,
-  parseSakuraScheduleCategoriesHtml,
   parseSakuraScheduleEventsHtml,
   type SakuraScheduleEvent
 } from "./sakura"

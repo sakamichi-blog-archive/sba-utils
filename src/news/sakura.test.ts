@@ -9,7 +9,6 @@ import {
   fetchSakuraNewsHtml,
   getSakuraNewsDetailUrl,
   getSakuraNewsUrl,
-  parseSakuraNewsCategoriesHtml,
   parseSakuraNewsDetailHtml,
   parseSakuraNewsHtml
 } from "./sakura"
@@ -32,7 +31,7 @@ describe("fetchSakuraNews()", () => {
       })
     )
     const { news, html, url } = await fetchSakuraNews({ year: 2026, month: 6 })
-    expect(news).toHaveLength(3)
+    expect(news).toHaveLength(2)
     expect(html).toBe(readFixture("sakura-news.html"))
     expect(url).toBe("https://sakurazaka46.com/s/s46/news/list?ima=3456&dy=202606")
   })
@@ -138,14 +137,6 @@ describe("parseSakuraNewsHtml()", () => {
     expect(parseSakuraNewsHtml(html)).toMatchInlineSnapshot(`
       [
         {
-          "categoryKey": "goods",
-          "categoryName": "グッズ",
-          "date": 2026-06-04T15:00:00.000Z,
-          "id": "G00087",
-          "title": "新規グッズの販売が決定！",
-          "url": "https://sakurazaka46.com/s/s46/news/detail/G00087?ima=0000",
-        },
-        {
           "categoryKey": "release",
           "categoryName": "リリース",
           "date": 2026-06-09T15:00:00.000Z,
@@ -165,16 +156,13 @@ describe("parseSakuraNewsHtml()", () => {
     `)
   })
 
-  it("falls back to the category nav label when the visible label is empty", () => {
-    expect(parseSakuraNewsHtml(html)[0]?.categoryName).toBe("グッズ")
+  it("skips news whose displayed category label is empty", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {})
+    expect(parseSakuraNewsHtml(html).every(news => news.categoryKey !== "goods")).toBe(true)
   })
 
-  it("always exposes a category key, even when the label is empty", () => {
-    expect(parseSakuraNewsHtml(html).map(news => news.categoryKey)).toEqual([
-      "goods",
-      "release",
-      "media"
-    ])
+  it("always exposes a category key", () => {
+    expect(parseSakuraNewsHtml(html).map(news => news.categoryKey)).toEqual(["release", "media"])
   })
 
   it("skips news with no href", () => {
@@ -183,19 +171,6 @@ describe("parseSakuraNewsHtml()", () => {
 
   it("returns an empty array when there is no news list", () => {
     expect(parseSakuraNewsHtml("<html></html>")).toEqual([])
-  })
-})
-
-describe("parseSakuraNewsCategoriesHtml()", () => {
-  it("parses the category nav, skipping the ALL and member-select links", () => {
-    expect(parseSakuraNewsCategoriesHtml(readFixture("sakura-news.html"))).toEqual({
-      goods: "グッズ",
-      media: "メディア"
-    })
-  })
-
-  it("returns an empty object when there is no category nav", () => {
-    expect(parseSakuraNewsCategoriesHtml("<html></html>")).toEqual({})
   })
 })
 

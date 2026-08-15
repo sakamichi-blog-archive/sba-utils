@@ -116,7 +116,9 @@ Both are always present, with one exception: Nogi's listing API returns the key 
 
 The split matters because labels move: `shakehands` was 握手会 and is now ミート＆グリート, while the key stayed put.
 
-Labels come from the sites themselves, never from a list baked into this package. Hinata and Sakura render the label on each item, with the page's own category nav as a backstop; both arrive in the document already being parsed, so they cost nothing. Nogi's listing API returns the key alone, so its listing page is fetched alongside to read the nav — one extra request per call, and if it fails those news carry a `categoryKey` but no `categoryName` rather than a possibly-wrong label.
+Labels come from the sites themselves, never from a list baked into this package. Hinata and Sakura render the label on every item, list and detail alike, so it is read straight off the page at no extra cost. Nogi's listing API returns the key alone, so its listing page is fetched alongside to read the category nav — one extra request, and only there; its detail page renders the label like everyone else's.
+
+Nothing falls back to a guess. If Nogi's nav cannot be read, those news carry a `categoryKey` with no `categoryName`. If a label is missing where one is expected, the item is skipped in a listing and `ParseError` is thrown for a single news.
 
 To resolve labels yourself, or to reuse one map across several Nogi calls instead of refetching it, pass it in:
 

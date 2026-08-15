@@ -6,7 +6,6 @@ export {
   fetchHinataNewsHtml,
   getHinataNewsDetailUrl,
   getHinataNewsUrl,
-  parseHinataNewsCategoriesHtml,
   parseHinataNewsDetailHtml,
   parseHinataNewsHtml
 } from "./hinata"
@@ -30,7 +29,6 @@ export {
   fetchSakuraNewsHtml,
   getSakuraNewsDetailUrl,
   getSakuraNewsUrl,
-  parseSakuraNewsCategoriesHtml,
   parseSakuraNewsDetailHtml,
   parseSakuraNewsHtml
 } from "./sakura"

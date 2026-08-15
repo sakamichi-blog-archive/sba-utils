@@ -23,13 +23,11 @@ export {
   type NewsFilter,
   type NewsWithHtml,
   type NogiNews,
-  parseHinataNewsCategoriesHtml,
   parseHinataNewsDetailHtml,
   parseHinataNewsHtml,
   parseNogiNewsCategoriesHtml,
   parseNogiNewsDetailHtml,
   parseNogiNewsJs,
-  parseSakuraNewsCategoriesHtml,
   parseSakuraNewsDetailHtml,
   parseSakuraNewsHtml
 } from "./news/index"

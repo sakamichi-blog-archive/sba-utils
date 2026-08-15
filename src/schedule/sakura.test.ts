@@ -81,13 +81,8 @@ describe("parseSakuraScheduleEventsHtml()", () => {
     expect(events[1]?.members).toEqual(["向井純葉"])
   })
 
-  it("falls back to the page's category nav when the visible label is empty", () => {
-    const fallback = `
-      <div class="com-hero-nav">
-        <ul>
-          <li class="cate-goods"><a href="/s/s46/media/list?ima=0000&cd=goods">グッズ</a></li>
-        </ul>
-      </div>
+  it("skips an event whose displayed category label is empty", () => {
+    const unresolvable = `
       <main class="site-main">
         <div class="module-modal js-schedule-detail count_1_01">
           <div class="mordal-box"><div class="inner"><div class="cate-goods"><div class="txt">
@@ -99,7 +94,8 @@ describe("parseSakuraScheduleEventsHtml()", () => {
           </div></div></div></div>
         </div>
       </main>`
-    expect(parseSakuraScheduleEventsHtml(fallback)[0]?.categoryName).toBe("グッズ")
+    vi.spyOn(console, "error").mockImplementation(() => {})
+    expect(parseSakuraScheduleEventsHtml(unresolvable)).toEqual([])
   })
 
   it("parses event fields correctly", () => {

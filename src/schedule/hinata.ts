@@ -1,6 +1,5 @@
 import * as cheerio from "cheerio"
 
-import { parseHinataCategoryNav } from "../shared/categories"
 import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDateJst } from "../shared/datetime"
 import { formatDy } from "../shared/dy"
@@ -86,14 +85,6 @@ export function getHinataScheduleEventUrl(id: string): string {
   return `${SCHEDULE_DETAIL_URL}/${id}?ima=${getMmss()}`
 }
 
-/**
- * Parse the page's own category nav into a `category_xxx` key to label map. Returns an empty object when
- * the nav is absent; events carry their own label, so this only backstops one that is blank.
- */
-export function parseHinataScheduleCategoriesHtml(html: string): Record<string, string> {
-  return parseHinataCategoryNav(html)
-}
-
 export function parseHinataScheduleEventsHtml(html: string): HinataScheduleEvent[] {
   const $ = cheerio.load(html)
 
@@ -105,7 +96,6 @@ export function parseHinataScheduleEventsHtml(html: string): HinataScheduleEvent
   if (yearMonth === null) throw new ParseError(`Cannot parse schedule year/month: ${pageDate}`)
 
   const [, year, month] = yearMonth
-  const categories = parseHinataScheduleCategoriesHtml(html)
   const events: HinataScheduleEvent[] = []
 
   const dayGroups = $(".l-maincontents--schedule ul .p-schedule__list-group")
@@ -134,8 +124,8 @@ export function parseHinataScheduleEventsHtml(html: string): HinataScheduleEvent
       const url = new URL(href, SCHEDULE_PAGE_URL)
       const categoryElement = $(element).find(".p-schedule__head .c-schedule__category").first()
       const categoryKey = getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_")
-      const categoryName = categoryElement.text().trim() || categories[categoryKey ?? ""]
-      if (categoryKey === undefined || categoryName === undefined || categoryName === "") {
+      const categoryName = categoryElement.text().trim()
+      if (categoryKey === undefined || categoryName === "") {
         console.error(`Failed to resolve category for event index ${elementIndex}. Skipping.`)
         continue
       }
@@ -167,13 +157,12 @@ export function parseHinataScheduleEventHtml(html: string, url: string): HinataS
   ).first()
   if (articleElement.length === 0) throw new ParseError("Article element not found in HTML")
 
-  const categories = parseHinataScheduleCategoriesHtml(html)
   const categoryElement = $(articleElement).find(".p-article__info .c-schedule__category")
   const categoryKey = getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_")
   if (categoryKey === undefined) throw new ParseError("Category not found in HTML")
 
-  const categoryName = categoryElement.text().trim() || categories[categoryKey]
-  if (categoryName === undefined || categoryName === "") {
+  const categoryName = categoryElement.text().trim()
+  if (categoryName === "") {
     throw new ParseError(`Cannot resolve category name for key: ${categoryKey}`)
   }
 

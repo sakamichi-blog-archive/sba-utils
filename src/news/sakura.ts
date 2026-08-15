@@ -1,6 +1,5 @@
 import * as cheerio from "cheerio"
 
-import { parseSakuraCategoryNav } from "../shared/categories"
 import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDateJst } from "../shared/datetime"
 import { formatOptionalDy } from "../shared/dy"
@@ -84,18 +83,9 @@ export function getSakuraNewsDetailUrl(id: string): string {
   return `${NEWS_DETAIL_URL}/${id}?ima=${getMmss()}`
 }
 
-/**
- * Parse the page's own category nav into a `cate-xxx` key to label map. Returns an empty object when the
- * nav is absent; items carry their own label, so this only backstops one that is blank.
- */
-export function parseSakuraNewsCategoriesHtml(html: string): Record<string, string> {
-  return parseSakuraCategoryNav(html)
-}
-
 /** Parse a news listing page. Returned oldest first, reversing the site's newest-first order. */
 export function parseSakuraNewsHtml(html: string): News[] {
   const $ = cheerio.load(html)
-  const categories = parseSakuraNewsCategoriesHtml(html)
   const elements = $("ul.com-news-part li.box")
   const news: News[] = []
 
@@ -129,9 +119,8 @@ export function parseSakuraNewsHtml(html: string): News[] {
       continue
     }
 
-    const categoryName =
-      $(element).find("div.title-part p.type").first().text().trim() || categories[categoryKey]
-    if (categoryName === undefined || categoryName === "") {
+    const categoryName = $(element).find("div.title-part p.type").first().text().trim()
+    if (categoryName === "") {
       console.error(`Failed to resolve category name for news ${id}. Skipping.`)
       continue
     }
@@ -157,13 +146,11 @@ export function parseSakuraNewsDetailHtml(html: string, url: string): NewsDetail
   const articleElement = $(".news-detailcont .post .com-news-part > div").first()
   if (articleElement.length === 0) throw new ParseError("Article element not found in HTML")
 
-  const categories = parseSakuraNewsCategoriesHtml(html)
   const categoryKey = getCategoryKeyFromClass($(articleElement).attr("class") ?? "", "cate-")
   if (categoryKey === undefined) throw new ParseError("Category not found in HTML")
 
-  const categoryName =
-    $(articleElement).find("div.title-part p.type").first().text().trim() || categories[categoryKey]
-  if (categoryName === undefined || categoryName === "") {
+  const categoryName = $(articleElement).find("div.title-part p.type").first().text().trim()
+  if (categoryName === "") {
     throw new ParseError(`Cannot resolve category name for key: ${categoryKey}`)
   }
 

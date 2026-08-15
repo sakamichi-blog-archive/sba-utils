@@ -1,6 +1,5 @@
 import * as cheerio from "cheerio"
 
-import { parseSakuraCategoryNav } from "../shared/categories"
 import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDateJst } from "../shared/datetime"
 import { formatDy } from "../shared/dy"
@@ -53,17 +52,8 @@ export function getSakuraScheduleUrl(filter: ScheduleFilter & { day?: number }):
   return `${SCHEDULE_PAGE_URL}?${params}`
 }
 
-/**
- * Parse the page's own category nav into a `cate-xxx` key to label map. Returns an empty object when the
- * nav is absent; events carry their own label, so this only backstops one that is blank.
- */
-export function parseSakuraScheduleCategoriesHtml(html: string): Record<string, string> {
-  return parseSakuraCategoryNav(html)
-}
-
 export function parseSakuraScheduleEventsHtml(html: string): SakuraScheduleEvent[] {
   const $ = cheerio.load(html)
-  const categories = parseSakuraScheduleCategoriesHtml(html)
   const modals = $(".module-modal.js-schedule-detail")
   const events: SakuraScheduleEvent[] = []
 
@@ -81,9 +71,8 @@ export function parseSakuraScheduleEventsHtml(html: string): SakuraScheduleEvent
     }
 
     const categoryKey = getCategoryKeyFromClass($(container).attr("class") ?? "", "cate-")
-    const categoryName =
-      $(container).find(".txt p.type").first().text().trim() || categories[categoryKey ?? ""]
-    if (categoryKey === undefined || categoryName === undefined || categoryName === "") {
+    const categoryName = $(container).find(".txt p.type").first().text().trim()
+    if (categoryKey === undefined || categoryName === "") {
       console.error(`Failed to resolve category for modal index ${modalIndex}. Skipping.`)
       continue
     }

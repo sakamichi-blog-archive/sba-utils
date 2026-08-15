@@ -9,7 +9,6 @@ import {
   fetchHinataNewsHtml,
   getHinataNewsDetailUrl,
   getHinataNewsUrl,
-  parseHinataNewsCategoriesHtml,
   parseHinataNewsDetailHtml,
   parseHinataNewsHtml
 } from "./hinata"
@@ -32,7 +31,7 @@ describe("fetchHinataNews()", () => {
       })
     )
     const { news, html, url } = await fetchHinataNews({ year: 2026, month: 6 })
-    expect(news).toHaveLength(3)
+    expect(news).toHaveLength(2)
     expect(html).toBe(readFixture("hinata-news.html"))
     expect(url).toBe("https://www.hinatazaka46.com/s/official/news/list?ima=3456&dy=202606")
   })
@@ -138,14 +137,6 @@ describe("parseHinataNewsHtml()", () => {
     expect(parseHinataNewsHtml(html)).toMatchInlineSnapshot(`
       [
         {
-          "categoryKey": "other",
-          "categoryName": "その他",
-          "date": 2026-06-06T15:00:00.000Z,
-          "id": "O100281",
-          "title": "「日向坂ちゃんねる」にて新着動画を公開！",
-          "url": "https://www.hinatazaka46.com/s/official/news/detail/O100281?ima=0000",
-        },
-        {
           "categoryKey": "media",
           "categoryName": "メディア",
           "date": 2026-06-29T15:00:00.000Z,
@@ -165,16 +156,13 @@ describe("parseHinataNewsHtml()", () => {
     `)
   })
 
-  it("falls back to the category nav label when the visible label is empty", () => {
-    expect(parseHinataNewsHtml(html)[0]?.categoryName).toBe("その他")
+  it("skips news whose displayed category label is empty", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {})
+    expect(parseHinataNewsHtml(html).every(news => news.categoryKey !== "other")).toBe(true)
   })
 
-  it("always exposes a category key, even when the label is empty", () => {
-    expect(parseHinataNewsHtml(html).map(news => news.categoryKey)).toEqual([
-      "other",
-      "media",
-      "release"
-    ])
+  it("always exposes a category key", () => {
+    expect(parseHinataNewsHtml(html).map(news => news.categoryKey)).toEqual(["media", "release"])
   })
 
   it("skips news with no href", () => {
@@ -183,26 +171,6 @@ describe("parseHinataNewsHtml()", () => {
 
   it("returns an empty array when there is no news list", () => {
     expect(parseHinataNewsHtml("<html></html>")).toEqual([])
-  })
-})
-
-describe("parseHinataNewsCategoriesHtml()", () => {
-  it("parses the category nav, skipping the ALL link", () => {
-    expect(parseHinataNewsCategoriesHtml(readFixture("hinata-news.html"))).toEqual({
-      fanclubonly: "ファンクラブ",
-      media: "メディア",
-      other: "その他"
-    })
-  })
-
-  it("returns an empty object when there is no category nav", () => {
-    expect(parseHinataNewsCategoriesHtml("<html></html>")).toEqual({})
-  })
-
-  it("keys on the class, not the cd query value, for fan club news", () => {
-    expect(
-      parseHinataNewsCategoriesHtml(readFixture("hinata-news.html"))["fanclub"]
-    ).toBeUndefined()
   })
 })
 

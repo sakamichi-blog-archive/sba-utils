@@ -1,6 +1,5 @@
 import * as cheerio from "cheerio"
 
-import { parseHinataCategoryNav } from "../shared/categories"
 import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDateJst } from "../shared/datetime"
 import { formatOptionalDy } from "../shared/dy"
@@ -84,18 +83,9 @@ export function getHinataNewsDetailUrl(id: string): string {
   return `${NEWS_DETAIL_URL}/${id}?ima=${getMmss()}`
 }
 
-/**
- * Parse the page's own category nav into a `category_xxx` key to label map. Returns an empty object when
- * the nav is absent; items carry their own label, so this only backstops one that is blank.
- */
-export function parseHinataNewsCategoriesHtml(html: string): Record<string, string> {
-  return parseHinataCategoryNav(html)
-}
-
 /** Parse a news listing page. Returned oldest first, reversing the site's newest-first order. */
 export function parseHinataNewsHtml(html: string): News[] {
   const $ = cheerio.load(html)
-  const categories = parseHinataNewsCategoriesHtml(html)
   const elements = $(".l-maincontents--news ul.p-news__list li.p-news__item > a")
   const news: News[] = []
 
@@ -130,8 +120,8 @@ export function parseHinataNewsHtml(html: string): News[] {
       continue
     }
 
-    const categoryName = categoryElement.text().trim() || categories[categoryKey]
-    if (categoryName === undefined || categoryName === "") {
+    const categoryName = categoryElement.text().trim()
+    if (categoryName === "") {
       console.error(`Failed to resolve category name for news ${id}. Skipping.`)
       continue
     }
@@ -157,13 +147,12 @@ export function parseHinataNewsDetailHtml(html: string, url: string): NewsDetail
   const articleElement = $(".l-maincontents--news-detail").first()
   if (articleElement.length === 0) throw new ParseError("Article element not found in HTML")
 
-  const categories = parseHinataNewsCategoriesHtml(html)
   const categoryElement = $(articleElement).find(".p-article__info .c-news__category").first()
   const categoryKey = getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_")
   if (categoryKey === undefined) throw new ParseError("Category not found in HTML")
 
-  const categoryName = categoryElement.text().trim() || categories[categoryKey]
-  if (categoryName === undefined || categoryName === "") {
+  const categoryName = categoryElement.text().trim()
+  if (categoryName === "") {
     throw new ParseError(`Cannot resolve category name for key: ${categoryKey}`)
   }
 

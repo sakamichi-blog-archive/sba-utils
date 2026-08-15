@@ -162,36 +162,7 @@ describe("parseHinataScheduleEventsHtml()", () => {
     expect(parseHinataScheduleEventsHtml(html).every(event => !("members" in event))).toBe(true)
   })
 
-  it("falls back to the page's category nav when the visible label is empty", () => {
-    const fallback = `
-      <ul class="p-category__list">
-        <li class="p-category__item">
-          <a class="c-button-category category_goods" href="/s/official/media/list?ima=0000&cd=goods">グッズ</a>
-        </li>
-      </ul>
-      <div class="l-maincontents--schedule">
-        <p class="p-schedule__page_date">2026年 08月</p>
-        <ul>
-          <li class="p-schedule__list-group">
-            <div class="c-schedule__date--list"><span>1</span></div>
-            <ul class="p-schedule__list">
-              <li class="p-schedule__item">
-                <a href="/s/official/media/detail/1?ima=0000">
-                  <div class="p-schedule__head">
-                    <div class="c-schedule__category category_goods"></div>
-                    <div class="c-schedule__time--list"></div>
-                  </div>
-                  <p class="c-schedule__text">グッズ販売</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>`
-    expect(parseHinataScheduleEventsHtml(fallback)[0]?.categoryName).toBe("グッズ")
-  })
-
-  it("skips an event whose label is empty and whose key is absent from the nav", () => {
+  it("skips an event whose displayed category label is empty", () => {
     const unresolvable = `
       <div class="l-maincontents--schedule">
         <p class="p-schedule__page_date">2026年 08月</p>
