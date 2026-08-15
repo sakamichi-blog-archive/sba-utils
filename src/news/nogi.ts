@@ -11,6 +11,7 @@ import type { NewsFilter, NewsWithHtml } from "./_types"
 
 /** Unlike the other groups, Nogi news carry a time of day and their detail HTML comes with the listing */
 export interface NogiNews extends NewsWithHtml {
+  /** Publication date and time (JST). Only the listing exposes it; the detail page shows a date alone */
   datetime: Date
 }
 

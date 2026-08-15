@@ -28,12 +28,10 @@ export interface News {
    */
   categoryName?: string
   /**
-   * Publication date at JST midnight. `nogi` also exposes the time of day via {@link News.datetime}; the
-   * other groups publish the date only.
+   * Publication date at JST midnight. Only `nogi` publishes a time of day, exposed as
+   * {@link NogiNews.datetime}.
    */
   date: Date
-  /** Publication date and time (JST). Only `nogi` exposes a time of day */
-  datetime?: Date
   group: NewsGroup
   /** Site-specific news identifier, unique per news */
   id: string
