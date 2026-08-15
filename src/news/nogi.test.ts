@@ -42,6 +42,8 @@ describe("fetchNogiNews()", () => {
     )
     const { news, js, url } = await fetchNogiNews({ year: 2026, month: 6 })
     expect(news).toHaveLength(3)
+    expect(news[2]?.categoryName).toBe("CD/音楽配信/映像商品")
+    expect(news[0]?.categoryName).toBe("テレビ")
     expect(js).toBe(readFixture("nogi-news.jsonp"))
     expect(url).toBe("https://www.nogizaka46.com/s/n46/news/list?ima=3456&dy=202606")
   })

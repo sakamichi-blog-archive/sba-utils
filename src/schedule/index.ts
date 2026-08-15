@@ -12,11 +12,11 @@ export {
   parseHinataScheduleEventsHtml
 } from "./hinata"
 export {
+  fetchNogiScheduleCategories,
   fetchNogiScheduleEvents,
   fetchNogiScheduleEventsJs,
   getNogiScheduleEventUrl,
   getNogiScheduleUrl,
-  fetchNogiScheduleCategories,
   type NogiScheduleEvent,
   parseNogiScheduleCategoriesHtml,
   parseNogiScheduleEventsJs

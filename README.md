@@ -86,6 +86,8 @@ Omitting `filter` does not fetch the current month — it returns the sites' def
 
 Every news item exposes `date` (JST midnight), `categoryKey`/`categoryName`, `id`, `title`, and an absolute `url`. The remaining fields vary by group:
 
+Nogi list `html` comes from the API verbatim, so it keeps the source's entities and self-closing tags (`&ldquo;`, `<br />`), while every other `html` in this package is normalised by the parser (`“`, `<br>`). The content is the same; normalise before comparing a Nogi list item against its detail.
+
 - **Nogi** news also include `datetime` (the API is the only one that exposes a time of day; absent on the rare item whose timestamp cannot be read) and the detail `html`, so the list alone is usually enough. They carry no member names, and `fetchNogiNewsDetail(id)` returns no `datetime` — the detail page shows a date only.
 - **Hinata** and **Sakura** list news omit `html` and `members` — fetch a single news to get those.
 
@@ -97,10 +99,10 @@ News is returned oldest first, reversing the order shown on the sites.
 
 Every news carries `categoryKey` and `categoryName`:
 
-- `categoryKey` — the site's own key, for example `"media"`. Stable across relabelling, so prefer it for storing and grouping. It is not always the value the site filters on — Hinata tags fan club news `fanclubonly` but filters them with `cd=fanclub`.
+- `categoryKey` — the site's own key, for example `"media"`. Stable across relabelling, so prefer it for storing and grouping.
 - `categoryName` — the Japanese label shown on the site, for example `"メディア"`, read straight off the item.
 
-`fetchNogiNews()` makes an extra request to resolve category names. To reuse one map across several Nogi calls instead of refetching it, run `fetchNogiNewsCategories()`, `fetchNogiNewsJs()`, and `parseNogiNewsJs()` directly:
+`fetchNogiNews()` and `fetchNogiScheduleEvents()` each make an extra request to resolve category names. To reuse one map across several Nogi calls instead of refetching it, run the pieces directly — `fetchNogiNewsCategories()`, `fetchNogiNewsJs()` and `parseNogiNewsJs()` for news, or `fetchNogiScheduleCategories()`, `fetchNogiScheduleEventsJs()` and `parseNogiScheduleEventsJs()` for schedule:
 
 ```typescript
 import {
