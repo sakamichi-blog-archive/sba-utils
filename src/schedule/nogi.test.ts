@@ -8,6 +8,7 @@ import {
   fetchNogiScheduleEventsJs,
   getNogiScheduleEventUrl,
   getNogiScheduleUrl,
+  parseNogiScheduleCategoriesHtml,
   parseNogiScheduleEventsJs
 } from "./nogi"
 
@@ -22,14 +23,24 @@ describe("fetchNogiScheduleEvents()", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue({
+      vi.fn().mockImplementation((requestUrl: string) => ({
         status: 200,
-        text: vi.fn().mockResolvedValue(readFixture("nogi-schedule.jsonp")),
+        text: vi
+          .fn()
+          .mockResolvedValue(
+            readFixture(
+              requestUrl.includes("/api/list/schedule")
+                ? "nogi-schedule.jsonp"
+                : "nogi-schedule-categories.html"
+            )
+          ),
         body: { cancel: vi.fn() }
-      })
+      }))
     )
     const { events, js, url } = await fetchNogiScheduleEvents({ year: 2026, month: 8 })
     expect(events).toHaveLength(3)
+    expect(events[0]?.categoryName).toBe("ライブ/イベント")
+    expect(events[1]?.categoryName).toBe("テレビ")
     expect(js).toBe(readFixture("nogi-schedule.jsonp"))
     expect(url).toBe(
       "https://www.nogizaka46.com/s/n46/api/list/schedule?ima=3456&dy=202608&callback=res"
@@ -102,6 +113,28 @@ describe("getNogiScheduleEventUrl()", () => {
     expect(getNogiScheduleEventUrl("107136")).toBe(
       "https://www.nogizaka46.com/s/n46/media/detail/107136?ima=3456"
     )
+  })
+})
+
+describe("parseNogiScheduleCategoriesHtml()", () => {
+  it("parses the radio-input nav, skipping the ALL input", () => {
+    expect(parseNogiScheduleCategoriesHtml(readFixture("nogi-schedule-categories.html"))).toEqual({
+      live: "ライブ/イベント",
+      meetandgreet: "ミート&グリート",
+      tv: "テレビ"
+    })
+  })
+
+  it("does not match the news nav markup", () => {
+    expect(
+      parseNogiScheduleCategoriesHtml(
+        `<div class="cat_sel_list"><a data-param="ct" data-value="tv">テレビ</a></div>`
+      )
+    ).toEqual({})
+  })
+
+  it("returns an empty object when the nav is absent", () => {
+    expect(parseNogiScheduleCategoriesHtml("<html></html>")).toEqual({})
   })
 })
 

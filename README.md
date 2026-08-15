@@ -103,7 +103,11 @@ Every news carries `categoryKey` and `categoryName`:
 `fetchNogiNews()` makes an extra request to resolve category names. To reuse one map across several Nogi calls instead of refetching it, run `fetchNogiNewsCategories()`, `fetchNogiNewsJs()`, and `parseNogiNewsJs()` directly:
 
 ```typescript
-import { fetchNogiNewsCategories, fetchNogiNewsJs, parseNogiNewsJs } from "@sakamichi-blog-archive/utils/news"
+import {
+  fetchNogiNewsCategories,
+  fetchNogiNewsJs,
+  parseNogiNewsJs
+} from "@sakamichi-blog-archive/utils/news"
 
 const categories = await fetchNogiNewsCategories()
 const { js } = await fetchNogiNewsJs({ year: 2026, month: 6 })
