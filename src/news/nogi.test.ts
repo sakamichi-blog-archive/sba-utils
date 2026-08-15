@@ -73,6 +73,22 @@ describe("fetchNogiNewsJs()", () => {
     )
   })
 
+  it("offsets by st for a 0-indexed page", async () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue(readFixture("nogi-news.jsonp")),
+        body: { cancel: vi.fn() }
+      })
+    )
+    const { url } = await fetchNogiNewsJs({ year: 2025, page: 2 })
+    expect(url).toBe(
+      "https://www.nogizaka46.com/s/n46/api/list/news?ima=3456&dy=2025&st=400&callback=res"
+    )
+  })
+
   it("throws FetchStatusError on non-200", async () => {
     vi.stubGlobal(
       "fetch",
@@ -107,6 +123,13 @@ describe("getNogiNewsUrl()", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     expect(getNogiNewsUrl({ year: 2026, month: 6, day: 30 })).toBe(
       "https://www.nogizaka46.com/s/n46/news/list?ima=3456&dy=20260630"
+    )
+  })
+
+  it("applies a 0-indexed page to the listing page URL", () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    expect(getNogiNewsUrl({ year: 2025, page: 2 })).toBe(
+      "https://www.nogizaka46.com/s/n46/news/list?ima=3456&dy=2025&page=2"
     )
   })
 

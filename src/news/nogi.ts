@@ -21,6 +21,8 @@ export interface NogiNews extends NewsWithHtml {
 const NEWS_PAGE_URL = "https://www.nogizaka46.com/s/n46/news/list"
 const NEWS_API_ENDPOINT = "https://www.nogizaka46.com/s/n46/api/list/news"
 const NEWS_DETAIL_URL = "https://www.nogizaka46.com/s/n46/news/detail"
+/** The API returns at most this many news per request, and `st` offsets by it */
+const NEWS_API_PAGE_SIZE = 200
 
 /**
  * The API also returns `arti_code`, which — unlike the schedule API's field of the same name — does not
@@ -164,6 +166,8 @@ export function getNogiNewsUrl(filter?: NewsFilter, ima = getMmss()): string {
   const params = new URLSearchParams({ ima })
   const dy = formatOptionalDy(filter)
   if (dy !== undefined) params.set("dy", dy)
+  const page = filter?.page ?? 0
+  if (page !== 0) params.set("page", String(page))
 
   return `${NEWS_PAGE_URL}?${params}`
 }
@@ -173,6 +177,8 @@ function getNogiNewsJsUrl(filter?: NewsFilter, ima = getMmss()): string {
   const params = new URLSearchParams({ ima })
   const dy = formatOptionalDy(filter)
   if (dy !== undefined) params.set("dy", dy)
+  const page = filter?.page ?? 0
+  if (page !== 0) params.set("st", String(page * NEWS_API_PAGE_SIZE))
   params.set("callback", "res")
 
   return `${NEWS_API_ENDPOINT}?${params}`

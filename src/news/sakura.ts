@@ -75,6 +75,8 @@ export function getSakuraNewsUrl(filter?: NewsFilter): string {
   const params = new URLSearchParams({ ima: getMmss() })
   const dy = formatOptionalDy(filter)
   if (dy !== undefined) params.set("dy", dy)
+  const page = filter?.page ?? 0
+  if (page !== 0) params.set("page", String(page))
 
   return `${NEWS_PAGE_URL}?${params}`
 }

@@ -112,6 +112,20 @@ describe("getSakuraNewsUrl()", () => {
     )
   })
 
+  it("applies a 0-indexed page", () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    expect(getSakuraNewsUrl({ year: 2025, page: 2 })).toBe(
+      "https://sakurazaka46.com/s/s46/news/list?ima=3456&dy=2025&page=2"
+    )
+  })
+
+  it("omits page for the first page", () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    expect(getSakuraNewsUrl({ year: 2025, page: 0 })).toBe(
+      "https://sakurazaka46.com/s/s46/news/list?ima=3456&dy=2025"
+    )
+  })
+
   it("omits dy when no filter is given", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     expect(getSakuraNewsUrl()).toBe("https://sakurazaka46.com/s/s46/news/list?ima=3456")

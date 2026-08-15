@@ -10,6 +10,11 @@ export interface NewsFilter {
   month?: number
   /** Day of the month; requires `month`. Narrows the listing to that single day */
   day?: number
+  /**
+   * 0-indexed. Every group serves news 200 at a time and silently truncates at that, so a year-wide or
+   * unfiltered listing needs paging to reach the rest; a month or a day fits in one page in practice.
+   */
+  page?: number
 }
 
 export interface News {

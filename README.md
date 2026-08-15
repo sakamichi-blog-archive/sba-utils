@@ -68,6 +68,9 @@ const { news: onOneDay } = await fetchHinataNews({ year: 2026, month: 6, day: 30
 // Omit the filter to fetch the most recent news
 const { news: latest } = await fetchHinataNews()
 
+// Page through anything wider than a month; `page` is 0-indexed
+const { news: page2 } = await fetchHinataNews({ year: 2025, page: 2 })
+
 // Fetch a single news by ID
 const { newsDetail } = await fetchHinataNewsDetail("M02770")
 ```
@@ -80,7 +83,9 @@ const { newsDetail } = await fetchHinataNewsDetail("M02770")
 | Nogi   | `fetchNogiNews(filter?)`   | `fetchNogiNewsDetail(id)`   |
 | Sakura | `fetchSakuraNews(filter?)` | `fetchSakuraNewsDetail(id)` |
 
-`filter` accepts `year`, `month` (January = 1), and `day`. Setting `month` requires `year`, and setting `day` requires `month`. A filtered listing covers exactly that month or day, so there is no page size or offset to control.
+`filter` accepts `year`, `month` (January = 1), `day`, and `page`. Setting `month` requires `year`, and setting `day` requires `month`.
+
+Every group serves news 200 at a time and truncates silently at that, so anything wider than a month needs `page` (0-indexed) to reach the rest — a year returns only its most recent 200 news on page 0. A month or a day fits in one page in practice.
 
 Omitting `filter` does not fetch the current month — it returns the sites' default listing of most recent news, currently the latest 200 items, which spans several months.
 
