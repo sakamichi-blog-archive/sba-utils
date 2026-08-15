@@ -135,7 +135,7 @@ const { events } = await fetchHinataScheduleEvents({ year: 2026, month: 8 })
 
 | Group  | Event list                          | Single event                               |
 | ------ | ----------------------------------- | ------------------------------------------ |
-| Nogi   | `fetchNogiScheduleEvents(filter)`   | `fetchNogiScheduleEvent(id)`               |
+| Nogi   | `fetchNogiScheduleEvents(filter)`   | `fetchNogiScheduleEvent(id, occurrence?)`  |
 | Hinata | `fetchHinataScheduleEvents(filter)` | `fetchHinataScheduleEvent(id)`             |
 | Sakura | `fetchSakuraScheduleEvents(filter)` | — (built into `fetchSakuraScheduleEvents`) |
 
@@ -149,7 +149,19 @@ Every event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:m
 
 An `id` identifies an event, not one occurrence of it: in every group a recurring event keeps one `id` (and one `url`) across every occurrence, so an `id` is not a key for a row in a month's listing.
 
-`fetchNogiScheduleEvent(id)` therefore cannot return a particular occurrence — its `date` is the date the event was first listed, not the occurrence you looked up, so a weekly show appearing under 2026/08/01 reports its first airing back in April. For `birthday` events only the month and day are meaningful; the year is whatever the site's entry happens to carry. Take `date` from the list event whenever you have one.
+So pass the occurrence you want to `fetchNogiScheduleEvent(id, occurrence)`:
+
+```typescript
+import {
+  fetchNogiScheduleEvent,
+  fetchNogiScheduleEvents
+} from "@sakamichi-blog-archive/utils/schedule"
+
+const { events } = await fetchNogiScheduleEvents({ year: 2026, month: 8 })
+const { event } = await fetchNogiScheduleEvent(events[0].id, events[0].date)
+```
+
+Without `occurrence` the page reports the date the event was **first listed**, so a weekly show appearing under 2026/08/01 reports its first airing back in April, and a birthday reports the year its entry was created rather than the member's year of birth. The site does not check the date against the event, so one the event does not fall on is displayed just the same.
 
 ### Members
 

@@ -3,7 +3,7 @@ import * as z from "zod"
 
 import { members as nogiMembers } from "../members/nogi"
 import { USER_AGENT_DESKTOP } from "../shared/constants"
-import { getMmss, parseDateJst } from "../shared/datetime"
+import { getDatePartsJst, getMmss, parseDateJst } from "../shared/datetime"
 import { formatDy } from "../shared/dy"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import { getCategoryKeyFromClass } from "../shared/html"
@@ -89,26 +89,31 @@ export async function fetchNogiScheduleEvents(filter: ScheduleFilter): Promise<{
  * The page renders everything the listing does except `members`, so this is only worth calling when you
  * have an id but no list event.
  *
- * Beware the `date`: an id identifies an event, not one occurrence of it, so the page reports the date the
- * event was first listed rather than the occurrence you looked up — a weekly radio show appearing under
- * 2026/08/01 reports 2026/04/04, its first airing. `birthday` events keep the member's month and day but
- * carry an unreliable year, usually the one the entry was created in. Take `date` from the list event
- * whenever you have one.
+ * An id identifies an event, not one occurrence of it, so pass `occurrence` — a
+ * {@link NogiScheduleEvent.date} — for anything recurring. Without it the page reports the date the event
+ * was first listed: a weekly radio show appearing under 2026/08/01 reports 2026/04/04, its first airing,
+ * and a `birthday` reports the year its entry was created rather than the year of birth.
  */
-export async function fetchNogiScheduleEvent(id: string): Promise<{
+export async function fetchNogiScheduleEvent(
+  id: string,
+  occurrence?: Date
+): Promise<{
   event: NogiScheduleEventDetail
   html: string
   url: string
 }> {
-  const { html, url } = await fetchNogiScheduleEventHtml(id)
+  const { html, url } = await fetchNogiScheduleEventHtml(id, occurrence)
   return { event: parseNogiScheduleEventHtml(html, url), html, url }
 }
 
-export async function fetchNogiScheduleEventHtml(id: string): Promise<{
+export async function fetchNogiScheduleEventHtml(
+  id: string,
+  occurrence?: Date
+): Promise<{
   html: string
   url: string
 }> {
-  const url = getNogiScheduleEventUrl(id)
+  const url = getNogiScheduleEventUrl(id, occurrence)
   const response = await fetch(url, {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP
@@ -214,13 +219,27 @@ function getNogiScheduleJsUrl(filter: ScheduleFilter, ima = getMmss()): string {
 }
 
 /**
- * Build the detail-page URL for a single event by its {@link NogiScheduleEvent.id}. The id alone resolves
- * the correct event, but the URL omits the `pri1=YYYYMM` month breadcrumb that the API's link includes, so
- * the detail page's back-to-list navigation falls back to the current month. Use {@link NogiScheduleEvent.url}
- * when that context matters.
+ * Build the detail-page URL for a single event by its {@link NogiScheduleEvent.id}.
+ *
+ * Pass `occurrence` — a {@link NogiScheduleEvent.date} — for a recurring event. The page renders whichever
+ * date the `wd00`/`wd01`/`wd02` parameters carry, so without it the page falls back to the date the event
+ * was first listed. The site echoes them without checking them against the event, so a date the event does
+ * not actually fall on is displayed just the same.
+ *
+ * The URL still omits the `pri1=YYYYMM` month breadcrumb that the API's link includes, so the detail page's
+ * back-to-list navigation falls back to the current month. Use {@link NogiScheduleEvent.url} when that
+ * context matters.
  */
-export function getNogiScheduleEventUrl(id: string): string {
-  return `${SCHEDULE_DETAIL_URL}/${id}?ima=${getMmss()}`
+export function getNogiScheduleEventUrl(id: string, occurrence?: Date): string {
+  const params = new URLSearchParams({ ima: getMmss() })
+  if (occurrence !== undefined) {
+    const { year, month, day } = getDatePartsJst(occurrence)
+    params.set("wd00", String(year))
+    params.set("wd01", String(month).padStart(2, "0"))
+    params.set("wd02", String(day).padStart(2, "0"))
+  }
+
+  return `${SCHEDULE_DETAIL_URL}/${id}?${params}`
 }
 
 /**

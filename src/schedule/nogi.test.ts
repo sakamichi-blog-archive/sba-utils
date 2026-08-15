@@ -87,6 +87,19 @@ describe("fetchNogiScheduleEvent()", () => {
     expect(event.title).toBe("テレビ番組「ナレーション出演」岩本蓮加")
     expect(event.id).toBe("107140")
   })
+
+  it("requests the given occurrence", async () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    const fetchMock = vi.fn().mockResolvedValue({
+      status: 200,
+      text: vi.fn().mockResolvedValue(readFixture("nogi-schedule-detail.html")),
+      body: { cancel: vi.fn() }
+    })
+    vi.stubGlobal("fetch", fetchMock)
+    const { url } = await fetchNogiScheduleEvent("107022", new Date("2026-08-15T00:00:00+09:00"))
+    expect(url).toContain("wd00=2026&wd01=08&wd02=15")
+    expect(String(fetchMock.mock.calls[0]?.[0])).toContain("wd00=2026&wd01=08&wd02=15")
+  })
 })
 
 describe("fetchNogiScheduleEventHtml()", () => {
@@ -162,6 +175,21 @@ describe("getNogiScheduleEventUrl()", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     expect(getNogiScheduleEventUrl("107136")).toBe(
       "https://www.nogizaka46.com/s/n46/media/detail/107136?ima=3456"
+    )
+  })
+
+  it("adds zero-padded wd parameters for an occurrence", () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    expect(getNogiScheduleEventUrl("107022", new Date("2026-08-01T00:00:00+09:00"))).toBe(
+      "https://www.nogizaka46.com/s/n46/media/detail/107022?ima=3456&wd00=2026&wd01=08&wd02=01"
+    )
+  })
+
+  it("splits the occurrence in JST, not the host time zone", () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    // JST midnight on the 1st is 15:00 UTC on the previous day
+    expect(getNogiScheduleEventUrl("107022", new Date("2026-07-31T15:00:00.000Z"))).toContain(
+      "wd00=2026&wd01=08&wd02=01"
     )
   })
 })

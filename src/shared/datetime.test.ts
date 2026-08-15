@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { getMmss, parseDateJst, parseDatetimeJst } from "./datetime"
+import { getDatePartsJst, getMmss, parseDateJst, parseDatetimeJst } from "./datetime"
 import { ParseError } from "./errors"
 
 describe("getMmss()", () => {
@@ -73,5 +73,28 @@ describe("parseDatetimeJst()", () => {
 
   it("throws ParseError for unexpected input", () => {
     expect(() => parseDatetimeJst("")).toThrow(ParseError)
+  })
+})
+
+describe("getDatePartsJst()", () => {
+  it("splits a JST-midnight date", () => {
+    expect(getDatePartsJst(new Date("2026-08-01T00:00:00+09:00"))).toEqual({
+      year: 2026,
+      month: 8,
+      day: 1
+    })
+  })
+
+  it("uses JST, not UTC, across the date boundary", () => {
+    // 15:00 UTC on Jul 31 is midnight on Aug 1 in JST
+    expect(getDatePartsJst(new Date("2026-07-31T15:00:00.000Z"))).toEqual({
+      year: 2026,
+      month: 8,
+      day: 1
+    })
+  })
+
+  it("returns a 1-based month", () => {
+    expect(getDatePartsJst(new Date("2026-01-15T00:00:00+09:00")).month).toBe(1)
   })
 })
