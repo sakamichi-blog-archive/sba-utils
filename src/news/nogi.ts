@@ -1,6 +1,7 @@
 import * as cheerio from "cheerio"
 import * as z from "zod"
 
+import { parseNogiNewsCategoryNav } from "../shared/categories"
 import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDateJst, parseDatetimeJst } from "../shared/datetime"
 import { formatOptionalDy } from "../shared/dy"
@@ -196,19 +197,7 @@ export function getNogiNewsDetailUrl(id: string): string {
  * nav is absent.
  */
 export function parseNogiNewsCategoriesHtml(html: string): Record<string, string> {
-  const $ = cheerio.load(html)
-  const categories: Record<string, string> = {}
-
-  const elements = $(`.cat_sel_list a[data-param="ct"]`)
-  for (let elementIndex = 0; elementIndex < elements.length; elementIndex++) {
-    const element = elements[elementIndex]
-    // The "ALL" link carries an empty `data-value` and is not a category
-    const key = $(element).attr("data-value") ?? ""
-    const label = $(element).text().trim()
-    if (key !== "" && label !== "") categories[key] = label
-  }
-
-  return categories
+  return parseNogiNewsCategoryNav(html)
 }
 
 export function parseNogiNewsDetailHtml(html: string, url: string): NewsWithHtml {

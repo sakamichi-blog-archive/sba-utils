@@ -1,5 +1,6 @@
 import * as cheerio from "cheerio"
 
+import { parseHinataCategoryNav } from "../shared/categories"
 import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDateJst } from "../shared/datetime"
 import { formatOptionalDy } from "../shared/dy"
@@ -105,21 +106,7 @@ export function getHinataNewsDetailUrl(id: string): string {
  * the nav is absent, in which case callers fall back to {@link HINATA_NEWS_CATEGORIES}.
  */
 export function parseHinataNewsCategoriesHtml(html: string): Record<string, string> {
-  const $ = cheerio.load(html)
-  const categories: Record<string, string> = {}
-
-  const elements = $("ul.p-category__list a.c-button-category")
-  for (let elementIndex = 0; elementIndex < elements.length; elementIndex++) {
-    const element = elements[elementIndex]
-    // The "ALL" link carries no `cd=` and is not a category
-    if (!($(element).attr("href") ?? "").includes("cd=")) continue
-
-    const key = getCategoryKeyFromClass($(element).attr("class") ?? "", "category_")
-    const label = $(element).text().trim()
-    if (key !== undefined && key !== "" && label !== "") categories[key] = label
-  }
-
-  return categories
+  return parseHinataCategoryNav(html)
 }
 
 /** Parse a news listing page. Returned oldest first, reversing the site's newest-first order. */
