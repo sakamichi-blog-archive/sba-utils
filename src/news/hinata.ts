@@ -147,9 +147,15 @@ export function parseHinataNewsHtml(html: string): News[] {
       continue
     }
 
+    const categoryName = categoryElement.text().trim() || categories[categoryKey]
+    if (categoryName === undefined || categoryName === "") {
+      console.error(`Failed to resolve category name for news ${id}. Skipping.`)
+      continue
+    }
+
     news.push({
       categoryKey,
-      categoryName: categoryElement.text().trim() || categories[categoryKey],
+      categoryName,
       date,
       id,
       title: $(element).find("p.c-news__text").first().text().trim(),
@@ -173,6 +179,11 @@ export function parseHinataNewsDetailHtml(html: string, url: string): NewsDetail
   const categoryKey = getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_")
   if (categoryKey === undefined) throw new ParseError("Category not found in HTML")
 
+  const categoryName = categoryElement.text().trim() || categories[categoryKey]
+  if (categoryName === undefined || categoryName === "") {
+    throw new ParseError(`Cannot resolve category name for key: ${categoryKey}`)
+  }
+
   const members: string[] = []
   const memberElements = $(articleElement).find(".c-article__tag > a")
   for (let memberIndex = 0; memberIndex < memberElements.length; memberIndex++) {
@@ -182,7 +193,7 @@ export function parseHinataNewsDetailHtml(html: string, url: string): NewsDetail
 
   return {
     categoryKey,
-    categoryName: categoryElement.text().trim() || categories[categoryKey],
+    categoryName,
     date: parseDateJst($(articleElement).find(".p-article__info time.c-news__date").text().trim()),
     html: $(articleElement).find(".p-article__text").html()?.trim() ?? "",
     id,

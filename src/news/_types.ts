@@ -20,11 +20,10 @@ export interface News {
    */
   categoryKey: string
   /**
-   * Category label as shown on the site (Japanese), e.g. `"メディア"`. Read from the page, or from the
-   * site's category nav for `nogi`, whose API exposes only the key. `undefined` when a key is new enough
-   * that no label could be resolved for it.
+   * Category label as shown on the site (Japanese), e.g. `"メディア"`. Read straight off the item, which
+   * renders it. Only {@link NogiNews} can lack one — its API returns the key alone.
    */
-  categoryName?: string
+  categoryName: string
   /**
    * Publication date at JST midnight. Only `nogi` publishes a time of day, exposed as
    * {@link NogiNews.datetime}.

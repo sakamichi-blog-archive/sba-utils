@@ -109,8 +109,10 @@ News is returned oldest first, reversing the order shown on the sites.
 
 Every news carries `categoryKey` and `categoryName`:
 
-- `categoryKey` — the site's own key, e.g. `"media"`. Always present. Stable across relabelling, so prefer it for storing and filtering.
-- `categoryName` — the Japanese label shown on the site, e.g. `"メディア"`. `undefined` when a key is new enough that no label could be resolved for it.
+- `categoryKey` — the site's own key, e.g. `"media"`. Stable across relabelling, so prefer it for storing and filtering.
+- `categoryName` — the Japanese label shown on the site, e.g. `"メディア"`, read straight off the item.
+
+Both are always present, with one exception: Nogi's listing API returns the key alone, so `NogiNews.categoryName` is optional — a key too new to appear in the site's category nav resolves to no label. `fetchNogiNewsDetail` has no such gap, since the detail page renders the label.
 
 The split matters because labels move: `shakehands` was 握手会 and is now ミート＆グリート, while the key stayed put.
 

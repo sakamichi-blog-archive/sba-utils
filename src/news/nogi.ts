@@ -11,7 +11,13 @@ import { parseJsonpArgumentJson } from "../shared/jsonp"
 import type { NewsFilter, NewsWithHtml } from "./_types"
 
 /** Unlike the other groups, Nogi news carry a time of day and their detail HTML comes with the listing */
-export interface NogiNews extends NewsWithHtml {
+export interface NogiNews extends Omit<NewsWithHtml, "categoryName"> {
+  /**
+   * Unlike every other news, this may be absent: the listing API returns the category key alone, so the
+   * label is resolved against the site's category nav and a key too new to appear there has none. The
+   * detail page renders the label, so {@link fetchNogiNewsDetail} always carries one.
+   */
+  categoryName?: string
   /** Publication date and time (JST). Only the listing exposes it; the detail page shows a date alone */
   datetime: Date
 }
@@ -215,9 +221,14 @@ export function parseNogiNewsDetailHtml(html: string, url: string): NewsWithHtml
   )
   if (categoryKey === undefined) throw new ParseError("Category not found in HTML")
 
+  const categoryName = categoryElement.text().trim() || NOGI_NEWS_CATEGORIES[categoryKey]
+  if (categoryName === undefined || categoryName === "") {
+    throw new ParseError(`Cannot resolve category name for key: ${categoryKey}`)
+  }
+
   return {
     categoryKey,
-    categoryName: categoryElement.text().trim() || NOGI_NEWS_CATEGORIES[categoryKey],
+    categoryName,
     date: parseDateJst($(headerElement).find(".post_header_data span").first().text().trim()),
     // `.post_body_in` excludes the prev/next nav and latest-news list that share `.post_body`
     html: $("main .post_body .post_body_in").first().html()?.trim() ?? "",
