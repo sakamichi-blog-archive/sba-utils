@@ -6,12 +6,23 @@ import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDateJst } from "../shared/datetime"
 import { formatDy } from "../shared/dy"
 import { FetchStatusError, ParseError } from "../shared/errors"
+import { getCategoryKeyFromClass } from "../shared/html"
 import { parseJsonpArgumentJson } from "../shared/jsonp"
 import type { ScheduleEventWithHtml, ScheduleFilter } from "./_types"
-import { normalizeTime } from "./_utils"
+import { normalizeTime, parseScheduleTimeRange } from "./_utils"
 
 /** Unlike {@link ScheduleEventWithHtml}, `url` is always present — the API gives every event a unique detail URL */
 export interface NogiScheduleEvent extends ScheduleEventWithHtml {
+  url: string
+}
+
+/**
+ * A Nogi schedule event as rendered on its own detail page.
+ *
+ * Unlike {@link NogiScheduleEvent} it carries no `members`: the page names nobody, and the API's member
+ * data is only in the listing. Take `members` from the list event.
+ */
+export interface NogiScheduleEventDetail extends Omit<ScheduleEventWithHtml, "members"> {
   url: string
 }
 
@@ -70,6 +81,40 @@ export async function fetchNogiScheduleEvents(filter: ScheduleFilter): Promise<{
     js,
     url: getNogiScheduleUrl(filter, ima)
   }
+}
+
+/**
+ * Fetch a single schedule event by its {@link NogiScheduleEvent.id}.
+ *
+ * The page renders everything the listing does except `members`, so this is only worth calling when you
+ * have an id but no list event. Note that `birthday` events date the page to the member's year of birth,
+ * not the year the birthday falls in; use the list event's `date` for those.
+ */
+export async function fetchNogiScheduleEvent(id: string): Promise<{
+  event: NogiScheduleEventDetail
+  html: string
+  url: string
+}> {
+  const { html, url } = await fetchNogiScheduleEventHtml(id)
+  return { event: parseNogiScheduleEventHtml(html, url), html, url }
+}
+
+export async function fetchNogiScheduleEventHtml(id: string): Promise<{
+  html: string
+  url: string
+}> {
+  const url = getNogiScheduleEventUrl(id)
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent": USER_AGENT_DESKTOP
+    }
+  })
+  if (response.status !== 200) {
+    await response.body?.cancel()
+    throw new FetchStatusError(response.status, response.url)
+  }
+
+  return { html: await response.text(), url }
 }
 
 /**
@@ -171,6 +216,38 @@ function getNogiScheduleJsUrl(filter: ScheduleFilter, ima = getMmss()): string {
  */
 export function getNogiScheduleEventUrl(id: string): string {
   return `${SCHEDULE_DETAIL_URL}/${id}?ima=${getMmss()}`
+}
+
+/**
+ * Parse a schedule event's detail page. `url` is the page the HTML came from; it supplies the returned
+ * `url` and `id`.
+ *
+ * Unlike the listing, the page displays its own category label, so no category map is needed.
+ */
+export function parseNogiScheduleEventHtml(html: string, url: string): NogiScheduleEventDetail {
+  const $ = cheerio.load(html)
+  const headerElement = $("header.m--dehd").first()
+  if (headerElement.length === 0) throw new ParseError("Header element not found in HTML")
+
+  const categoryElement = headerElement.find(".m--dehd__tag__i").first()
+  // The second `m--pstdata__p` is the content type ("SCHEDULE"), not a date
+  const dateText = headerElement.find(".m--pstdata__p").first().text().trim()
+  const { timeStart, timeEnd } = parseScheduleTimeRange(
+    headerElement.find(".m--dehd__sctm").first().text().trim()
+  )
+
+  return {
+    categoryKey: getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "i--") ?? "",
+    categoryName: headerElement.find(".m--dehd__tag__name").first().text().trim(),
+    date: parseDateJst(dateText),
+    // Scoped to the editable section: `.sd--de` alone also holds the prev/next nav and a LATEST list
+    html: $(".sd--de .m--scedit").first().html()?.trim() ?? "",
+    id: new URL(url).pathname.match(/\/detail\/([^/?]+)/)?.[1],
+    timeEnd,
+    timeStart,
+    title: headerElement.find("h1.c--dettl").first().text().trim(),
+    url
+  }
 }
 
 /**

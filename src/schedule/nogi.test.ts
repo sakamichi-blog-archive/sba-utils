@@ -4,11 +4,14 @@ import { FetchStatusError, ParseError } from "../shared/errors"
 import { readFixture } from "../test/utils"
 import {
   fetchNogiScheduleCategories,
+  fetchNogiScheduleEvent,
+  fetchNogiScheduleEventHtml,
   fetchNogiScheduleEvents,
   fetchNogiScheduleEventsJs,
   getNogiScheduleEventUrl,
   getNogiScheduleUrl,
   parseNogiScheduleCategoriesHtml,
+  parseNogiScheduleEventHtml,
   parseNogiScheduleEventsJs
 } from "./nogi"
 
@@ -59,6 +62,44 @@ describe("fetchNogiScheduleEventsJs()", () => {
     await expect(fetchNogiScheduleEventsJs({ year: 2026, month: 8 })).rejects.toBeInstanceOf(
       FetchStatusError
     )
+  })
+})
+
+describe("fetchNogiScheduleEvent()", () => {
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => {
+    vi.useRealTimers()
+    vi.restoreAllMocks()
+  })
+
+  it("returns the parsed event on 200", async () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue(readFixture("nogi-schedule-detail.html")),
+        body: { cancel: vi.fn() }
+      })
+    )
+    const { event, url } = await fetchNogiScheduleEvent("107140")
+    expect(url).toBe("https://www.nogizaka46.com/s/n46/media/detail/107140?ima=3456")
+    expect(event.title).toBe("テレビ番組「ナレーション出演」岩本蓮加")
+    expect(event.id).toBe("107140")
+  })
+})
+
+describe("fetchNogiScheduleEventHtml()", () => {
+  afterEach(() => vi.restoreAllMocks())
+
+  it("throws FetchStatusError on non-200", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue({ status: 404, url: "https://example.com", body: { cancel: vi.fn() } })
+    )
+    await expect(fetchNogiScheduleEventHtml("107140")).rejects.toBeInstanceOf(FetchStatusError)
   })
 })
 
@@ -144,6 +185,63 @@ describe("parseNogiScheduleCategoriesHtml()", () => {
 
   it("returns an empty object when the nav is absent", () => {
     expect(parseNogiScheduleCategoriesHtml("<html></html>")).toEqual({})
+  })
+})
+
+describe("parseNogiScheduleEventHtml()", () => {
+  const url = "https://www.nogizaka46.com/s/n46/media/detail/107140?ima=3456"
+
+  it("throws ParseError when the header is absent", () => {
+    expect(() => parseNogiScheduleEventHtml("<html></html>", url)).toThrow(ParseError)
+  })
+
+  it("reads the category label off the page, without a category map", () => {
+    const event = parseNogiScheduleEventHtml(readFixture("nogi-schedule-detail.html"), url)
+    expect(event.categoryKey).toBe("tv")
+    expect(event.categoryName).toBe("テレビ")
+  })
+
+  it("falls back to an empty categoryKey when the tag carries no `i--` class", () => {
+    const event = parseNogiScheduleEventHtml(
+      `<header class="m--dehd"><div class="m--dehd__tag__i"></div>
+        <p class="m--dehd__tag__name">テレビ</p>
+        <p class="m--pstdata__p">2026.08.01</p></header>`,
+      url
+    )
+    expect(event.categoryKey).toBe("")
+    expect(event.categoryName).toBe("テレビ")
+  })
+
+  it("leaves timeEnd undefined for an open-ended range", () => {
+    const event = parseNogiScheduleEventHtml(
+      `<header class="m--dehd"><p class="m--dehd__sctm">20:30～</p>
+        <p class="m--pstdata__p">2026.08.01</p></header>`,
+      url
+    )
+    expect(event.timeStart).toBe("20:30")
+    expect(event.timeEnd).toBeUndefined()
+  })
+
+  it("ignores the LATEST list's date and reads the header's", () => {
+    const event = parseNogiScheduleEventHtml(readFixture("nogi-schedule-detail.html"), url)
+    expect(event.date.toISOString()).toBe("2026-07-31T15:00:00.000Z")
+  })
+
+  it("parses event fields correctly", () => {
+    expect(parseNogiScheduleEventHtml(readFixture("nogi-schedule-detail.html"), url))
+      .toMatchInlineSnapshot(`
+        {
+          "categoryKey": "tv",
+          "categoryName": "テレビ",
+          "date": 2026-07-31T15:00:00.000Z,
+          "html": "<p>Broadcast detail placeholder.</p>",
+          "id": "107140",
+          "timeEnd": "10:00",
+          "timeStart": "09:30",
+          "title": "テレビ番組「ナレーション出演」岩本蓮加",
+          "url": "https://www.nogizaka46.com/s/n46/media/detail/107140?ima=3456",
+        }
+      `)
   })
 })
 

@@ -13,12 +13,16 @@ export {
 } from "./hinata"
 export {
   fetchNogiScheduleCategories,
+  fetchNogiScheduleEvent,
+  fetchNogiScheduleEventHtml,
   fetchNogiScheduleEvents,
   fetchNogiScheduleEventsJs,
   getNogiScheduleEventUrl,
   getNogiScheduleUrl,
   type NogiScheduleEvent,
+  type NogiScheduleEventDetail,
   parseNogiScheduleCategoriesHtml,
+  parseNogiScheduleEventHtml,
   parseNogiScheduleEventsJs
 } from "./nogi"
 export {
