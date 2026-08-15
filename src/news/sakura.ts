@@ -104,12 +104,6 @@ export function parseSakuraNewsHtml(html: string): News[] {
       continue
     }
 
-    const categoryKey = getCategoryKeyFromClass($(element).attr("class") ?? "", "cate-")
-    if (categoryKey === undefined) {
-      console.error(`Failed to extract category key for news ${id}. Skipping.`)
-      continue
-    }
-
     const dateText = $(element).find("div.title-part p.date").first().text().trim()
     let date: Date
     try {
@@ -119,15 +113,9 @@ export function parseSakuraNewsHtml(html: string): News[] {
       continue
     }
 
-    const categoryName = $(element).find("div.title-part p.type").first().text().trim()
-    if (categoryName === "") {
-      console.error(`Failed to resolve category name for news ${id}. Skipping.`)
-      continue
-    }
-
     news.push({
-      categoryKey,
-      categoryName,
+      categoryKey: getCategoryKeyFromClass($(element).attr("class") ?? "", "cate-") ?? "",
+      categoryName: $(element).find("div.title-part p.type").first().text().trim(),
       date,
       id,
       title: $(element).find("p.lead").first().text().trim(),
@@ -146,14 +134,6 @@ export function parseSakuraNewsDetailHtml(html: string, url: string): NewsDetail
   const articleElement = $(".news-detailcont .post .com-news-part > div").first()
   if (articleElement.length === 0) throw new ParseError("Article element not found in HTML")
 
-  const categoryKey = getCategoryKeyFromClass($(articleElement).attr("class") ?? "", "cate-")
-  if (categoryKey === undefined) throw new ParseError("Category not found in HTML")
-
-  const categoryName = $(articleElement).find("div.title-part p.type").first().text().trim()
-  if (categoryName === "") {
-    throw new ParseError(`Cannot resolve category name for key: ${categoryKey}`)
-  }
-
   const members: string[] = []
   const memberElements = $(articleElement).find("div.taglist span")
   for (let memberIndex = 0; memberIndex < memberElements.length; memberIndex++) {
@@ -162,8 +142,8 @@ export function parseSakuraNewsDetailHtml(html: string, url: string): NewsDetail
   }
 
   return {
-    categoryKey,
-    categoryName,
+    categoryKey: getCategoryKeyFromClass($(articleElement).attr("class") ?? "", "cate-") ?? "",
+    categoryName: $(articleElement).find("div.title-part p.type").first().text().trim(),
     date: parseDateJst($(articleElement).find("div.title-part p.date").first().text().trim()),
     html: $(articleElement).find("div.article").first().html()?.trim() ?? "",
     id,

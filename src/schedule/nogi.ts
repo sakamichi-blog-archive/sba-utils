@@ -11,12 +11,7 @@ import type { ScheduleEventWithHtml, ScheduleFilter } from "./_types"
 import { normalizeTime } from "./_utils"
 
 /** Unlike {@link ScheduleEventWithHtml}, `url` is always present — the API gives every event a unique detail URL */
-export interface NogiScheduleEvent extends Omit<ScheduleEventWithHtml, "categoryName"> {
-  /**
-   * Unlike every other event, this may be absent: the API returns the category key alone, so the label is
-   * resolved against the site's category nav and a key too new to appear there has none.
-   */
-  categoryName?: string
+export interface NogiScheduleEvent extends ScheduleEventWithHtml {
   url: string
 }
 
@@ -52,7 +47,7 @@ const scheduleApiSchema = z.object({
 /**
  * Fetch a month of Nogi schedule events. The API exposes only category keys, so the listing page is
  * fetched alongside it to resolve their labels; if that request fails, the events carry a `categoryKey`
- * but no `categoryName`.
+ * and an empty `categoryName`.
  */
 export async function fetchNogiScheduleEvents(filter: ScheduleFilter): Promise<{
   events: NogiScheduleEvent[]
@@ -87,7 +82,7 @@ export async function fetchNogiScheduleCategories(
 
     return parseNogiScheduleCategoriesHtml(await response.text())
   } catch (error) {
-    console.error("Failed to fetch schedule categories. Events will carry no category name.", error)
+    console.error("Failed to fetch schedule categories. Events will carry an empty name.", error)
     return {}
   }
 }
@@ -159,7 +154,7 @@ export function getNogiScheduleEventUrl(id: string): string {
  * Parse a schedule API response.
  *
  * Pass `categories` — from {@link fetchNogiScheduleCategories} or {@link parseNogiScheduleCategoriesHtml} —
- * to resolve category keys to the labels the site displays. Without it the events carry no `categoryName`.
+ * to resolve category keys to the labels the site displays. Without it `categoryName` is an empty string.
  */
 export function parseNogiScheduleEventsJs(
   js: string,
@@ -190,7 +185,7 @@ export function parseNogiScheduleEventsJs(
 
     events.push({
       categoryKey: event.cate,
-      categoryName: categories[event.cate],
+      categoryName: categories[event.cate] ?? "",
       date,
       html: event.text.trim(),
       id: event.code,

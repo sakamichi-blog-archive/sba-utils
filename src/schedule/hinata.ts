@@ -123,20 +123,14 @@ export function parseHinataScheduleEventsHtml(html: string): HinataScheduleEvent
 
       const url = new URL(href, SCHEDULE_PAGE_URL)
       const categoryElement = $(element).find(".p-schedule__head .c-schedule__category").first()
-      const categoryKey = getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_")
-      const categoryName = categoryElement.text().trim()
-      if (categoryKey === undefined || categoryName === "") {
-        console.error(`Failed to resolve category for event index ${elementIndex}. Skipping.`)
-        continue
-      }
-
       const { timeStart, timeEnd } = parseScheduleTimeRange(
         $(element).find("div.p-schedule__head div.c-schedule__time--list").first().text().trim()
       )
 
       events.push({
-        categoryKey,
-        categoryName,
+        categoryKey:
+          getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_") ?? "",
+        categoryName: categoryElement.text().trim(),
         date,
         id: url.pathname.match(/\/detail\/([^/?]+)/)?.[1],
         timeEnd,
@@ -158,13 +152,6 @@ export function parseHinataScheduleEventHtml(html: string, url: string): HinataS
   if (articleElement.length === 0) throw new ParseError("Article element not found in HTML")
 
   const categoryElement = $(articleElement).find(".p-article__info .c-schedule__category")
-  const categoryKey = getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_")
-  if (categoryKey === undefined) throw new ParseError("Category not found in HTML")
-
-  const categoryName = categoryElement.text().trim()
-  if (categoryName === "") {
-    throw new ParseError(`Cannot resolve category name for key: ${categoryKey}`)
-  }
 
   const dateText = $(articleElement).find(".p-article__info .c-schedule__date b").text().trim()
   const { timeStart, timeEnd } = parseScheduleTimeRange(
@@ -179,8 +166,8 @@ export function parseHinataScheduleEventHtml(html: string, url: string): HinataS
   }
 
   return {
-    categoryKey,
-    categoryName,
+    categoryKey: getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_") ?? "",
+    categoryName: categoryElement.text().trim(),
     date: dateText !== "" ? parseDateJst(dateText) : undefined,
     html: $(articleElement).find(".p-article__text").html()?.trim() ?? "",
     id: new URL(url).pathname.match(/\/detail\/([^/?]+)/)?.[1],

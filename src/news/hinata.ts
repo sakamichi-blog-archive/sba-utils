@@ -114,21 +114,10 @@ export function parseHinataNewsHtml(html: string): News[] {
     }
 
     const categoryElement = $(element).find(".c-news__category").first()
-    const categoryKey = getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_")
-    if (categoryKey === undefined) {
-      console.error(`Failed to extract category key for news ${id}. Skipping.`)
-      continue
-    }
-
-    const categoryName = categoryElement.text().trim()
-    if (categoryName === "") {
-      console.error(`Failed to resolve category name for news ${id}. Skipping.`)
-      continue
-    }
 
     news.push({
-      categoryKey,
-      categoryName,
+      categoryKey: getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_") ?? "",
+      categoryName: categoryElement.text().trim(),
       date,
       id,
       title: $(element).find("p.c-news__text").first().text().trim(),
@@ -148,13 +137,6 @@ export function parseHinataNewsDetailHtml(html: string, url: string): NewsDetail
   if (articleElement.length === 0) throw new ParseError("Article element not found in HTML")
 
   const categoryElement = $(articleElement).find(".p-article__info .c-news__category").first()
-  const categoryKey = getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_")
-  if (categoryKey === undefined) throw new ParseError("Category not found in HTML")
-
-  const categoryName = categoryElement.text().trim()
-  if (categoryName === "") {
-    throw new ParseError(`Cannot resolve category name for key: ${categoryKey}`)
-  }
 
   const members: string[] = []
   const memberElements = $(articleElement).find(".c-article__tag > a")
@@ -164,8 +146,8 @@ export function parseHinataNewsDetailHtml(html: string, url: string): NewsDetail
   }
 
   return {
-    categoryKey,
-    categoryName,
+    categoryKey: getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_") ?? "",
+    categoryName: categoryElement.text().trim(),
     date: parseDateJst($(articleElement).find(".p-article__info time.c-news__date").text().trim()),
     html: $(articleElement).find(".p-article__text").html()?.trim() ?? "",
     id,

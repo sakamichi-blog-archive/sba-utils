@@ -10,13 +10,7 @@ import { parseJsonpArgumentJson } from "../shared/jsonp"
 import type { NewsFilter, NewsWithHtml } from "./_types"
 
 /** Unlike the other groups, Nogi news carry a time of day and their detail HTML comes with the listing */
-export interface NogiNews extends Omit<NewsWithHtml, "categoryName"> {
-  /**
-   * Unlike every other news, this may be absent: the listing API returns the category key alone, so the
-   * label is resolved against the site's category nav and a key too new to appear there has none. The
-   * detail page renders the label, so {@link fetchNogiNewsDetail} always carries one.
-   */
-  categoryName?: string
+export interface NogiNews extends NewsWithHtml {
   /** Publication date and time (JST). Only the listing exposes it; the detail page shows a date alone */
   datetime: Date
 }
@@ -53,7 +47,7 @@ const newsApiSchema = z.object({
  *
  * Unlike the other groups, the listing already carries each news' detail `html`, so there is no separate
  * detail fetch. The API exposes only category keys, so the listing page is fetched alongside it to resolve
- * their labels; if that request fails, the news carry a `categoryKey` but no `categoryName`.
+ * their labels; if that request fails, the news carry a `categoryKey` and an empty `categoryName`.
  */
 export async function fetchNogiNews(filter?: NewsFilter): Promise<{
   news: NogiNews[]
@@ -125,7 +119,7 @@ export async function fetchNogiNewsCategories(
 
     return parseNogiNewsCategoriesHtml(await response.text())
   } catch (error) {
-    console.error("Failed to fetch news categories. News will carry no category name.", error)
+    console.error("Failed to fetch news categories. News will carry an empty category name.", error)
     return {}
   }
 }
@@ -201,21 +195,13 @@ export function parseNogiNewsDetailHtml(html: string, url: string): NewsWithHtml
   const headerElement = $("main .post_header").first()
   if (headerElement.length === 0) throw new ParseError("Article element not found in HTML")
 
-  const categoryElement = $(headerElement).find(".post_header_cat .cat_name").first()
-  const categoryKey = getCategoryKeyFromClass(
-    $(headerElement).find(".post_header_cat .cat_icon").attr("class") ?? "",
-    "i--"
-  )
-  if (categoryKey === undefined) throw new ParseError("Category not found in HTML")
-
-  const categoryName = categoryElement.text().trim()
-  if (categoryName === "") {
-    throw new ParseError(`Cannot resolve category name for key: ${categoryKey}`)
-  }
-
   return {
-    categoryKey,
-    categoryName,
+    categoryKey:
+      getCategoryKeyFromClass(
+        $(headerElement).find(".post_header_cat .cat_icon").attr("class") ?? "",
+        "i--"
+      ) ?? "",
+    categoryName: $(headerElement).find(".post_header_cat .cat_name").first().text().trim(),
     date: parseDateJst($(headerElement).find(".post_header_data span").first().text().trim()),
     // `.post_body_in` excludes the prev/next nav and latest-news list that share `.post_body`
     html: $("main .post_body .post_body_in").first().html()?.trim() ?? "",
@@ -229,7 +215,7 @@ export function parseNogiNewsDetailHtml(html: string, url: string): NewsWithHtml
  * Parse a news API response. Returned oldest first, reversing the API's newest-first order.
  *
  * Pass `categories` — from {@link fetchNogiNewsCategories} or {@link parseNogiNewsCategoriesHtml} — to
- * resolve category keys to the labels the site displays. Without it the news carry no `categoryName`.
+ * resolve category keys to the labels the site displays. Without it `categoryName` is an empty string.
  */
 export function parseNogiNewsJs(js: string, categories: Record<string, string> = {}): NogiNews[] {
   const functionArgument = parseJsonpArgumentJson(js, "res")
@@ -253,7 +239,7 @@ export function parseNogiNewsJs(js: string, categories: Record<string, string> =
 
     news.push({
       categoryKey: item.cate,
-      categoryName: categories[item.cate],
+      categoryName: categories[item.cate] ?? "",
       date,
       datetime,
       html: item.text.trim(),

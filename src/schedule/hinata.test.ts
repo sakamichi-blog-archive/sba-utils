@@ -162,7 +162,7 @@ describe("parseHinataScheduleEventsHtml()", () => {
     expect(parseHinataScheduleEventsHtml(html).every(event => !("members" in event))).toBe(true)
   })
 
-  it("skips an event whose displayed category label is empty", () => {
+  it("keeps an event whose displayed category label is empty, with an empty name", () => {
     const unresolvable = `
       <div class="l-maincontents--schedule">
         <p class="p-schedule__page_date">2026年 08月</p>
@@ -183,8 +183,9 @@ describe("parseHinataScheduleEventsHtml()", () => {
           </li>
         </ul>
       </div>`
-    vi.spyOn(console, "error").mockImplementation(() => {})
-    expect(parseHinataScheduleEventsHtml(unresolvable)).toEqual([])
+    const [event] = parseHinataScheduleEventsHtml(unresolvable)
+    expect(event?.categoryKey).toBe("goods")
+    expect(event?.categoryName).toBe("")
   })
 })
 

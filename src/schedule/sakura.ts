@@ -70,12 +70,6 @@ export function parseSakuraScheduleEventsHtml(html: string): SakuraScheduleEvent
       continue
     }
 
-    const categoryKey = getCategoryKeyFromClass($(container).attr("class") ?? "", "cate-")
-    const categoryName = $(container).find(".txt p.type").first().text().trim()
-    if (categoryKey === undefined || categoryName === "") {
-      console.error(`Failed to resolve category for modal index ${modalIndex}. Skipping.`)
-      continue
-    }
     const { timeStart, timeEnd } = parseScheduleTimeRange(dateText)
 
     const members: string[] = []
@@ -86,8 +80,8 @@ export function parseSakuraScheduleEventsHtml(html: string): SakuraScheduleEvent
     }
 
     events.push({
-      categoryKey,
-      categoryName,
+      categoryKey: getCategoryKeyFromClass($(container).attr("class") ?? "", "cate-") ?? "",
+      categoryName: $(container).find(".txt p.type").first().text().trim(),
       date,
       html: $(container).find(".txt p.lead").html()?.trim() ?? "",
       id: ($(modal).attr("class") ?? "").match(/count_(\d+)_/)?.[1],

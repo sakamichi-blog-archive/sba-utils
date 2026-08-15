@@ -230,7 +230,7 @@ describe("parseNogiNewsJs()", () => {
       [
         {
           "categoryKey": "tv",
-          "categoryName": undefined,
+          "categoryName": "",
           "date": 2026-05-31T15:00:00.000Z,
           "datetime": 2026-05-31T15:44:51.000Z,
           "html": "<p>Broadcast detail placeholder.</p>",
@@ -240,7 +240,7 @@ describe("parseNogiNewsJs()", () => {
         },
         {
           "categoryKey": "unknown_category",
-          "categoryName": undefined,
+          "categoryName": "",
           "date": 2026-06-14T15:00:00.000Z,
           "datetime": 2026-06-15T03:00:00.000Z,
           "html": "<p>Unmapped category placeholder.</p>",
@@ -250,7 +250,7 @@ describe("parseNogiNewsJs()", () => {
         },
         {
           "categoryKey": "release",
-          "categoryName": undefined,
+          "categoryName": "",
           "date": 2026-06-29T15:00:00.000Z,
           "datetime": 2026-06-30T12:00:00.000Z,
           "html": "<p>News detail placeholder.</p>",
@@ -262,9 +262,9 @@ describe("parseNogiNewsJs()", () => {
     `)
   })
 
-  it("exposes keys but no names when no category map is supplied", () => {
+  it("exposes keys with empty names when no category map is supplied", () => {
     expect(parseNogiNewsJs(js)[1]?.categoryKey).toBe("unknown_category")
-    expect(parseNogiNewsJs(js).every(news => news.categoryName === undefined)).toBe(true)
+    expect(parseNogiNewsJs(js).every(news => news.categoryName === "")).toBe(true)
   })
 
   it("resolves names from a supplied map", () => {
@@ -305,7 +305,7 @@ describe("parseNogiNewsDetailHtml()", () => {
     expect(contentHtml).not.toContain("次の記事")
   })
 
-  it("throws ParseError when the label is empty", () => {
+  it("returns an empty name when the label is empty", () => {
     const fallback = `
       <main>
         <header class="post_header">
@@ -317,6 +317,7 @@ describe("parseNogiNewsDetailHtml()", () => {
           <div class="post_header_data"><span>2026.06.30</span></div>
         </header>
       </main>`
-    expect(() => parseNogiNewsDetailHtml(fallback, url)).toThrow(ParseError)
+    expect(parseNogiNewsDetailHtml(fallback, url).categoryName).toBe("")
+    expect(parseNogiNewsDetailHtml(fallback, url).categoryKey).toBe("tv")
   })
 })

@@ -31,7 +31,7 @@ describe("fetchHinataNews()", () => {
       })
     )
     const { news, html, url } = await fetchHinataNews({ year: 2026, month: 6 })
-    expect(news).toHaveLength(2)
+    expect(news).toHaveLength(3)
     expect(html).toBe(readFixture("hinata-news.html"))
     expect(url).toBe("https://www.hinatazaka46.com/s/official/news/list?ima=3456&dy=202606")
   })
@@ -137,6 +137,14 @@ describe("parseHinataNewsHtml()", () => {
     expect(parseHinataNewsHtml(html)).toMatchInlineSnapshot(`
       [
         {
+          "categoryKey": "other",
+          "categoryName": "",
+          "date": 2026-06-06T15:00:00.000Z,
+          "id": "O100281",
+          "title": "「日向坂ちゃんねる」にて新着動画を公開！",
+          "url": "https://www.hinatazaka46.com/s/official/news/detail/O100281?ima=0000",
+        },
+        {
           "categoryKey": "media",
           "categoryName": "メディア",
           "date": 2026-06-29T15:00:00.000Z,
@@ -156,13 +164,17 @@ describe("parseHinataNewsHtml()", () => {
     `)
   })
 
-  it("skips news whose displayed category label is empty", () => {
-    vi.spyOn(console, "error").mockImplementation(() => {})
-    expect(parseHinataNewsHtml(html).every(news => news.categoryKey !== "other")).toBe(true)
+  it("keeps news whose displayed category label is empty, with an empty name", () => {
+    const empty = parseHinataNewsHtml(html).find(news => news.categoryKey === "other")
+    expect(empty?.categoryName).toBe("")
   })
 
   it("always exposes a category key", () => {
-    expect(parseHinataNewsHtml(html).map(news => news.categoryKey)).toEqual(["media", "release"])
+    expect(parseHinataNewsHtml(html).map(news => news.categoryKey)).toEqual([
+      "other",
+      "media",
+      "release"
+    ])
   })
 
   it("skips news with no href", () => {

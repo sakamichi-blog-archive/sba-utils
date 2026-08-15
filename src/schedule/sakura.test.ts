@@ -81,7 +81,7 @@ describe("parseSakuraScheduleEventsHtml()", () => {
     expect(events[1]?.members).toEqual(["向井純葉"])
   })
 
-  it("skips an event whose displayed category label is empty", () => {
+  it("keeps an event whose displayed category label is empty, with an empty name", () => {
     const unresolvable = `
       <main class="site-main">
         <div class="module-modal js-schedule-detail count_1_01">
@@ -94,8 +94,9 @@ describe("parseSakuraScheduleEventsHtml()", () => {
           </div></div></div></div>
         </div>
       </main>`
-    vi.spyOn(console, "error").mockImplementation(() => {})
-    expect(parseSakuraScheduleEventsHtml(unresolvable)).toEqual([])
+    const [event] = parseSakuraScheduleEventsHtml(unresolvable)
+    expect(event?.categoryKey).toBe("goods")
+    expect(event?.categoryName).toBe("")
   })
 
   it("parses event fields correctly", () => {

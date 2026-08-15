@@ -118,7 +118,7 @@ The split matters because labels move: `shakehands` was 握手会 and is now ミ
 
 Labels come from the sites themselves, never from a list baked into this package. Hinata and Sakura render the label on every item, list and detail alike, so it is read straight off the page at no extra cost. Nogi's listing API returns the key alone, so its listing page is fetched alongside to read the category nav — one extra request, and only there; its detail page renders the label like everyone else's.
 
-Nothing falls back to a guess. If Nogi's nav cannot be read, those news carry a `categoryKey` with no `categoryName`. If a label is missing where one is expected, the item is skipped in a listing and `ParseError` is thrown for a single news.
+Nothing falls back to a guess, and nothing is dropped or thrown over a category. Whatever the site does not give is an empty string — so if Nogi's nav cannot be read, those news carry a `categoryKey` and an empty `categoryName`.
 
 To resolve labels yourself, or to reuse one map across several Nogi calls instead of refetching it, pass it in:
 
@@ -160,7 +160,7 @@ const { events } = await fetchHinataScheduleEvents({ year: 2026, month: 8 })
 
 Every event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:mm`, JST), `categoryKey`/`categoryName`, and `title`. Categories work exactly as they do for news, including the extra request Nogi needs — see [Categories](#categories) above. The remaining fields vary by group:
 
-- **Nogi** events also include `members`, the detail `html`, and a unique `url`, and are the only ones whose `categoryName` is optional — the API returns the key alone.
+- **Nogi** events also include `members`, the detail `html`, and a unique `url`.
 - **Sakura** events also include `members` and the detail `html`, but no `url` (the detail is an on-page modal).
 - **Hinata** list events include a `url` but omit `members` and `html` — fetch a single event with `fetchHinataScheduleEvent(id)` to get those. The `id` comes from each list event.
 

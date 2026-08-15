@@ -10,11 +10,13 @@ export interface ScheduleEvent {
    * Stable category key as used by the site, e.g. `"live"`. Taken from the `category_xxx`/`cate-xxx` class
    * for `hinata`/`sakura` and from the API's `cate` field for `nogi`. Prefer this for storing and
    * filtering: unlike {@link ScheduleEvent.categoryName} it does not change when a category is relabelled.
+   * Empty string when the site does not give one.
    */
   categoryKey: string
   /**
    * Category label as shown on the site (Japanese), e.g. `"ライブ/イベント"`. Read straight off the event,
-   * which renders it. Only {@link NogiScheduleEvent} can lack one — its API returns the key alone.
+   * which renders it — except for {@link NogiScheduleEvent}, whose API returns the key alone and whose
+   * label is resolved against the site's category nav. Empty string when no label could be read.
    */
   categoryName: string
   /** Event date at JST midnight. Time of day, if any, is carried by {@link ScheduleEvent.timeStart} */
