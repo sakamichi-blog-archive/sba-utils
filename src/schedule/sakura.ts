@@ -16,12 +16,12 @@ const SCHEDULE_PAGE_URL = "https://sakurazaka46.com/s/s46/media/list"
 /** Maps `cate-xxx` class keys to Japanese labels, used as a fallback when the visible label is empty */
 const SAKURA_SCHEDULE_CATEGORIES: Record<string, string> = {
   birthday: "誕生日",
-  event: "イベント",
+  event: "イベント情報",
   goods: "グッズ",
   media: "メディア",
   other: "その他",
   release: "リリース",
-  shakehands: "握手会",
+  shakehands: "ミート＆グリート",
   ticket: "チケット"
 }
 

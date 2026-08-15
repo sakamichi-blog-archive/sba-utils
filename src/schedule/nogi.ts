@@ -24,13 +24,17 @@ const NOGI_SCHEDULE_CATEGORIES: Record<string, string> = {
   book: "書籍",
   live: "ライブ/イベント",
   meet: "握手会",
-  mobile: "モバイル",
+  meetandgreet: "ミート&グリート",
+  mobile: "モバイル・アプリ",
   movie: "映画",
   musical: "舞台/ミュージカル",
   other: "その他",
+  photo_book: "写真集",
   radio: "ラジオ",
-  release: "リリース",
-  tv: "TV",
+  release: "CD/音楽配信/映像商品",
+  streaming: "映像配信サービス",
+  tieup: "タイアップ・CM",
+  tv: "テレビ",
   web: "WEB"
 }
 

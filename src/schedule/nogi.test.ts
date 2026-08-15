@@ -111,7 +111,7 @@ describe("parseNogiScheduleEventsJs()", () => {
           "url": "https://www.nogizaka46.com/s/n46/media/detail/107136?ima=2037&pri1=202608",
         },
         {
-          "category": "TV",
+          "category": "テレビ",
           "date": 2026-08-01T15:00:00.000Z,
           "html": "<p>Broadcast detail placeholder.</p>",
           "id": "107140",

@@ -19,7 +19,7 @@ const HINATA_SCHEDULE_CATEGORIES: Record<string, string> = {
   media: "メディア",
   other: "その他",
   release: "リリース",
-  shakehands: "握手会",
+  shakehands: "ミート＆グリート",
   ticket: "チケット"
 }
 
