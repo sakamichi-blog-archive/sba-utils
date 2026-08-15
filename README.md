@@ -127,13 +127,13 @@ const { events } = await fetchHinataScheduleEvents({ year: 2026, month: 8 })
 | Hinata | `fetchHinataScheduleEvents(filter)` | `fetchHinataScheduleEvent(id)`             |
 | Sakura | `fetchSakuraScheduleEvents(filter)` | — (built into `fetchSakuraScheduleEvents`) |
 
-`filter` requires both `year` and `month` (1-based; January = 1).
+`filter` requires both `year` and `month` (January = 1).
 
-Every event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:mm`, JST), `categoryKey`/`categoryName`, and `title`. Categories work exactly as they do for news, including the extra request Nogi needs — see [Categories](#categories) above. The remaining fields vary by group:
+Every event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:mm`, JST), `categoryKey`/`categoryName`, and `title`. Categories work exactly as news, including the extra request Nogi needs — see [Categories](#categories) above. The remaining fields vary by group:
 
 - **Nogi** events also include `members`, the detail `html`, and a unique `url`. Single event does not return `members`.
 - **Hinata** list events include a `url` but omit `members` and `html` — fetch a single event with `fetchHinataScheduleEvent(id)` to get those. The `id` comes from each list event.
-- **Sakura** events also include `members` and the detail `html`, but no `url` (the detail is an on-page modal).
+- **Sakura** events include `members` and the detail `html`, but no `url` (the detail is an on-page modal).
 
 ### Members
 
