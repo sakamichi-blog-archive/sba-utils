@@ -39,7 +39,8 @@ export interface ScheduleEvent {
   /**
    * Absolute URL. Meaning differs per group:
    *
-   * - `nogi`: always present; recurring events share the same URL
+   * - `nogi`: always present; a recurring event's occurrences share an id but each carries its own URL,
+   *   which pins the occurrence date in its query
    * - `hinata`: recurring events share the same URL
    * - `sakura`: `undefined` (the detail lives in an on-page modal with no standalone URL)
    */
