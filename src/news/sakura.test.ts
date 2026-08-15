@@ -106,6 +106,13 @@ describe("getSakuraNewsUrl()", () => {
     )
   })
 
+  it("narrows dy to a single day when day is given", () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    expect(getSakuraNewsUrl({ year: 2026, month: 6, day: 30 })).toBe(
+      "https://sakurazaka46.com/s/s46/news/list?ima=3456&dy=20260630"
+    )
+  })
+
   it("omits dy when no filter is given", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     expect(getSakuraNewsUrl()).toBe("https://sakurazaka46.com/s/s46/news/list?ima=3456")

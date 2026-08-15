@@ -83,6 +83,10 @@ describe("fetchNogiNewsJs()", () => {
   it("throws RangeError when month is given without year", async () => {
     await expect(fetchNogiNewsJs({ month: 6 })).rejects.toBeInstanceOf(RangeError)
   })
+
+  it("throws RangeError when day is given without month", async () => {
+    await expect(fetchNogiNewsJs({ year: 2026, day: 30 })).rejects.toBeInstanceOf(RangeError)
+  })
 })
 
 describe("getNogiNewsUrl()", () => {
@@ -93,6 +97,13 @@ describe("getNogiNewsUrl()", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     expect(getNogiNewsUrl({ year: 2026, month: 6 })).toBe(
       "https://www.nogizaka46.com/s/n46/api/list/news?ima=3456&dy=202606&callback=res"
+    )
+  })
+
+  it("narrows dy to a single day when day is given", () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    expect(getNogiNewsUrl({ year: 2026, month: 6, day: 30 })).toBe(
+      "https://www.nogizaka46.com/s/n46/api/list/news?ima=3456&dy=20260630&callback=res"
     )
   })
 

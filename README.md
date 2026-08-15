@@ -68,6 +68,14 @@ import { fetchHinataNews } from "@sakamichi-blog-archive/utils/news"
 const { news } = await fetchHinataNews({ year: 2026, month: 6 })
 ```
 
+Narrow it to a single day with `day`:
+
+```typescript
+import { fetchHinataNews } from "@sakamichi-blog-archive/utils/news"
+
+const { news } = await fetchHinataNews({ year: 2026, month: 6, day: 30 })
+```
+
 Omit the filter to fetch the most recent news:
 
 ```typescript
@@ -84,7 +92,7 @@ const { news } = await fetchHinataNews()
 | Nogi   | `fetchNogiNews(filter?)`   | `fetchNogiNewsDetail(id)`   |
 | Sakura | `fetchSakuraNews(filter?)` | `fetchSakuraNewsDetail(id)` |
 
-`filter` accepts `year` and `month` (1-based; January = 1). Setting `month` requires `year`. A filtered listing covers exactly that month, so there is no page size or offset to control.
+`filter` accepts `year`, `month` (1-based; January = 1), and `day`. Setting `month` requires `year`, and setting `day` requires `month`. A filtered listing covers exactly that month or day, so there is no page size or offset to control.
 
 Omitting `filter` does not fetch the current month — it returns the sites' default listing of most recent news, currently the latest 200 items, which spans several months. Pass `year`/`month` when you need a specific month.
 

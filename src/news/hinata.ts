@@ -28,7 +28,7 @@ const HINATA_NEWS_CATEGORIES: Record<string, string> = {
 }
 
 /**
- * Fetch a month of Hinata news, oldest first. Omit `filter` for the site's default listing of most recent
+ * Fetch a month — or a single day, with `day` — of Hinata news, oldest first. Omit `filter` for the site's default listing of most recent
  * news, which spans several months rather than the current one.
  *
  * List news carry no `html` or `members`; fetch a single news with {@link fetchHinataNewsDetail} to get those.
@@ -87,7 +87,7 @@ export async function fetchHinataNewsDetailHtml(id: string): Promise<{
   return { html: await response.text(), url }
 }
 
-/** Build the news listing URL for a month, or — when `filter` is omitted — for the most recent news */
+/** Build the news listing URL for a month or day, or — when `filter` is omitted — for the most recent news */
 export function getHinataNewsUrl(filter?: NewsFilter): string {
   const params = new URLSearchParams({ ima: getMmss() })
   const dy = formatOptionalDy(filter)

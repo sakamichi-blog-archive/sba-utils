@@ -64,7 +64,7 @@ const newsApiSchema = z.object({
 })
 
 /**
- * Fetch a month of Nogi news, oldest first. Omit `filter` for the site's default listing of most recent
+ * Fetch a month — or a single day, with `day` — of Nogi news, oldest first. Omit `filter` for the site's default listing of most recent
  * news, which spans several months rather than the current one.
  *
  * Unlike the other groups, the listing already carries each news' detail `html`, so there is no separate
@@ -172,7 +172,7 @@ export async function fetchNogiNewsJs(filter?: NewsFilter): Promise<{
   return { js: await response.text(), url }
 }
 
-/** Build the news API URL for a month, or — when `filter` is omitted — for the most recent news */
+/** Build the news API URL for a month or day, or — when `filter` is omitted — for the most recent news */
 export function getNogiNewsUrl(filter?: NewsFilter, ima = getMmss()): string {
   const params = new URLSearchParams({ ima })
   const dy = formatOptionalDy(filter)
