@@ -11,8 +11,11 @@ import type { NewsFilter, NewsWithHtml } from "./_types"
 
 /** Unlike the other groups, Nogi news carry a time of day and their detail HTML comes with the listing */
 export interface NogiNews extends NewsWithHtml {
-  /** Publication date and time (JST). Only the listing exposes it; the detail page shows a date alone */
-  datetime: Date
+  /**
+   * Publication date and time (JST). Only the listing exposes it; the detail page shows a date alone, and
+   * it is absent on the rare item whose date carries a time this cannot read.
+   */
+  datetime?: Date
 }
 
 const NEWS_PAGE_URL = "https://www.nogizaka46.com/s/n46/news/list"
@@ -98,6 +101,9 @@ export async function fetchNogiNewsDetailHtml(id: string): Promise<{
 
 /**
  * Fetch the listing page's category nav and parse it into a `cate` key to label map.
+ *
+ * The nav is the same whichever month is requested, so `filter` only steers the page fetched and may be
+ * omitted; the map it returns can be reused across calls.
  *
  * Throws if the page cannot be fetched — an unreachable site is a real failure, not a missing label. A
  * page that loads but carries no nav returns an empty map instead, leaving every `categoryName` empty.
@@ -226,13 +232,19 @@ export function parseNogiNewsJs(js: string, categories: Record<string, string> =
 
   for (const item of data) {
     let date: Date
-    let datetime: Date
     try {
       date = parseDateJst(item.date)
-      datetime = parseDatetimeJst(item.date)
     } catch (error) {
       console.error(`Failed to parse date for news ${item.code}. Skipping.`, error)
       continue
+    }
+
+    // A time of day that cannot be read costs only `datetime`, never the news itself
+    let datetime: Date | undefined
+    try {
+      datetime = parseDatetimeJst(item.date)
+    } catch {
+      datetime = undefined
     }
 
     news.push({

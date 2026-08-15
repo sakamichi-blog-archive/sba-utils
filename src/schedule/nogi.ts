@@ -64,13 +64,17 @@ export async function fetchNogiScheduleEvents(filter: ScheduleFilter): Promise<{
 /**
  * Fetch the listing page's category nav and parse it into a `cate` key to label map.
  *
+ * The nav is the same whichever month is requested, so `filter` only steers the page fetched and may be
+ * omitted; the map it returns can be reused across calls.
+ *
  * Throws if the page cannot be fetched — an unreachable site is a real failure, not a missing label. A
  * page that loads but carries no nav returns an empty map instead, leaving every `categoryName` empty.
  */
 export async function fetchNogiScheduleCategories(
-  filter: ScheduleFilter
+  filter?: ScheduleFilter
 ): Promise<Record<string, string>> {
-  const params = new URLSearchParams({ ima: getMmss(), dy: formatDy(filter) })
+  const params = new URLSearchParams({ ima: getMmss() })
+  if (filter !== undefined) params.set("dy", formatDy(filter))
   const response = await fetch(`${SCHEDULE_PAGE_URL}?${params}`, {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP

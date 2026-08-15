@@ -79,6 +79,17 @@ describe("fetchNogiScheduleCategories()", () => {
     )
   })
 
+  it("omits dy when no filter is given", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      status: 200,
+      text: vi.fn().mockResolvedValue(readFixture("nogi-schedule-categories.html")),
+      body: { cancel: vi.fn() }
+    })
+    vi.stubGlobal("fetch", fetchMock)
+    await fetchNogiScheduleCategories()
+    expect(String(fetchMock.mock.calls[0]?.[0])).not.toContain("dy=")
+  })
+
   it("returns an empty map when the nav is absent", async () => {
     vi.stubGlobal(
       "fetch",

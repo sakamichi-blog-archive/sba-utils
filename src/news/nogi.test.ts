@@ -305,6 +305,20 @@ describe("parseNogiNewsJs()", () => {
     expect(parseNogiNewsJs(js).every(news => news.categoryName === "")).toBe(true)
   })
 
+  it("keeps a news whose time of day cannot be read, without a datetime", () => {
+    const js = `res({"count":"1","data":[{"arti_code":"","cate":"tv","code":"999","date":"2026/06/30 21:00:00 JST","link_url":"https://www.nogizaka46.com/s/n46/news/detail/999?ima=0140","text":"<p>x</p>","title":"時刻が読めないお知らせ"}]});`
+    const [item] = parseNogiNewsJs(js)
+    expect(item?.id).toBe("999")
+    expect(item?.date).toEqual(new Date("2026-06-30T00:00:00+09:00"))
+    expect(item?.datetime).toBeUndefined()
+  })
+
+  it("drops a news whose date cannot be read at all", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {})
+    const js = `res({"count":"1","data":[{"arti_code":"","cate":"tv","code":"999","date":"no date","link_url":"https://www.nogizaka46.com/s/n46/news/detail/999?ima=0140","text":"<p>x</p>","title":"日付が読めないお知らせ"}]});`
+    expect(parseNogiNewsJs(js)).toEqual([])
+  })
+
   it("resolves names from a supplied map", () => {
     const categories = parseNogiNewsCategoriesHtml(readFixture("nogi-news-categories.html"))
     expect(parseNogiNewsJs(js, categories)[1]?.categoryName).toBe("新カテゴリー")
