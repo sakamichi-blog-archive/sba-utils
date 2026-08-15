@@ -22,13 +22,13 @@ export interface News {
   categoryKey: string
   /**
    * Category label as shown on the site (Japanese), e.g. `"メディア"`. Read straight off the item, which
-   * renders it — except for {@link NogiNews}, whose API returns the key alone and whose label is resolved
-   * against the site's category nav. Empty string when no label could be read.
+   * renders it — except for Nogi news, whose API returns the key alone and whose label is resolved against
+   * the site's category nav. Empty string when no label could be read.
    */
   categoryName: string
   /**
-   * Publication date at JST midnight. Only `nogi` publishes a time of day, exposed as
-   * {@link NogiNews.datetime}.
+   * Publication date at JST midnight. Only Nogi publishes a time of day, exposed as `datetime` on its own
+   * news type.
    */
   date: Date
   /** Site-specific news identifier, unique per news */

@@ -63,13 +63,13 @@ import { fetchHinataNews, fetchHinataNewsDetail } from "@sakamichi-blog-archive/
 const { news } = await fetchHinataNews({ year: 2026, month: 6 })
 
 // Narrow it to a single day with `day`
-const { news } = await fetchHinataNews({ year: 2026, month: 6, day: 30 })
+const { news: onOneDay } = await fetchHinataNews({ year: 2026, month: 6, day: 30 })
 
 // Omit the filter to fetch the most recent news
-const { news } = await fetchHinataNews()
+const { news: latest } = await fetchHinataNews()
 
-// Fetch news by ID
-const news = await fetchHinataNewsDetail("M02770")
+// Fetch a single news by ID
+const { newsDetail } = await fetchHinataNewsDetail("M02770")
 ```
 
 #### Available functions
@@ -97,7 +97,7 @@ News is returned oldest first, reversing the order shown on the sites.
 
 Every news carries `categoryKey` and `categoryName`:
 
-- `categoryKey` — the site's own key, for example `"media"`. Stable across relabelling, so prefer it for storing and filtering.
+- `categoryKey` — the site's own key, for example `"media"`. Stable across relabelling, so prefer it for storing and grouping. It is not always the value the site filters on — Hinata tags fan club news `fanclubonly` but filters them with `cd=fanclub`.
 - `categoryName` — the Japanese label shown on the site, for example `"メディア"`, read straight off the item.
 
 `fetchNogiNews()` makes an extra request to resolve category names. To reuse one map across several Nogi calls instead of refetching it, run `fetchNogiNewsCategories()`, `fetchNogiNewsJs()`, and `parseNogiNewsJs()` directly:

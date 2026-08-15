@@ -56,13 +56,20 @@ const newsApiSchema = z.object({
 export async function fetchNogiNews(filter?: NewsFilter): Promise<{
   news: NogiNews[]
   js: string
+  /** The listing page these news came from, as for the other groups — not the JSONP endpoint behind it */
   url: string
 }> {
-  const [{ js, url }, categories] = await Promise.all([
-    fetchNogiNewsJs(filter),
-    fetchNogiNewsCategories(filter)
+  const ima = getMmss()
+  // `allSettled` so that a second failure cannot surface as an unhandled rejection
+  const [jsResult, categoriesResult] = await Promise.allSettled([
+    fetchNogiNewsJs(filter, ima),
+    fetchNogiNewsCategories(filter, ima)
   ])
-  return { news: parseNogiNewsJs(js, categories), js, url }
+  if (jsResult.status === "rejected") throw jsResult.reason
+  if (categoriesResult.status === "rejected") throw categoriesResult.reason
+
+  const { js } = jsResult.value
+  return { news: parseNogiNewsJs(js, categoriesResult.value), js, url: getNogiNewsUrl(filter, ima) }
 }
 
 /**
@@ -109,13 +116,10 @@ export async function fetchNogiNewsDetailHtml(id: string): Promise<{
  * page that loads but carries no nav returns an empty map instead, leaving every `categoryName` empty.
  */
 export async function fetchNogiNewsCategories(
-  filter?: NewsFilter
+  filter?: NewsFilter,
+  ima = getMmss()
 ): Promise<Record<string, string>> {
-  const params = new URLSearchParams({ ima: getMmss() })
-  const dy = formatOptionalDy(filter)
-  if (dy !== undefined) params.set("dy", dy)
-
-  const response = await fetch(`${NEWS_PAGE_URL}?${params}`, {
+  const response = await fetch(getNogiNewsUrl(filter, ima), {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP
     }
@@ -128,20 +132,19 @@ export async function fetchNogiNewsCategories(
   return parseNogiNewsCategoriesHtml(await response.text())
 }
 
-export async function fetchNogiNewsJs(filter?: NewsFilter): Promise<{
+/** Unlike {@link fetchNogiNews}, the returned `url` is the JSONP endpoint — the URL that produced `js` */
+export async function fetchNogiNewsJs(
+  filter?: NewsFilter,
+  ima = getMmss()
+): Promise<{
   js: string
   url: string
 }> {
-  const ima = getMmss()
-  const url = getNogiNewsUrl(filter, ima)
-
-  const refererParams = new URLSearchParams({ ima })
-  const dy = formatOptionalDy(filter)
-  if (dy !== undefined) refererParams.set("dy", dy)
+  const url = getNogiNewsJsUrl(filter, ima)
 
   const response = await fetch(url, {
     headers: {
-      Referer: `${NEWS_PAGE_URL}?${refererParams}`,
+      Referer: getNogiNewsUrl(filter, ima),
       "User-Agent": USER_AGENT_DESKTOP
     }
   })
@@ -153,8 +156,20 @@ export async function fetchNogiNewsJs(filter?: NewsFilter): Promise<{
   return { js: await response.text(), url }
 }
 
-/** Build the news API URL for a month or day, or — when `filter` is omitted — for the most recent news */
+/**
+ * Build the news listing page URL for a month or day, or — when `filter` is omitted — for the most recent
+ * news. This is the page a reader would open; the JSONP endpoint behind it is an implementation detail.
+ */
 export function getNogiNewsUrl(filter?: NewsFilter, ima = getMmss()): string {
+  const params = new URLSearchParams({ ima })
+  const dy = formatOptionalDy(filter)
+  if (dy !== undefined) params.set("dy", dy)
+
+  return `${NEWS_PAGE_URL}?${params}`
+}
+
+/** Build the JSONP endpoint URL backing {@link getNogiNewsUrl} */
+function getNogiNewsJsUrl(filter?: NewsFilter, ima = getMmss()): string {
   const params = new URLSearchParams({ ima })
   const dy = formatOptionalDy(filter)
   if (dy !== undefined) params.set("dy", dy)

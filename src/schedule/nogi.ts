@@ -52,13 +52,24 @@ const scheduleApiSchema = z.object({
 export async function fetchNogiScheduleEvents(filter: ScheduleFilter): Promise<{
   events: NogiScheduleEvent[]
   js: string
+  /** The listing page these events came from, as for the other groups — not the JSONP endpoint behind it */
   url: string
 }> {
-  const [{ js, url }, categories] = await Promise.all([
-    fetchNogiScheduleEventsJs(filter),
-    fetchNogiScheduleCategories(filter)
+  const ima = getMmss()
+  // `allSettled` so that a second failure cannot surface as an unhandled rejection
+  const [jsResult, categoriesResult] = await Promise.allSettled([
+    fetchNogiScheduleEventsJs(filter, ima),
+    fetchNogiScheduleCategories(filter, ima)
   ])
-  return { events: parseNogiScheduleEventsJs(js, categories), js, url }
+  if (jsResult.status === "rejected") throw jsResult.reason
+  if (categoriesResult.status === "rejected") throw categoriesResult.reason
+
+  const { js } = jsResult.value
+  return {
+    events: parseNogiScheduleEventsJs(js, categoriesResult.value),
+    js,
+    url: getNogiScheduleUrl(filter, ima)
+  }
 }
 
 /**
@@ -71,11 +82,10 @@ export async function fetchNogiScheduleEvents(filter: ScheduleFilter): Promise<{
  * page that loads but carries no nav returns an empty map instead, leaving every `categoryName` empty.
  */
 export async function fetchNogiScheduleCategories(
-  filter?: ScheduleFilter
+  filter?: ScheduleFilter,
+  ima = getMmss()
 ): Promise<Record<string, string>> {
-  const params = new URLSearchParams({ ima: getMmss() })
-  if (filter !== undefined) params.set("dy", formatDy(filter))
-  const response = await fetch(`${SCHEDULE_PAGE_URL}?${params}`, {
+  const response = await fetch(getNogiScheduleUrl(filter, ima), {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP
     }
@@ -110,17 +120,21 @@ export function parseNogiScheduleCategoriesHtml(html: string): Record<string, st
   return categories
 }
 
-export async function fetchNogiScheduleEventsJs(filter: ScheduleFilter): Promise<{
+/**
+ * Unlike {@link fetchNogiScheduleEvents}, the returned `url` is the JSONP endpoint — the URL that produced
+ * `js`
+ */
+export async function fetchNogiScheduleEventsJs(
+  filter: ScheduleFilter,
+  ima = getMmss()
+): Promise<{
   js: string
   url: string
 }> {
-  const ima = getMmss()
-  const url = getNogiScheduleUrl(filter, ima)
-  const dy = formatDy(filter)
-  const referer = `${SCHEDULE_PAGE_URL}?${new URLSearchParams({ ima, dy })}`
+  const url = getNogiScheduleJsUrl(filter, ima)
   const response = await fetch(url, {
     headers: {
-      Referer: referer,
+      Referer: getNogiScheduleUrl(filter, ima),
       "User-Agent": USER_AGENT_DESKTOP
     }
   })
@@ -132,12 +146,20 @@ export async function fetchNogiScheduleEventsJs(filter: ScheduleFilter): Promise
   return { js: await response.text(), url }
 }
 
-export function getNogiScheduleUrl(filter: ScheduleFilter, ima = getMmss()): string {
-  const params = new URLSearchParams({
-    ima,
-    dy: formatDy(filter),
-    callback: "res"
-  })
+/**
+ * Build the schedule listing page URL for a month. This is the page a reader would open; the JSONP
+ * endpoint behind it is an implementation detail.
+ */
+export function getNogiScheduleUrl(filter?: ScheduleFilter, ima = getMmss()): string {
+  const params = new URLSearchParams({ ima })
+  if (filter !== undefined) params.set("dy", formatDy(filter))
+
+  return `${SCHEDULE_PAGE_URL}?${params}`
+}
+
+/** Build the JSONP endpoint URL backing {@link getNogiScheduleUrl} */
+function getNogiScheduleJsUrl(filter: ScheduleFilter, ima = getMmss()): string {
+  const params = new URLSearchParams({ ima, dy: formatDy(filter), callback: "res" })
   return `${SCHEDULE_API_ENDPOINT}?${params}`
 }
 

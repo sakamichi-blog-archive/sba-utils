@@ -43,9 +43,7 @@ describe("fetchNogiNews()", () => {
     const { news, js, url } = await fetchNogiNews({ year: 2026, month: 6 })
     expect(news).toHaveLength(3)
     expect(js).toBe(readFixture("nogi-news.jsonp"))
-    expect(url).toBe(
-      "https://www.nogizaka46.com/s/n46/api/list/news?ima=3456&dy=202606&callback=res"
-    )
+    expect(url).toBe("https://www.nogizaka46.com/s/n46/news/list?ima=3456&dy=202606")
   })
 })
 
@@ -64,7 +62,10 @@ describe("fetchNogiNewsJs()", () => {
       body: { cancel: vi.fn() }
     })
     vi.stubGlobal("fetch", fetchMock)
-    await fetchNogiNewsJs({ year: 2026, month: 6 })
+    const { url } = await fetchNogiNewsJs({ year: 2026, month: 6 })
+    expect(url).toBe(
+      "https://www.nogizaka46.com/s/n46/api/list/news?ima=3456&dy=202606&callback=res"
+    )
     expect(fetchMock.mock.calls[0]?.[1]?.headers?.Referer).toBe(
       "https://www.nogizaka46.com/s/n46/news/list?ima=3456&dy=202606"
     )
@@ -93,25 +94,23 @@ describe("getNogiNewsUrl()", () => {
   beforeEach(() => vi.useFakeTimers())
   afterEach(() => vi.useRealTimers())
 
-  it("applies ima, dy, and callback params", () => {
+  it("returns the listing page, not the JSONP endpoint", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     expect(getNogiNewsUrl({ year: 2026, month: 6 })).toBe(
-      "https://www.nogizaka46.com/s/n46/api/list/news?ima=3456&dy=202606&callback=res"
+      "https://www.nogizaka46.com/s/n46/news/list?ima=3456&dy=202606"
     )
   })
 
   it("narrows dy to a single day when day is given", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     expect(getNogiNewsUrl({ year: 2026, month: 6, day: 30 })).toBe(
-      "https://www.nogizaka46.com/s/n46/api/list/news?ima=3456&dy=20260630&callback=res"
+      "https://www.nogizaka46.com/s/n46/news/list?ima=3456&dy=20260630"
     )
   })
 
   it("omits dy when no filter is given", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
-    expect(getNogiNewsUrl()).toBe(
-      "https://www.nogizaka46.com/s/n46/api/list/news?ima=3456&callback=res"
-    )
+    expect(getNogiNewsUrl()).toBe("https://www.nogizaka46.com/s/n46/news/list?ima=3456")
   })
 })
 

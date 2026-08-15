@@ -42,9 +42,7 @@ describe("fetchNogiScheduleEvents()", () => {
     expect(events[0]?.categoryName).toBe("ライブ/イベント")
     expect(events[1]?.categoryName).toBe("テレビ")
     expect(js).toBe(readFixture("nogi-schedule.jsonp"))
-    expect(url).toBe(
-      "https://www.nogizaka46.com/s/n46/api/list/schedule?ima=3456&dy=202608&callback=res"
-    )
+    expect(url).toBe("https://www.nogizaka46.com/s/n46/media/list?ima=3456&dy=202608")
   })
 })
 
@@ -107,10 +105,10 @@ describe("getNogiScheduleUrl()", () => {
   beforeEach(() => vi.useFakeTimers())
   afterEach(() => vi.useRealTimers())
 
-  it("applies ima, dy, and callback params", () => {
+  it("returns the listing page, not the JSONP endpoint", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     expect(getNogiScheduleUrl({ year: 2026, month: 8 })).toBe(
-      "https://www.nogizaka46.com/s/n46/api/list/schedule?ima=3456&dy=202608&callback=res"
+      "https://www.nogizaka46.com/s/n46/media/list?ima=3456&dy=202608"
     )
   })
 })

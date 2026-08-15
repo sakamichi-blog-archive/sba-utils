@@ -15,8 +15,8 @@ export interface ScheduleEvent {
   categoryKey: string
   /**
    * Category label as shown on the site (Japanese), e.g. `"ライブ/イベント"`. Read straight off the event,
-   * which renders it — except for {@link NogiScheduleEvent}, whose API returns the key alone and whose
-   * label is resolved against the site's category nav. Empty string when no label could be read.
+   * which renders it — except for Nogi events, whose API returns the key alone and whose label is resolved
+   * against the site's category nav. Empty string when no label could be read.
    */
   categoryName: string
   /** Event date at JST midnight. Time of day, if any, is carried by {@link ScheduleEvent.timeStart} */
