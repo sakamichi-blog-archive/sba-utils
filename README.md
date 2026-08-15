@@ -111,6 +111,18 @@ const { js } = await fetchNogiNewsJs({ year: 2026, month: 6 })
 const news = parseNogiNewsJs(js, categories) // reuse `categories` across calls
 ```
 
+```typescript
+import {
+  fetchNogiScheduleCategories,
+  fetchNogiScheduleEventsJs,
+  parseNogiScheduleEventsJs
+} from "@sakamichi-blog-archive/utils/schedule"
+
+const categories = await fetchNogiScheduleCategories()
+const { js } = await fetchNogiScheduleEventsJs({ year: 2026, month: 8 })
+const events = parseNogiScheduleEventsJs(js, categories) // reuse `categories` across calls
+```
+
 ### Schedule
 
 ```typescript
