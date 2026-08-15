@@ -89,31 +89,31 @@ export async function fetchNogiScheduleEvents(filter: ScheduleFilter): Promise<{
  * The page renders everything the listing does except `members`, so this is only worth calling when you
  * have an id but no list event.
  *
- * An id identifies an event, not one occurrence of it, so pass `occurrence` — a
+ * An id identifies an event, not one occurrence of it, so pass `date` — the list event's
  * {@link NogiScheduleEvent.date} — for anything recurring. Without it the page reports the date the event
  * was first listed: a weekly radio show appearing under 2026/08/01 reports 2026/04/04, its first airing,
  * and a `birthday` reports the year its entry was created rather than the year of birth.
  */
 export async function fetchNogiScheduleEvent(
   id: string,
-  occurrence?: Date
+  date?: Date
 ): Promise<{
   event: NogiScheduleEventDetail
   html: string
   url: string
 }> {
-  const { html, url } = await fetchNogiScheduleEventHtml(id, occurrence)
+  const { html, url } = await fetchNogiScheduleEventHtml(id, date)
   return { event: parseNogiScheduleEventHtml(html, url), html, url }
 }
 
 export async function fetchNogiScheduleEventHtml(
   id: string,
-  occurrence?: Date
+  date?: Date
 ): Promise<{
   html: string
   url: string
 }> {
-  const url = getNogiScheduleEventUrl(id, occurrence)
+  const url = getNogiScheduleEventUrl(id, date)
   const response = await fetch(url, {
     headers: {
       "User-Agent": USER_AGENT_DESKTOP
@@ -221,19 +221,19 @@ function getNogiScheduleJsUrl(filter: ScheduleFilter, ima = getMmss()): string {
 /**
  * Build the detail-page URL for a single event by its {@link NogiScheduleEvent.id}.
  *
- * Pass `occurrence` — a {@link NogiScheduleEvent.date} — for a recurring event. The page renders whichever
- * date the `wd00`/`wd01`/`wd02` parameters carry, so without it the page falls back to the date the event
- * was first listed. The site echoes them without checking them against the event, so a date the event does
- * not actually fall on is displayed just the same.
+ * Pass `date` — the list event's {@link NogiScheduleEvent.date} — for a recurring event. The page renders
+ * whichever date the `wd00`/`wd01`/`wd02` parameters carry, so without it the page falls back to the date
+ * the event was first listed. The site echoes them without checking them against the event, so a date the
+ * event does not actually fall on is displayed just the same.
  *
  * The URL still omits the `pri1=YYYYMM` month breadcrumb that the API's link includes, so the detail page's
  * back-to-list navigation falls back to the current month. Use {@link NogiScheduleEvent.url} when that
  * context matters.
  */
-export function getNogiScheduleEventUrl(id: string, occurrence?: Date): string {
+export function getNogiScheduleEventUrl(id: string, date?: Date): string {
   const params = new URLSearchParams({ ima: getMmss() })
-  if (occurrence !== undefined) {
-    const { year, month, day } = getDatePartsJst(occurrence)
+  if (date !== undefined) {
+    const { year, month, day } = getDatePartsJst(date)
     params.set("wd00", String(year))
     params.set("wd01", String(month).padStart(2, "0"))
     params.set("wd02", String(day).padStart(2, "0"))
