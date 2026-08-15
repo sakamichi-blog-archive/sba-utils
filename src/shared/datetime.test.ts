@@ -94,6 +94,18 @@ describe("getDatePartsJst()", () => {
     })
   })
 
+  it("throws RangeError for an invalid date", () => {
+    expect(() => getDatePartsJst(new Date("not a date"))).toThrow(RangeError)
+  })
+
+  it("handles dates before 1970", () => {
+    expect(getDatePartsJst(new Date("1960-03-05T00:00:00+09:00"))).toEqual({
+      year: 1960,
+      month: 3,
+      day: 5
+    })
+  })
+
   it("returns a 1-based month", () => {
     expect(getDatePartsJst(new Date("2026-01-15T00:00:00+09:00")).month).toBe(1)
   })

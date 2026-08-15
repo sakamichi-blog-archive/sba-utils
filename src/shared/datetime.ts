@@ -12,6 +12,8 @@ export function getMmss(): string {
  * `month` is 1-based, matching the filters.
  */
 export function getDatePartsJst(date: Date): { year: number; month: number; day: number } {
+  if (Number.isNaN(date.getTime())) throw new RangeError("Invalid date")
+
   const jst = new Date(date.getTime() + 9 * 60 * 60 * 1000)
   return { year: jst.getUTCFullYear(), month: jst.getUTCMonth() + 1, day: jst.getUTCDate() }
 }
