@@ -1,4 +1,4 @@
-export type { ScheduleEvent, ScheduleEventWithHtml, ScheduleFilter, ScheduleGroup } from "./_types"
+export type { ScheduleEvent, ScheduleEventWithHtml, ScheduleFilter } from "./_types"
 export {
   fetchHinataScheduleEvent,
   fetchHinataScheduleEventHtml,
@@ -12,11 +12,13 @@ export {
   parseHinataScheduleEventsHtml
 } from "./hinata"
 export {
+  fetchNogiScheduleCategories,
   fetchNogiScheduleEvents,
   fetchNogiScheduleEventsJs,
   getNogiScheduleEventUrl,
   getNogiScheduleUrl,
   type NogiScheduleEvent,
+  parseNogiScheduleCategoriesHtml,
   parseNogiScheduleEventsJs
 } from "./nogi"
 export {

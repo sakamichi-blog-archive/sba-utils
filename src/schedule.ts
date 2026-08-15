@@ -3,6 +3,7 @@ export {
   fetchHinataScheduleEventHtml,
   fetchHinataScheduleEvents,
   fetchHinataScheduleEventsHtml,
+  fetchNogiScheduleCategories,
   fetchNogiScheduleEvents,
   fetchNogiScheduleEventsJs,
   fetchSakuraScheduleEvents,
@@ -17,12 +18,12 @@ export {
   type NogiScheduleEvent,
   parseHinataScheduleEventHtml,
   parseHinataScheduleEventsHtml,
+  parseNogiScheduleCategoriesHtml,
   parseNogiScheduleEventsJs,
   parseSakuraScheduleEventsHtml,
   type SakuraScheduleEvent,
   type ScheduleEvent,
   type ScheduleEventWithHtml,
-  type ScheduleFilter,
-  type ScheduleGroup
+  type ScheduleFilter
 } from "./schedule/index"
 export { FetchStatusError, ParseError } from "./shared/errors"

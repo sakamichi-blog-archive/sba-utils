@@ -3,10 +3,12 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import { readFixture } from "../test/utils"
 import {
+  fetchNogiScheduleCategories,
   fetchNogiScheduleEvents,
   fetchNogiScheduleEventsJs,
   getNogiScheduleEventUrl,
   getNogiScheduleUrl,
+  parseNogiScheduleCategoriesHtml,
   parseNogiScheduleEventsJs
 } from "./nogi"
 
@@ -21,18 +23,26 @@ describe("fetchNogiScheduleEvents()", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue({
+      vi.fn().mockImplementation((requestUrl: string) => ({
         status: 200,
-        text: vi.fn().mockResolvedValue(readFixture("nogi-schedule.jsonp")),
+        text: vi
+          .fn()
+          .mockResolvedValue(
+            readFixture(
+              requestUrl.includes("/api/list/schedule")
+                ? "nogi-schedule.jsonp"
+                : "nogi-schedule-categories.html"
+            )
+          ),
         body: { cancel: vi.fn() }
-      })
+      }))
     )
     const { events, js, url } = await fetchNogiScheduleEvents({ year: 2026, month: 8 })
     expect(events).toHaveLength(3)
+    expect(events[0]?.categoryName).toBe("ライブ/イベント")
+    expect(events[1]?.categoryName).toBe("テレビ")
     expect(js).toBe(readFixture("nogi-schedule.jsonp"))
-    expect(url).toBe(
-      "https://www.nogizaka46.com/s/n46/api/list/schedule?ima=3456&dy=202608&callback=res"
-    )
+    expect(url).toBe("https://www.nogizaka46.com/s/n46/media/list?ima=3456&dy=202608")
   })
 })
 
@@ -52,14 +62,53 @@ describe("fetchNogiScheduleEventsJs()", () => {
   })
 })
 
+describe("fetchNogiScheduleCategories()", () => {
+  afterEach(() => vi.restoreAllMocks())
+
+  it("throws FetchStatusError on non-200", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue({ status: 503, url: "https://example.com", body: { cancel: vi.fn() } })
+    )
+    await expect(fetchNogiScheduleCategories({ year: 2026, month: 8 })).rejects.toBeInstanceOf(
+      FetchStatusError
+    )
+  })
+
+  it("omits dy when no filter is given", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      status: 200,
+      text: vi.fn().mockResolvedValue(readFixture("nogi-schedule-categories.html")),
+      body: { cancel: vi.fn() }
+    })
+    vi.stubGlobal("fetch", fetchMock)
+    await fetchNogiScheduleCategories()
+    expect(String(fetchMock.mock.calls[0]?.[0])).not.toContain("dy=")
+  })
+
+  it("returns an empty map when the nav is absent", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue("<html></html>"),
+        body: { cancel: vi.fn() }
+      })
+    )
+    await expect(fetchNogiScheduleCategories({ year: 2026, month: 8 })).resolves.toEqual({})
+  })
+})
+
 describe("getNogiScheduleUrl()", () => {
   beforeEach(() => vi.useFakeTimers())
   afterEach(() => vi.useRealTimers())
 
-  it("applies ima, dy, and callback params", () => {
+  it("returns the listing page, not the JSONP endpoint", () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     expect(getNogiScheduleUrl({ year: 2026, month: 8 })).toBe(
-      "https://www.nogizaka46.com/s/n46/api/list/schedule?ima=3456&dy=202608&callback=res"
+      "https://www.nogizaka46.com/s/n46/media/list?ima=3456&dy=202608"
     )
   })
 })
@@ -76,6 +125,28 @@ describe("getNogiScheduleEventUrl()", () => {
   })
 })
 
+describe("parseNogiScheduleCategoriesHtml()", () => {
+  it("parses the radio-input nav, skipping the ALL input", () => {
+    expect(parseNogiScheduleCategoriesHtml(readFixture("nogi-schedule-categories.html"))).toEqual({
+      live: "ライブ/イベント",
+      meetandgreet: "ミート&グリート",
+      tv: "テレビ"
+    })
+  })
+
+  it("does not match the news nav markup", () => {
+    expect(
+      parseNogiScheduleCategoriesHtml(
+        `<div class="cat_sel_list"><a data-param="ct" data-value="tv">テレビ</a></div>`
+      )
+    ).toEqual({})
+  })
+
+  it("returns an empty object when the nav is absent", () => {
+    expect(parseNogiScheduleCategoriesHtml("<html></html>")).toEqual({})
+  })
+})
+
 describe("parseNogiScheduleEventsJs()", () => {
   const js = readFixture("nogi-schedule.jsonp")
 
@@ -88,18 +159,24 @@ describe("parseNogiScheduleEventsJs()", () => {
     expect(first?.members).toEqual(["五百城茉央", "奥田いろは"])
   })
 
-  it("falls back to the raw category key when unknown", () => {
+  it("exposes keys with empty names when no category map is supplied", () => {
     const events = parseNogiScheduleEventsJs(js)
-    expect(events[2]?.category).toBe("special")
+    expect(events[2]?.categoryKey).toBe("special")
+    expect(events[2]?.categoryName).toBe("")
+  })
+
+  it("resolves names from a supplied map", () => {
+    const events = parseNogiScheduleEventsJs(js, { special: "特別企画" })
+    expect(events[2]?.categoryName).toBe("特別企画")
   })
 
   it("parses event fields correctly", () => {
     expect(parseNogiScheduleEventsJs(js)).toMatchInlineSnapshot(`
       [
         {
-          "category": "ライブ/イベント",
+          "categoryKey": "live",
+          "categoryName": "",
           "date": 2026-07-31T15:00:00.000Z,
-          "group": "nogi",
           "html": "<p>Event detail placeholder.</p>",
           "id": "107136",
           "members": [
@@ -112,9 +189,9 @@ describe("parseNogiScheduleEventsJs()", () => {
           "url": "https://www.nogizaka46.com/s/n46/media/detail/107136?ima=2037&pri1=202608",
         },
         {
-          "category": "TV",
+          "categoryKey": "tv",
+          "categoryName": "",
           "date": 2026-08-01T15:00:00.000Z,
-          "group": "nogi",
           "html": "<p>Broadcast detail placeholder.</p>",
           "id": "107140",
           "members": [
@@ -126,9 +203,9 @@ describe("parseNogiScheduleEventsJs()", () => {
           "url": "https://www.nogizaka46.com/s/n46/media/detail/107140?ima=2037&pri1=202608",
         },
         {
-          "category": "special",
+          "categoryKey": "special",
+          "categoryName": "",
           "date": 2026-08-02T15:00:00.000Z,
-          "group": "nogi",
           "html": "<p>Placeholder.</p>",
           "id": "107150",
           "members": [],

@@ -81,8 +81,8 @@ describe("parseSakuraScheduleEventsHtml()", () => {
     expect(events[1]?.members).toEqual(["向井純葉"])
   })
 
-  it("falls back to the container class when the visible label is empty", () => {
-    const fallback = `
+  it("keeps an event whose displayed category label is empty, with an empty name", () => {
+    const unresolvable = `
       <main class="site-main">
         <div class="module-modal js-schedule-detail count_1_01">
           <div class="mordal-box"><div class="inner"><div class="cate-goods"><div class="txt">
@@ -94,16 +94,18 @@ describe("parseSakuraScheduleEventsHtml()", () => {
           </div></div></div></div>
         </div>
       </main>`
-    expect(parseSakuraScheduleEventsHtml(fallback)[0]?.category).toBe("グッズ")
+    const [event] = parseSakuraScheduleEventsHtml(unresolvable)
+    expect(event?.categoryKey).toBe("goods")
+    expect(event?.categoryName).toBe("")
   })
 
   it("parses event fields correctly", () => {
     expect(parseSakuraScheduleEventsHtml(html)).toMatchInlineSnapshot(`
       [
         {
-          "category": "ライブ",
+          "categoryKey": "event",
+          "categoryName": "ライブ",
           "date": 2026-07-31T15:00:00.000Z,
-          "group": "sakura",
           "html": "<a href="https://example.com/">Event detail placeholder.</a>",
           "id": "11602",
           "members": [],
@@ -112,9 +114,9 @@ describe("parseSakuraScheduleEventsHtml()", () => {
           "title": "音楽フェス出演",
         },
         {
-          "category": "メディア",
+          "categoryKey": "media",
+          "categoryName": "メディア",
           "date": 2026-08-01T15:00:00.000Z,
-          "group": "sakura",
           "html": "Radio detail placeholder.",
           "id": "10472",
           "members": [

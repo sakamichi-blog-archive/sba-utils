@@ -1,30 +1,15 @@
 import * as cheerio from "cheerio"
 
 import { USER_AGENT_DESKTOP } from "../shared/constants"
-import { getMmss } from "../shared/datetime"
+import { getMmss, parseDateJst } from "../shared/datetime"
+import { formatDy } from "../shared/dy"
 import { FetchStatusError, ParseError } from "../shared/errors"
+import { getCategoryKeyFromClass } from "../shared/html"
 import type { ScheduleEvent, ScheduleEventWithHtml, ScheduleFilter } from "./_types"
-import {
-  formatScheduleDy,
-  parseScheduleDate,
-  parseScheduleTimeRange,
-  resolveCategoryFromClass
-} from "./_utils"
+import { parseScheduleTimeRange } from "./_utils"
 
 const SCHEDULE_PAGE_URL = "https://www.hinatazaka46.com/s/official/media/list"
 const SCHEDULE_DETAIL_URL = "https://www.hinatazaka46.com/s/official/media/detail"
-
-/** Maps `category_xxx` class keys to Japanese labels, used as a fallback when the visible label is empty */
-const HINATA_SCHEDULE_CATEGORIES: Record<string, string> = {
-  birth: "誕生日",
-  event: "イベント",
-  goods: "グッズ",
-  media: "メディア",
-  other: "その他",
-  release: "リリース",
-  shakehands: "握手会",
-  ticket: "チケット"
-}
 
 /**
  * A Hinata schedule list event. Unlike the other groups' list events, these carry no `html` or `members`;
@@ -92,7 +77,7 @@ export async function fetchHinataScheduleEventHtml(id: string): Promise<{
 }
 
 export function getHinataScheduleUrl(filter: ScheduleFilter): string {
-  const params = new URLSearchParams({ ima: getMmss(), dy: formatScheduleDy(filter) })
+  const params = new URLSearchParams({ ima: getMmss(), dy: formatDy(filter) })
   return `${SCHEDULE_PAGE_URL}?${params}`
 }
 
@@ -121,7 +106,7 @@ export function parseHinataScheduleEventsHtml(html: string): HinataScheduleEvent
 
     let date: Date
     try {
-      date = parseScheduleDate(`${year}/${month}/${day}`)
+      date = parseDateJst(`${year}/${month}/${day}`)
     } catch (error) {
       console.error(`Failed to parse date for day index ${dayIndex}. Skipping.`, error)
       continue
@@ -138,22 +123,15 @@ export function parseHinataScheduleEventsHtml(html: string): HinataScheduleEvent
 
       const url = new URL(href, SCHEDULE_PAGE_URL)
       const categoryElement = $(element).find(".p-schedule__head .c-schedule__category").first()
-      const category =
-        categoryElement.text().trim() ||
-        resolveCategoryFromClass(
-          categoryElement.attr("class") ?? "",
-          "category_",
-          HINATA_SCHEDULE_CATEGORIES
-        )
-
       const { timeStart, timeEnd } = parseScheduleTimeRange(
         $(element).find("div.p-schedule__head div.c-schedule__time--list").first().text().trim()
       )
 
       events.push({
-        category,
+        categoryKey:
+          getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_") ?? "",
+        categoryName: categoryElement.text().trim(),
         date,
-        group: "hinata",
         id: url.pathname.match(/\/detail\/([^/?]+)/)?.[1],
         timeEnd,
         timeStart,
@@ -174,13 +152,6 @@ export function parseHinataScheduleEventHtml(html: string, url: string): HinataS
   if (articleElement.length === 0) throw new ParseError("Article element not found in HTML")
 
   const categoryElement = $(articleElement).find(".p-article__info .c-schedule__category")
-  const category =
-    categoryElement.text().trim() ||
-    resolveCategoryFromClass(
-      categoryElement.attr("class") ?? "",
-      "category_",
-      HINATA_SCHEDULE_CATEGORIES
-    )
 
   const dateText = $(articleElement).find(".p-article__info .c-schedule__date b").text().trim()
   const { timeStart, timeEnd } = parseScheduleTimeRange(
@@ -195,9 +166,9 @@ export function parseHinataScheduleEventHtml(html: string, url: string): HinataS
   }
 
   return {
-    category,
-    date: dateText !== "" ? parseScheduleDate(dateText) : undefined,
-    group: "hinata",
+    categoryKey: getCategoryKeyFromClass(categoryElement.attr("class") ?? "", "category_") ?? "",
+    categoryName: categoryElement.text().trim(),
+    date: dateText !== "" ? parseDateJst(dateText) : undefined,
     html: $(articleElement).find(".p-article__text").html()?.trim() ?? "",
     id: new URL(url).pathname.match(/\/detail\/([^/?]+)/)?.[1],
     members,

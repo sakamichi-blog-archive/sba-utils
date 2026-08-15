@@ -125,9 +125,9 @@ describe("parseHinataScheduleEventsHtml()", () => {
     expect(parseHinataScheduleEventsHtml(html)).toMatchInlineSnapshot(`
       [
         {
-          "category": "誕生日",
+          "categoryKey": "birth",
+          "categoryName": "誕生日",
           "date": 2026-07-31T15:00:00.000Z,
-          "group": "hinata",
           "id": "10222",
           "timeEnd": undefined,
           "timeStart": undefined,
@@ -135,9 +135,9 @@ describe("parseHinataScheduleEventsHtml()", () => {
           "url": "https://www.hinatazaka46.com/s/official/media/detail/10222?ima=0000",
         },
         {
-          "category": "メディア",
+          "categoryKey": "media",
+          "categoryName": "メディア",
           "date": 2026-07-31T15:00:00.000Z,
-          "group": "hinata",
           "id": "10333",
           "timeEnd": undefined,
           "timeStart": "18:00",
@@ -145,9 +145,9 @@ describe("parseHinataScheduleEventsHtml()", () => {
           "url": "https://www.hinatazaka46.com/s/official/media/detail/10333?ima=0000",
         },
         {
-          "category": "イベント",
+          "categoryKey": "event",
+          "categoryName": "イベント",
           "date": 2026-08-01T15:00:00.000Z,
-          "group": "hinata",
           "id": "10444",
           "timeEnd": "15:00",
           "timeStart": "13:00",
@@ -162,8 +162,8 @@ describe("parseHinataScheduleEventsHtml()", () => {
     expect(parseHinataScheduleEventsHtml(html).every(event => !("members" in event))).toBe(true)
   })
 
-  it("falls back to the category class when the visible label is empty", () => {
-    const fallback = `
+  it("keeps an event whose displayed category label is empty, with an empty name", () => {
+    const unresolvable = `
       <div class="l-maincontents--schedule">
         <p class="p-schedule__page_date">2026年 08月</p>
         <ul>
@@ -183,7 +183,9 @@ describe("parseHinataScheduleEventsHtml()", () => {
           </li>
         </ul>
       </div>`
-    expect(parseHinataScheduleEventsHtml(fallback)[0]?.category).toBe("グッズ")
+    const [event] = parseHinataScheduleEventsHtml(unresolvable)
+    expect(event?.categoryKey).toBe("goods")
+    expect(event?.categoryName).toBe("")
   })
 })
 
@@ -213,15 +215,15 @@ describe("parseHinataScheduleEventHtml()", () => {
       "https://www.hinatazaka46.com/s/official/media/detail/10222?ima=0000"
     )
     expect(event.date).toBeUndefined()
-    expect(event.category).toBe("誕生日")
+    expect(event.categoryName).toBe("誕生日")
   })
 
   it("parses detail fields correctly", () => {
     expect(parseHinataScheduleEventHtml(html, url)).toMatchInlineSnapshot(`
       {
-        "category": "メディア",
+        "categoryKey": "media",
+        "categoryName": "メディア",
         "date": 2026-07-31T15:00:00.000Z,
-        "group": "hinata",
         "html": "<p>Broadcast detail placeholder.</p>",
         "id": "10333",
         "members": [

@@ -20,21 +20,11 @@ npm install @sakamichi-blog-archive/utils
 
 ```typescript
 import { fetchHinataBlogs } from "@sakamichi-blog-archive/utils/blogs"
-```
 
-Fetch blogs from a specific year, month, or day:
-
-```typescript
-import { fetchHinataBlogs } from "@sakamichi-blog-archive/utils/blogs"
-
+// Fetch blogs from a specific year, month, or day
 const { blogs } = await fetchHinataBlogs({ year: 2026, month: 7, day: 1 })
-```
 
-Fetch blogs from a specific member, using their member ID from the official website:
-
-```typescript
-import { fetchHinataBlogs } from "@sakamichi-blog-archive/utils/blogs"
-
+// Fetch blogs from a specific member, using their member ID from the official website
 const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
 ```
 
@@ -54,13 +44,74 @@ const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
 
 Some functions do not accept some of the properties, due to the external API.
 
-### Schedule
+### News
 
 ```typescript
-import { fetchHinataScheduleEvents } from "@sakamichi-blog-archive/utils/schedule"
+import { fetchHinataNews, fetchHinataNewsDetail } from "@sakamichi-blog-archive/utils/news"
+
+// Fetch news from a specific year and month
+const { news } = await fetchHinataNews({ year: 2026, month: 6 })
+
+// Narrow it to a single day with `day`
+const { news: onOneDay } = await fetchHinataNews({ year: 2026, month: 6, day: 30 })
+
+// Omit the filter to fetch the most recent news
+const { news: latest } = await fetchHinataNews()
+
+// Page through anything wider than a month; `page` is 0-indexed
+const { news: page2 } = await fetchHinataNews({ year: 2025, page: 2 })
+
+// Fetch a single news by ID
+const { newsDetail } = await fetchHinataNewsDetail("M02770")
 ```
 
-Fetch schedule events for a specific year and month:
+#### Available functions
+
+| Group  | News list                  | Single news                 |
+| ------ | -------------------------- | --------------------------- |
+| Hinata | `fetchHinataNews(filter?)` | `fetchHinataNewsDetail(id)` |
+| Nogi   | `fetchNogiNews(filter?)`   | `fetchNogiNewsDetail(id)`   |
+| Sakura | `fetchSakuraNews(filter?)` | `fetchSakuraNewsDetail(id)` |
+
+`filter` accepts `year`, `month` (January = 1), `day`, and `page`. Setting `month` requires `year`, and setting `day` requires `month`.
+
+Every group serves news 200 at a time and truncates silently at that, so anything wider than a month needs `page` (0-indexed) to reach the rest — a year returns only its most recent 200 news on page 0.
+
+Omitting `filter` returns the sites' most recent news, currently the latest 200 items, spanning several months.
+
+Every news item exposes `date` (JST midnight), `categoryKey`/`categoryName`, `id`, `title`, and an absolute `url`. The remaining fields vary by group:
+
+- **Nogi** news also include `datetime` (the API is the only one that exposes a time of day; absent on the rare item whose timestamp cannot be read) and the detail `html`, so the list alone is usually enough. They carry no member names, and `fetchNogiNewsDetail(id)` returns no `datetime` — the detail page shows a date only.
+- **Hinata** and **Sakura** list news omit `html` and `members` — fetch a single news to get those.
+
+Nogi list `html` comes from the API verbatim, so it keeps the source's entities and self-closing tags (`&ldquo;`, `<br />`), while every other `html` in this package is normalised by the parser (`“`, `<br>`).
+
+News is returned oldest first, reversing the order shown on the sites.
+
+`id` in `fetch*NewsDetail(id)` comes from each list item.
+
+#### Categories
+
+Every news carries `categoryKey` and `categoryName`:
+
+- `categoryKey` — the site's own key, for example `"media"`. Stable across relabelling, so prefer it for storing and grouping.
+- `categoryName` — the Japanese label shown on the site, for example `"メディア"`, read straight off the item.
+
+`fetchNogiNews()` and `fetchNogiScheduleEvents()` each make an extra request to resolve category names. To reuse one map across several Nogi calls instead of refetching it, run the pieces directly — `fetchNogiNewsCategories()`, `fetchNogiNewsJs()` and `parseNogiNewsJs()` for news, or `fetchNogiScheduleCategories()`, `fetchNogiScheduleEventsJs()` and `parseNogiScheduleEventsJs()` for schedule:
+
+```typescript
+import {
+  fetchNogiNewsCategories,
+  fetchNogiNewsJs,
+  parseNogiNewsJs
+} from "@sakamichi-blog-archive/utils/news"
+
+const categories = await fetchNogiNewsCategories()
+const { js } = await fetchNogiNewsJs({ year: 2026, month: 6 })
+const news = parseNogiNewsJs(js, categories) // reuse `categories` across calls
+```
+
+### Schedule
 
 ```typescript
 import { fetchHinataScheduleEvents } from "@sakamichi-blog-archive/utils/schedule"
@@ -78,7 +129,7 @@ const { events } = await fetchHinataScheduleEvents({ year: 2026, month: 8 })
 
 `filter` requires both `year` and `month` (1-based; January = 1).
 
-Every event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:mm`, JST), `category`, and `title`. The remaining fields vary by group:
+Every event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:mm`, JST), `categoryKey`/`categoryName`, and `title`. Categories work exactly as they do for news, including the extra request Nogi needs — see [Categories](#categories) above. The remaining fields vary by group:
 
 - **Nogi** events also include `members`, the detail `html`, and a unique `url`.
 - **Sakura** events also include `members` and the detail `html`, but no `url` (the detail is an on-page modal).

@@ -21,6 +21,10 @@
       "types": "./dist/members.d.mts",
       "import": "./dist/members.mjs"
     },
+    "./news": {
+      "types": "./dist/news.d.mts",
+      "import": "./dist/news.mjs"
+    },
     "./schedule": {
       "types": "./dist/schedule.d.mts",
       "import": "./dist/schedule.mjs"

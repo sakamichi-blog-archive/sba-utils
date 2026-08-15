@@ -1,9 +1,21 @@
 import { ParseError } from "./errors"
+import { normalizeFullWidthNumbers } from "./text"
 
 /** Return current time as `mmss` */
 export function getMmss(): string {
   const now = new Date()
   return `${String(now.getMinutes()).padStart(2, "0")}${String(now.getSeconds()).padStart(2, "0")}`
+}
+
+/**
+ * Parse the date portion (`YYYY-MM-DD`, `YYYY/MM/DD`, or `YYYY.MM.DD`) of a string into a JST-midnight `Date`.
+ * Full-width digits are normalized first.
+ */
+export function parseDateJst(text: string): Date {
+  const match = normalizeFullWidthNumbers(text).match(/(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})/)
+  if (match === null) throw new ParseError(`Cannot parse date: ${text}`)
+
+  return parseDatetimeJst(`${match[1]}/${match[2]}/${match[3]}`)
 }
 
 /** Parse JST datetime string into `Date` */

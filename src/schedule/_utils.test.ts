@@ -1,50 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { ParseError } from "../shared/errors"
-import {
-  formatScheduleDy,
-  normalizeTime,
-  parseScheduleDate,
-  parseScheduleTimeRange
-} from "./_utils"
-
-describe("formatScheduleDy()", () => {
-  it("zero-pads the month", () => {
-    expect(formatScheduleDy({ year: 2026, month: 8 })).toBe("202608")
-  })
-
-  it("does not pad an already double-digit month", () => {
-    expect(formatScheduleDy({ year: 2026, month: 12 })).toBe("202612")
-  })
-
-  it("appends a zero-padded day when given", () => {
-    expect(formatScheduleDy({ year: 2026, month: 9, day: 1 })).toBe("20260901")
-  })
-})
-
-describe("parseScheduleDate()", () => {
-  it("parses a dot-separated date", () => {
-    expect(parseScheduleDate("2026.08.01").toISOString()).toBe("2026-07-31T15:00:00.000Z")
-  })
-
-  it("parses a hyphen-separated date", () => {
-    expect(parseScheduleDate("2026-08-01").toISOString()).toBe("2026-07-31T15:00:00.000Z")
-  })
-
-  it("parses the date portion of a string with a trailing time", () => {
-    expect(parseScheduleDate("2026.08.02  22:00～23:30").toISOString()).toBe(
-      "2026-08-01T15:00:00.000Z"
-    )
-  })
-
-  it("throws ParseError when no date is present", () => {
-    expect(() => parseScheduleDate("no date here")).toThrow(ParseError)
-  })
-
-  it("normalizes full-width digits", () => {
-    expect(parseScheduleDate("２０２６.０８.０１").toISOString()).toBe("2026-07-31T15:00:00.000Z")
-  })
-})
+import { normalizeTime, parseScheduleTimeRange } from "./_utils"
 
 describe("normalizeTime()", () => {
   it("zero-pads a single-digit hour", () => {

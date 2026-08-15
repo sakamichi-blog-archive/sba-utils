@@ -2,9 +2,10 @@ import * as cheerio from "cheerio"
 
 import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDatetimeJst } from "../shared/datetime"
+import { formatOptionalDy } from "../shared/dy"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import type { BlogListFilter, BlogWithHtml } from "./_types"
-import { findImagesInHtml, formatOptionalBlogDateFilter, getUidFromUrl } from "./_utils"
+import { findImagesInHtml, getUidFromUrl } from "./_utils"
 
 const BLOGS_PAGE_URL = "https://www.hinatazaka46.com/s/official/diary/member/list"
 
@@ -43,7 +44,7 @@ export async function fetchHinataBlogsHtml(
   filter?: BlogListFilter
 ): Promise<{ html: string; url: string }> {
   const params = new URLSearchParams({ ima: getMmss() })
-  const dy = formatOptionalBlogDateFilter(filter)
+  const dy = formatOptionalDy(filter)
   if (dy !== undefined) params.set("dy", dy)
   const page = filter?.page ?? 0
   if (page !== 0) params.set("page", String(page))
