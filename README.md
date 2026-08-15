@@ -147,21 +147,19 @@ Every event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:m
 - **Hinata** list events include a `url`. `members` and `html` are not included — fetch single event to get those. The `id` comes from each list event.
 - **Sakura** list events include `members` and the detail `html`, but no `url` (the detail is an on-page modal).
 
-An `id` identifies an event, not one occurrence of it: in every group a recurring event keeps one `id` (and one `url`) across every occurrence, so an `id` is not a key for a row in a month's listing.
+A recurring event keeps one `id` across all of its occurrences, in every group. So `id` alone does not identify an entry in a month's listing.
 
-So pass the occurrence you want as `fetchNogiScheduleEvent(id, date)`:
+##### `fetchNogiScheduleEvent(id, date)`
+
+The function accepts occurrence date as 2nd parameter:
 
 ```typescript
-import {
-  fetchNogiScheduleEvent,
-  fetchNogiScheduleEvents
-} from "@sakamichi-blog-archive/utils/schedule"
+import { fetchNogiScheduleEvent } from "@sakamichi-blog-archive/utils/schedule"
 
-const { events } = await fetchNogiScheduleEvents({ year: 2026, month: 8 })
-const { event } = await fetchNogiScheduleEvent(events[0].id, events[0].date)
+const { event } = await fetchNogiScheduleEvent("107022", new Date("2026-08-08T00:00:00+09:00"))
 ```
 
-Without `date` the page reports the date the event was **first listed**, so a weekly show appearing under 2026/08/01 reports its first airing back in April, and a birthday reports the year its entry was created rather than the member's year of birth. The site does not check the date against the event, so one the event does not fall on is displayed just the same.
+Without `date` the page reports the date the event was **first listed**, and a birthday reports the year its entry was created. The site does not check the date against the event, so one the event does not fall on is displayed just the same.
 
 ### Members
 
