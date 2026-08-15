@@ -141,10 +141,10 @@ const { events } = await fetchHinataScheduleEvents({ year: 2026, month: 8 })
 
 `filter` requires both `year` and `month` (January = 1).
 
-Every event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:mm`, JST), `categoryKey`/`categoryName`, and `title`. Categories work exactly as news, including the extra request Nogi needs — see [Categories](#categories) above. The remaining fields vary by group:
+Every list event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:mm`, JST), `categoryKey`/`categoryName`, and `title`. Categories work exactly as news, including the extra request Nogi needs — see [Categories](#categories) above. The remaining fields vary by group:
 
 - **Nogi** list events include `members`, the detail `html`, and a `url`. Single event does not return `members`.
-- **Hinata** list events include a `url`. `members` and `html` are not included — fetch single event to get those. The `id` comes from each list event.
+- **Hinata** list events include a `url`. `members` and `html` are not included — fetch single event to get those. The `id` comes from each list event. Single event may omit `date` (birthdays show none), so take `date` from the list event.
 - **Sakura** list events include `members` and the detail `html`, but no `url` (the detail is an on-page modal).
 
 A recurring event keeps one `id` across all of its occurrences, in every group. So `id` alone does not identify an entry in a month's listing.
