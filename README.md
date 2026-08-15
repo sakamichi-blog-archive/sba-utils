@@ -75,20 +75,20 @@ const { newsDetail } = await fetchHinataNewsDetail("M02770")
 
 `filter` accepts `year`, `month` (January = 1), `day`, and `page`. Setting `month` requires `year`, and setting `day` requires `month`.
 
-Every group serves news 200 at a time and truncates silently at that, so anything wider than a month needs `page` (0-indexed) to reach the rest — a year returns only its most recent 200 news on page 0. A month or a day fits in one page in practice.
+Every group serves news 200 at a time and truncates silently at that, so anything wider than a month needs `page` (0-indexed) to reach the rest — a year returns only its most recent 200 news on page 0.
 
-Omitting `filter` does not fetch the current month — it returns the sites' default listing of most recent news, currently the latest 200 items, which spans several months.
+Omitting `filter` returns the sites' most recent news, currently the latest 200 items, spanning several months.
 
 Every news item exposes `date` (JST midnight), `categoryKey`/`categoryName`, `id`, `title`, and an absolute `url`. The remaining fields vary by group:
-
-Nogi list `html` comes from the API verbatim, so it keeps the source's entities and self-closing tags (`&ldquo;`, `<br />`), while every other `html` in this package is normalised by the parser (`“`, `<br>`). The content is the same; normalise before comparing a Nogi list item against its detail.
 
 - **Nogi** news also include `datetime` (the API is the only one that exposes a time of day; absent on the rare item whose timestamp cannot be read) and the detail `html`, so the list alone is usually enough. They carry no member names, and `fetchNogiNewsDetail(id)` returns no `datetime` — the detail page shows a date only.
 - **Hinata** and **Sakura** list news omit `html` and `members` — fetch a single news to get those.
 
-`fetch*NewsDetail(id)` reaches a news of any age without knowing which month it falls in. The `id` comes from each list item.
+Nogi list `html` comes from the API verbatim, so it keeps the source's entities and self-closing tags (`&ldquo;`, `<br />`), while every other `html` in this package is normalised by the parser (`“`, `<br>`).
 
 News is returned oldest first, reversing the order shown on the sites.
+
+`id` in `fetch*NewsDetail(id)` comes from each list item.
 
 #### Categories
 
