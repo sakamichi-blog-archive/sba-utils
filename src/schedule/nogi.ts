@@ -11,7 +11,7 @@ import { parseJsonpArgumentJson } from "../shared/jsonp"
 import type { ScheduleEventWithHtml, ScheduleFilter } from "./_types"
 import { normalizeTime, parseScheduleTimeRange } from "./_utils"
 
-/** Unlike {@link ScheduleEventWithHtml}, `url` is always present — the API gives every event a unique detail URL */
+/** Unlike {@link ScheduleEventWithHtml}, `url` is always present — the API gives every event a detail URL */
 export interface NogiScheduleEvent extends ScheduleEventWithHtml {
   url: string
 }
@@ -87,8 +87,11 @@ export async function fetchNogiScheduleEvents(filter: ScheduleFilter): Promise<{
  * Fetch a single schedule event by its {@link NogiScheduleEvent.id}.
  *
  * The page renders everything the listing does except `members`, so this is only worth calling when you
- * have an id but no list event. Note that `birthday` events date the page to the member's year of birth,
- * not the year the birthday falls in; use the list event's `date` for those.
+ * have an id but no list event.
+ *
+ * Beware the `date`: an id identifies an event, not one occurrence of it, and the page always shows the
+ * event's original date. A weekly radio show listed under 2026/08/01 reports the date it first aired, and a
+ * `birthday` reports the member's year of birth. Take `date` from the list event whenever you have one.
  */
 export async function fetchNogiScheduleEvent(id: string): Promise<{
   event: NogiScheduleEventDetail

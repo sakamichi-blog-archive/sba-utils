@@ -143,9 +143,13 @@ const { events } = await fetchHinataScheduleEvents({ year: 2026, month: 8 })
 
 Every event exposes `date` (JST midnight), optional `timeStart`/`timeEnd` (`HH:mm`, JST), `categoryKey`/`categoryName`, and `title`. Categories work exactly as news, including the extra request Nogi needs — see [Categories](#categories) above. The remaining fields vary by group:
 
-- **Nogi** list events include `members`, the detail `html`, and a unique `url`. Single event does not return `members`.
+- **Nogi** list events include `members`, the detail `html`, and a `url`. Single event does not return `members`.
 - **Hinata** list events include a `url`. `members` and `html` are not included — fetch single event to get those. The `id` comes from each list event.
 - **Sakura** list events include `members` and the detail `html`, but no `url` (the detail is an on-page modal).
+
+An `id` identifies an event, not one occurrence of it: in every group a recurring event keeps one `id` (and one `url`) across every occurrence, so an `id` is not a key for a row in a month's listing.
+
+`fetchNogiScheduleEvent(id)` therefore cannot return a particular occurrence — its `date` is the event's original date, which for a weekly show is its first airing and for a birthday is the member's year of birth. Take `date` from the list event whenever you have one.
 
 ### Members
 
