@@ -1,10 +1,11 @@
 import * as cheerio from "cheerio"
 
+import { parseSakuraCategoryNav } from "../shared/categories"
 import { USER_AGENT_DESKTOP } from "../shared/constants"
 import { getMmss, parseDateJst } from "../shared/datetime"
 import { formatDy } from "../shared/dy"
 import { FetchStatusError } from "../shared/errors"
-import { resolveCategoryFromClass } from "../shared/html"
+import { getCategoryKeyFromClass } from "../shared/html"
 import type { ScheduleEventWithHtml, ScheduleFilter } from "./_types"
 import { parseScheduleTimeRange } from "./_utils"
 
@@ -64,8 +65,17 @@ export function getSakuraScheduleUrl(filter: ScheduleFilter & { day?: number }):
   return `${SCHEDULE_PAGE_URL}?${params}`
 }
 
+/**
+ * Parse the page's own category nav into a `cate-xxx` key to label map. Returns an empty object when the
+ * nav is absent, in which case callers fall back to {@link SAKURA_SCHEDULE_CATEGORIES}.
+ */
+export function parseSakuraScheduleCategoriesHtml(html: string): Record<string, string> {
+  return parseSakuraCategoryNav(html)
+}
+
 export function parseSakuraScheduleEventsHtml(html: string): SakuraScheduleEvent[] {
   const $ = cheerio.load(html)
+  const categories = { ...SAKURA_SCHEDULE_CATEGORIES, ...parseSakuraScheduleCategoriesHtml(html) }
   const modals = $(".module-modal.js-schedule-detail")
   const events: SakuraScheduleEvent[] = []
 
@@ -82,13 +92,13 @@ export function parseSakuraScheduleEventsHtml(html: string): SakuraScheduleEvent
       continue
     }
 
-    const category =
-      $(container).find(".txt p.type").first().text().trim() ||
-      resolveCategoryFromClass(
-        $(container).attr("class") ?? "",
-        "cate-",
-        SAKURA_SCHEDULE_CATEGORIES
-      )
+    const categoryKey = getCategoryKeyFromClass($(container).attr("class") ?? "", "cate-")
+    const categoryName =
+      $(container).find(".txt p.type").first().text().trim() || categories[categoryKey ?? ""]
+    if (categoryKey === undefined || categoryName === undefined || categoryName === "") {
+      console.error(`Failed to resolve category for modal index ${modalIndex}. Skipping.`)
+      continue
+    }
     const { timeStart, timeEnd } = parseScheduleTimeRange(dateText)
 
     const members: string[] = []
@@ -99,7 +109,8 @@ export function parseSakuraScheduleEventsHtml(html: string): SakuraScheduleEvent
     }
 
     events.push({
-      category,
+      categoryKey,
+      categoryName,
       date,
       html: $(container).find(".txt p.lead").html()?.trim() ?? "",
       id: ($(modal).attr("class") ?? "").match(/count_(\d+)_/)?.[1],

@@ -88,16 +88,23 @@ describe("parseNogiScheduleEventsJs()", () => {
     expect(first?.members).toEqual(["五百城茉央", "奥田いろは"])
   })
 
-  it("falls back to the raw category key when unknown", () => {
+  it("exposes the key with no name when the key is in neither map", () => {
     const events = parseNogiScheduleEventsJs(js)
-    expect(events[2]?.category).toBe("special")
+    expect(events[2]?.categoryKey).toBe("special")
+    expect(events[2]?.categoryName).toBeUndefined()
+  })
+
+  it("resolves names from a supplied map, overriding the known categories", () => {
+    const events = parseNogiScheduleEventsJs(js, { special: "特別企画" })
+    expect(events[2]?.categoryName).toBe("特別企画")
   })
 
   it("parses event fields correctly", () => {
     expect(parseNogiScheduleEventsJs(js)).toMatchInlineSnapshot(`
       [
         {
-          "category": "ライブ/イベント",
+          "categoryKey": "live",
+          "categoryName": "ライブ/イベント",
           "date": 2026-07-31T15:00:00.000Z,
           "html": "<p>Event detail placeholder.</p>",
           "id": "107136",
@@ -111,7 +118,8 @@ describe("parseNogiScheduleEventsJs()", () => {
           "url": "https://www.nogizaka46.com/s/n46/media/detail/107136?ima=2037&pri1=202608",
         },
         {
-          "category": "テレビ",
+          "categoryKey": "tv",
+          "categoryName": "テレビ",
           "date": 2026-08-01T15:00:00.000Z,
           "html": "<p>Broadcast detail placeholder.</p>",
           "id": "107140",
@@ -124,7 +132,8 @@ describe("parseNogiScheduleEventsJs()", () => {
           "url": "https://www.nogizaka46.com/s/n46/media/detail/107140?ima=2037&pri1=202608",
         },
         {
-          "category": "special",
+          "categoryKey": "special",
+          "categoryName": undefined,
           "date": 2026-08-02T15:00:00.000Z,
           "html": "<p>Placeholder.</p>",
           "id": "107150",

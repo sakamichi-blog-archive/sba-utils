@@ -94,14 +94,15 @@ describe("parseSakuraScheduleEventsHtml()", () => {
           </div></div></div></div>
         </div>
       </main>`
-    expect(parseSakuraScheduleEventsHtml(fallback)[0]?.category).toBe("グッズ")
+    expect(parseSakuraScheduleEventsHtml(fallback)[0]?.categoryName).toBe("グッズ")
   })
 
   it("parses event fields correctly", () => {
     expect(parseSakuraScheduleEventsHtml(html)).toMatchInlineSnapshot(`
       [
         {
-          "category": "ライブ",
+          "categoryKey": "event",
+          "categoryName": "ライブ",
           "date": 2026-07-31T15:00:00.000Z,
           "html": "<a href="https://example.com/">Event detail placeholder.</a>",
           "id": "11602",
@@ -111,7 +112,8 @@ describe("parseSakuraScheduleEventsHtml()", () => {
           "title": "音楽フェス出演",
         },
         {
-          "category": "メディア",
+          "categoryKey": "media",
+          "categoryName": "メディア",
           "date": 2026-08-01T15:00:00.000Z,
           "html": "Radio detail placeholder.",
           "id": "10472",

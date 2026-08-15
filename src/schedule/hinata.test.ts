@@ -125,7 +125,8 @@ describe("parseHinataScheduleEventsHtml()", () => {
     expect(parseHinataScheduleEventsHtml(html)).toMatchInlineSnapshot(`
       [
         {
-          "category": "誕生日",
+          "categoryKey": "birth",
+          "categoryName": "誕生日",
           "date": 2026-07-31T15:00:00.000Z,
           "id": "10222",
           "timeEnd": undefined,
@@ -134,7 +135,8 @@ describe("parseHinataScheduleEventsHtml()", () => {
           "url": "https://www.hinatazaka46.com/s/official/media/detail/10222?ima=0000",
         },
         {
-          "category": "メディア",
+          "categoryKey": "media",
+          "categoryName": "メディア",
           "date": 2026-07-31T15:00:00.000Z,
           "id": "10333",
           "timeEnd": undefined,
@@ -143,7 +145,8 @@ describe("parseHinataScheduleEventsHtml()", () => {
           "url": "https://www.hinatazaka46.com/s/official/media/detail/10333?ima=0000",
         },
         {
-          "category": "イベント",
+          "categoryKey": "event",
+          "categoryName": "イベント",
           "date": 2026-08-01T15:00:00.000Z,
           "id": "10444",
           "timeEnd": "15:00",
@@ -180,7 +183,7 @@ describe("parseHinataScheduleEventsHtml()", () => {
           </li>
         </ul>
       </div>`
-    expect(parseHinataScheduleEventsHtml(fallback)[0]?.category).toBe("グッズ")
+    expect(parseHinataScheduleEventsHtml(fallback)[0]?.categoryName).toBe("グッズ")
   })
 })
 
@@ -210,13 +213,14 @@ describe("parseHinataScheduleEventHtml()", () => {
       "https://www.hinatazaka46.com/s/official/media/detail/10222?ima=0000"
     )
     expect(event.date).toBeUndefined()
-    expect(event.category).toBe("誕生日")
+    expect(event.categoryName).toBe("誕生日")
   })
 
   it("parses detail fields correctly", () => {
     expect(parseHinataScheduleEventHtml(html, url)).toMatchInlineSnapshot(`
       {
-        "category": "メディア",
+        "categoryKey": "media",
+        "categoryName": "メディア",
         "date": 2026-07-31T15:00:00.000Z,
         "html": "<p>Broadcast detail placeholder.</p>",
         "id": "10333",

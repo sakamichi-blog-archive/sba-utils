@@ -7,11 +7,16 @@ export interface ScheduleFilter {
 
 export interface ScheduleEvent {
   /**
-   * Category label as shown on the site (Japanese), e.g. `"ライブ/イベント"`. `undefined` when the event
-   * carries no category. For `nogi` (whose API exposes only a category key), an unrecognized key is passed
-   * through verbatim rather than mapped to a label.
+   * Stable category key as used by the site, e.g. `"live"`. Taken from the `category_xxx`/`cate-xxx` class
+   * for `hinata`/`sakura` and from the API's `cate` field for `nogi`. Prefer this for storing and
+   * filtering: unlike {@link ScheduleEvent.categoryName} it does not change when a category is relabelled.
    */
-  category?: string
+  categoryKey: string
+  /**
+   * Category label as shown on the site (Japanese), e.g. `"ライブ/イベント"`. Read straight off the event,
+   * which renders it. Only {@link NogiScheduleEvent} can lack one — its API returns the key alone.
+   */
+  categoryName: string
   /** Event date at JST midnight. Time of day, if any, is carried by {@link ScheduleEvent.timeStart} */
   date: Date
   /**

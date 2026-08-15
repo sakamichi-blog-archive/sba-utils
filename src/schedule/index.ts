@@ -8,6 +8,7 @@ export {
   getHinataScheduleUrl,
   type HinataScheduleEvent,
   type HinataScheduleEventDetail,
+  parseHinataScheduleCategoriesHtml,
   parseHinataScheduleEventHtml,
   parseHinataScheduleEventsHtml
 } from "./hinata"
@@ -16,13 +17,16 @@ export {
   fetchNogiScheduleEventsJs,
   getNogiScheduleEventUrl,
   getNogiScheduleUrl,
+  fetchNogiScheduleCategories,
   type NogiScheduleEvent,
+  parseNogiScheduleCategoriesHtml,
   parseNogiScheduleEventsJs
 } from "./nogi"
 export {
   fetchSakuraScheduleEvents,
   fetchSakuraScheduleEventsHtml,
   getSakuraScheduleUrl,
+  parseSakuraScheduleCategoriesHtml,
   parseSakuraScheduleEventsHtml,
   type SakuraScheduleEvent
 } from "./sakura"
