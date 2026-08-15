@@ -97,7 +97,7 @@ Every news carries `categoryKey` and `categoryName`:
 - `categoryKey` — the site's own key, for example `"media"`. Stable across relabelling, so prefer it for storing and grouping.
 - `categoryName` — the Japanese label shown on the site, for example `"メディア"`, read straight off the item.
 
-`fetchNogiNews()` and `fetchNogiScheduleEvents()` each make an extra request to resolve category names. To reuse one map across several Nogi calls instead of refetching it, run the pieces directly — `fetchNogiNewsCategories()`, `fetchNogiNewsJs()` and `parseNogiNewsJs()` for news, or `fetchNogiScheduleCategories()`, `fetchNogiScheduleEventsJs()` and `parseNogiScheduleEventsJs()` for schedule:
+`fetchNogiNews()` and `fetchNogiScheduleEvents()` each make an extra request to resolve category names. To reuse one map across several calls instead of refetching it, run the pieces directly:
 
 ```typescript
 import {
