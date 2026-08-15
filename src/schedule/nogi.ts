@@ -46,8 +46,8 @@ const scheduleApiSchema = z.object({
 
 /**
  * Fetch a month of Nogi schedule events. The API exposes only category keys, so the listing page is
- * fetched alongside it to resolve their labels; if that request fails, the events carry a `categoryKey`
- * and an empty `categoryName`.
+ * fetched alongside it to resolve their labels, and a failure there fails the call. A key the nav does not
+ * cover resolves to an empty `categoryName`.
  */
 export async function fetchNogiScheduleEvents(filter: ScheduleFilter): Promise<{
   events: NogiScheduleEvent[]
@@ -62,29 +62,26 @@ export async function fetchNogiScheduleEvents(filter: ScheduleFilter): Promise<{
 }
 
 /**
- * Fetch the listing page's category nav and parse it into a `cate` key to label map. Returns an empty
- * object rather than throwing, so that a schedule fetch is never lost to a label lookup.
+ * Fetch the listing page's category nav and parse it into a `cate` key to label map.
+ *
+ * Throws if the page cannot be fetched — an unreachable site is a real failure, not a missing label. A
+ * page that loads but carries no nav returns an empty map instead, leaving every `categoryName` empty.
  */
 export async function fetchNogiScheduleCategories(
   filter: ScheduleFilter
 ): Promise<Record<string, string>> {
-  try {
-    const params = new URLSearchParams({ ima: getMmss(), dy: formatDy(filter) })
-    const response = await fetch(`${SCHEDULE_PAGE_URL}?${params}`, {
-      headers: {
-        "User-Agent": USER_AGENT_DESKTOP
-      }
-    })
-    if (response.status !== 200) {
-      await response.body?.cancel()
-      throw new FetchStatusError(response.status, response.url)
+  const params = new URLSearchParams({ ima: getMmss(), dy: formatDy(filter) })
+  const response = await fetch(`${SCHEDULE_PAGE_URL}?${params}`, {
+    headers: {
+      "User-Agent": USER_AGENT_DESKTOP
     }
-
-    return parseNogiScheduleCategoriesHtml(await response.text())
-  } catch (error) {
-    console.error("Failed to fetch schedule categories. Events will carry an empty name.", error)
-    return {}
+  })
+  if (response.status !== 200) {
+    await response.body?.cancel()
+    throw new FetchStatusError(response.status, response.url)
   }
+
+  return parseNogiScheduleCategoriesHtml(await response.text())
 }
 
 /**

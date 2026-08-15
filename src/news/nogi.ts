@@ -47,7 +47,8 @@ const newsApiSchema = z.object({
  *
  * Unlike the other groups, the listing already carries each news' detail `html`, so there is no separate
  * detail fetch. The API exposes only category keys, so the listing page is fetched alongside it to resolve
- * their labels; if that request fails, the news carry a `categoryKey` and an empty `categoryName`.
+ * their labels, and a failure there fails the call. A key the nav does not cover resolves to an empty
+ * `categoryName`.
  */
 export async function fetchNogiNews(filter?: NewsFilter): Promise<{
   news: NogiNews[]
@@ -96,32 +97,29 @@ export async function fetchNogiNewsDetailHtml(id: string): Promise<{
 }
 
 /**
- * Fetch the listing page's category nav and parse it into a `cate` key to label map. Returns an empty
- * object rather than throwing, so that a news fetch is never lost to a label lookup.
+ * Fetch the listing page's category nav and parse it into a `cate` key to label map.
+ *
+ * Throws if the page cannot be fetched — an unreachable site is a real failure, not a missing label. A
+ * page that loads but carries no nav returns an empty map instead, leaving every `categoryName` empty.
  */
 export async function fetchNogiNewsCategories(
   filter?: NewsFilter
 ): Promise<Record<string, string>> {
-  try {
-    const params = new URLSearchParams({ ima: getMmss() })
-    const dy = formatOptionalDy(filter)
-    if (dy !== undefined) params.set("dy", dy)
+  const params = new URLSearchParams({ ima: getMmss() })
+  const dy = formatOptionalDy(filter)
+  if (dy !== undefined) params.set("dy", dy)
 
-    const response = await fetch(`${NEWS_PAGE_URL}?${params}`, {
-      headers: {
-        "User-Agent": USER_AGENT_DESKTOP
-      }
-    })
-    if (response.status !== 200) {
-      await response.body?.cancel()
-      throw new FetchStatusError(response.status, response.url)
+  const response = await fetch(`${NEWS_PAGE_URL}?${params}`, {
+    headers: {
+      "User-Agent": USER_AGENT_DESKTOP
     }
-
-    return parseNogiNewsCategoriesHtml(await response.text())
-  } catch (error) {
-    console.error("Failed to fetch news categories. News will carry an empty category name.", error)
-    return {}
+  })
+  if (response.status !== 200) {
+    await response.body?.cancel()
+    throw new FetchStatusError(response.status, response.url)
   }
+
+  return parseNogiNewsCategoriesHtml(await response.text())
 }
 
 export async function fetchNogiNewsJs(filter?: NewsFilter): Promise<{

@@ -118,7 +118,9 @@ The split matters because labels move: `shakehands` was 握手会 and is now ミ
 
 Labels come from the sites themselves, never from a list baked into this package. Hinata and Sakura render the label on every item, list and detail alike, so it is read straight off the page at no extra cost. Nogi's listing API returns the key alone, so its listing page is fetched alongside to read the category nav — one extra request, and only there; its detail page renders the label like everyone else's.
 
-Nothing falls back to a guess, and nothing is dropped or thrown over a category. Whatever the site does not give is an empty string — so if Nogi's nav cannot be read, those news carry a `categoryKey` and an empty `categoryName`.
+Nothing falls back to a guess. Whatever the site does not give is an empty string: a category the nav does not cover, or a label the page leaves blank, yields an empty `categoryName` rather than dropping the item or throwing.
+
+An unreachable page is different, and does throw. If Nogi's listing page cannot be fetched, `fetchNogiNews` and `fetchNogiScheduleEvents` reject with `FetchStatusError` rather than quietly returning everything unlabelled — you get an error you can retry, not a silent gap in the data. A page that loads but carries no nav is treated as the soft case.
 
 To resolve labels yourself, or to reuse one map across several Nogi calls instead of refetching it, pass it in:
 

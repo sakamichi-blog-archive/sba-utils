@@ -180,15 +180,14 @@ describe("fetchNogiNewsCategories()", () => {
     await expect(fetchNogiNewsCategories()).resolves.toMatchObject({ tv: "テレビ" })
   })
 
-  it("returns an empty map on non-200 instead of throwing", async () => {
-    vi.spyOn(console, "error").mockImplementation(() => {})
+  it("throws FetchStatusError on non-200", async () => {
     vi.stubGlobal(
       "fetch",
       vi
         .fn()
         .mockResolvedValue({ status: 503, url: "https://example.com", body: { cancel: vi.fn() } })
     )
-    await expect(fetchNogiNewsCategories()).resolves.toEqual({})
+    await expect(fetchNogiNewsCategories()).rejects.toBeInstanceOf(FetchStatusError)
   })
 
   it("returns an empty map when the nav is absent", async () => {
@@ -201,6 +200,45 @@ describe("fetchNogiNewsCategories()", () => {
       })
     )
     await expect(fetchNogiNewsCategories()).resolves.toEqual({})
+  })
+})
+
+describe("fetchNogiNews() category failures", () => {
+  afterEach(() => vi.restoreAllMocks())
+
+  it("rejects when the category nav cannot be fetched", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockImplementation((requestUrl: string) =>
+        requestUrl.includes("/api/list/news")
+          ? {
+              status: 200,
+              text: vi.fn().mockResolvedValue(readFixture("nogi-news.jsonp")),
+              body: { cancel: vi.fn() }
+            }
+          : { status: 503, url: requestUrl, body: { cancel: vi.fn() } }
+      )
+    )
+    await expect(fetchNogiNews({ year: 2026, month: 6 })).rejects.toBeInstanceOf(FetchStatusError)
+  })
+
+  it("resolves with empty names when the nav loads but carries no categories", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockImplementation((requestUrl: string) => ({
+        status: 200,
+        text: vi
+          .fn()
+          .mockResolvedValue(
+            requestUrl.includes("/api/list/news") ? readFixture("nogi-news.jsonp") : "<html></html>"
+          ),
+        body: { cancel: vi.fn() }
+      }))
+    )
+    const { news } = await fetchNogiNews({ year: 2026, month: 6 })
+    expect(news).toHaveLength(3)
+    expect(news.every(item => item.categoryName === "")).toBe(true)
+    expect(news.every(item => item.categoryKey !== "")).toBe(true)
   })
 })
 

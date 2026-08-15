@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import { readFixture } from "../test/utils"
 import {
+  fetchNogiScheduleCategories,
   fetchNogiScheduleEvents,
   fetchNogiScheduleEventsJs,
   getNogiScheduleEventUrl,
@@ -49,6 +50,34 @@ describe("fetchNogiScheduleEventsJs()", () => {
     await expect(fetchNogiScheduleEventsJs({ year: 2026, month: 8 })).rejects.toBeInstanceOf(
       FetchStatusError
     )
+  })
+})
+
+describe("fetchNogiScheduleCategories()", () => {
+  afterEach(() => vi.restoreAllMocks())
+
+  it("throws FetchStatusError on non-200", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue({ status: 503, url: "https://example.com", body: { cancel: vi.fn() } })
+    )
+    await expect(fetchNogiScheduleCategories({ year: 2026, month: 8 })).rejects.toBeInstanceOf(
+      FetchStatusError
+    )
+  })
+
+  it("returns an empty map when the nav is absent", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue("<html></html>"),
+        body: { cancel: vi.fn() }
+      })
+    )
+    await expect(fetchNogiScheduleCategories({ year: 2026, month: 8 })).resolves.toEqual({})
   })
 })
 
