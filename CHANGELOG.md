@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.8.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.7.0...utils-v0.8.0) (2026-08-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* `ScheduleEvent` no longer has `group`, and `ScheduleGroup` is no longer exported.
+* `Blog.uid`, `BlogWithHtml`, `NogiBlogSummary.uid`, `SakuraBlog.uid`, and `getUidFromUrl`'s return are now `string`, and the single-blog `fetch*`/`get*BlogUrl` functions take a `string` uid.
+
+### Features
+
+* Add news utils ([#74](https://github.com/sakamichi-blog-archive/sba-utils/issues/74)) ([56c49d7](https://github.com/sakamichi-blog-archive/sba-utils/commit/56c49d72b5a9e912d2720c709730fad742762577))
+* Add single schedule event fetcher for Nogi ([#77](https://github.com/sakamichi-blog-archive/sba-utils/issues/77)) ([349ccfe](https://github.com/sakamichi-blog-archive/sba-utils/commit/349ccfe590a5f2405752a28c7e448d4e125389f4))
+
+
+### Bug fixes
+
+* Represent blog uid as string ([#59](https://github.com/sakamichi-blog-archive/sba-utils/issues/59)) ([c3d9073](https://github.com/sakamichi-blog-archive/sba-utils/commit/c3d907327c3d590c98770a8b29eb407c2ec2e555))
+
+
+### Dependencies
+
+* Bump pnpm to 11.20.0 ([#65](https://github.com/sakamichi-blog-archive/sba-utils/issues/65)) ([5ceba98](https://github.com/sakamichi-blog-archive/sba-utils/commit/5ceba98d247dcc88acad76f78425aade943415f8))
+* Bump publint from 0.3.22 to 0.3.23 in the all-non-major group ([#68](https://github.com/sakamichi-blog-archive/sba-utils/issues/68)) ([3e8a947](https://github.com/sakamichi-blog-archive/sba-utils/commit/3e8a94774c561db73f158ae3d31701da56952a57))
+* Bump the all-non-major group with 2 updates ([#64](https://github.com/sakamichi-blog-archive/sba-utils/issues/64)) ([507e4a3](https://github.com/sakamichi-blog-archive/sba-utils/commit/507e4a3ba8aec7e028dc4b231ac9673a1a83e58e))
+
 ## [0.7.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.6.0...utils-v0.7.0) (2026-08-05)
 
 
