@@ -212,7 +212,7 @@ importers:
         version: 1.2.0
       zod:
         specifier: ^4.4.3
-        version: 4.4.3
+        version: 4.5.1
     devDependencies:
       '@arethetypeswrong/cli':
         specifier: ^0.18.5
@@ -1776,8 +1776,8 @@ packages:
   yuku-parser@0.7.4:
     resolution: {integrity: sha512-HveMyhZPQQfR4z3xskXv5hHJW9g0KIESZW6JvUZv7Jn52FfMFUhCYL77KHBtnWGFti0KrKeTHMZVTY5AUVgFAA==}
 
-  zod@4.4.3:
-    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
+  zod@4.5.1:
+    resolution: {integrity: sha512-P3GqeAEOEDqKvafVGLezbg+39YW/ze4xrD4qdS0adOY8eoI3zfjv1PQM4UwQzgT8mZKXEbqtVt8K+ZKGqkMFKg==}
 
 snapshots:
 
@@ -2972,4 +2972,4 @@ snapshots:
       '@yuku-parser/binding-win32-arm64': 0.7.4
       '@yuku-parser/binding-win32-x64': 0.7.4
 
-  zod@4.4.3: {}
+  zod@4.5.1: {}
