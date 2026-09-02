@@ -222,7 +222,7 @@ importers:
         version: 24.13.3
       happy-dom:
         specifier: ^20.10.6
-        version: 20.11.14
+        version: 20.12.0
       oxfmt:
         specifier: ^0.65.0
         version: 0.65.0
@@ -240,7 +240,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.11(@types/node@24.13.3)(happy-dom@20.11.14)(vite@8.1.0(@types/node@24.13.3))
+        version: 4.1.11(@types/node@24.13.3)(happy-dom@20.12.0)(vite@8.1.0(@types/node@24.13.3))
 
 packages:
 
@@ -1236,8 +1236,8 @@ packages:
     resolution: {integrity: sha512-/6gFNr0N04nob252sTQxyFLi3eKFRqIg1I87YcqAMT1i6SQrSF6KujUEQrtrjMV0H/eejTCltLdDSTEMzHbnsQ==}
     engines: {node: '>=20.20.0'}
 
-  happy-dom@20.11.14:
-    resolution: {integrity: sha512-iMIMAWOt/D00kFzSCARbY+9ih0VhDzieeEQjTIc4JiF9vIym4ghA9ktz4Rpr1oiPQGh+oeNP314TgnT5D0Venw==}
+  happy-dom@20.12.0:
+    resolution: {integrity: sha512-7uMYJu2SEwwL8vVcKp0C0lnt6d2LSGGe+T+oY79PiCJNNSgFpbxW8n5KuzpDQvrU4mt+fYiK1+Jy7Z2v39YR6g==}
     engines: {node: '>=20.0.0'}
 
   has-flag@4.0.0:
@@ -2450,7 +2450,7 @@ snapshots:
     dependencies:
       resolve-pkg-maps: 1.0.0
 
-  happy-dom@20.11.14:
+  happy-dom@20.12.0:
     dependencies:
       '@types/node': 24.13.3
       '@types/whatwg-mimetype': 3.0.2
@@ -2872,7 +2872,7 @@ snapshots:
       '@types/node': 24.13.3
       fsevents: 2.3.3
 
-  vitest@4.1.11(@types/node@24.13.3)(happy-dom@20.11.14)(vite@8.1.0(@types/node@24.13.3)):
+  vitest@4.1.11(@types/node@24.13.3)(happy-dom@20.12.0)(vite@8.1.0(@types/node@24.13.3)):
     dependencies:
       '@vitest/expect': 4.1.11
       '@vitest/mocker': 4.1.11(vite@8.1.0(@types/node@24.13.3))
@@ -2896,7 +2896,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 24.13.3
-      happy-dom: 20.11.14
+      happy-dom: 20.12.0
     transitivePeerDependencies:
       - msw
 
