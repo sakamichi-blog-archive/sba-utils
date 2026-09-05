@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.1](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.8.0...utils-v0.8.1) (2026-09-05)
+
+
+### Bug fixes
+
+* **ci:** Merge Dependabot PRs as a GitHub App ([#93](https://github.com/sakamichi-blog-archive/sba-utils/issues/93)) ([cee6711](https://github.com/sakamichi-blog-archive/sba-utils/commit/cee6711aec47cc1747506e0f0e0c2a6761cc7ab8)), closes [#92](https://github.com/sakamichi-blog-archive/sba-utils/issues/92)
+
+
+### Dependencies
+
+* Bump zod in the prod-non-major group across 1 directory ([#86](https://github.com/sakamichi-blog-archive/sba-utils/issues/86)) ([8fbb66a](https://github.com/sakamichi-blog-archive/sba-utils/commit/8fbb66abb5fd0f972159330be4ec027f3921bb9b))
+* Bump zod in the prod-non-major group across 1 directory ([#90](https://github.com/sakamichi-blog-archive/sba-utils/issues/90)) ([b9e4ea9](https://github.com/sakamichi-blog-archive/sba-utils/commit/b9e4ea9fa38551153587f356433aab242a0f1a8d))
+
 ## [0.8.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.7.0...utils-v0.8.0) (2026-08-16)
 
 
