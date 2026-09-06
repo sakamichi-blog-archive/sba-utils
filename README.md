@@ -44,6 +44,8 @@ const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
 
 Some functions do not accept some of the properties, due to the external API.
 
+`getNogiBlogUrl(uid)`, `getHinataBlogUrl(uid)` and `getSakuraBlogUrl(uid)` build a blog's URL from its `uid`, for callers that store blogs by `uid` rather than keeping the `url` returned by a fetch.
+
 ### News
 
 ```typescript
