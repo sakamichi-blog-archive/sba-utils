@@ -343,10 +343,12 @@ describe("parseNogiNewsJs()", () => {
     expect(parseNogiNewsJs(undatedJs)).toEqual([])
   })
 
-  it("drops a news whose link cannot be parsed as a URL", () => {
+  it("drops a news whose link cannot be parsed as a URL, keeping the rest of the page", () => {
     vi.spyOn(console, "error").mockImplementation(() => {})
-    const badLinkJs = `res({"count":"1","data":[{"arti_code":"","cate":"tv","code":"999","date":"2026/06/30","link_url":"https://[","text":"<p>x</p>","title":"リンクが壊れたお知らせ"}]});`
-    expect(parseNogiNewsJs(badLinkJs)).toEqual([])
+    const badLinkJs = `res({"count":"2","data":[{"arti_code":"","cate":"tv","code":"999","date":"2026/06/30","link_url":"https://[","text":"<p>x</p>","title":"リンクが壊れたお知らせ"},{"arti_code":"","cate":"tv","code":"998","date":"2026/06/29","link_url":"https://www.nogizaka46.com/s/n46/news/detail/998?ima=0140","text":"<p>x</p>","title":"正常なお知らせ"}]});`
+    const news = parseNogiNewsJs(badLinkJs)
+    expect(news).toHaveLength(1)
+    expect(news[0]?.id).toBe("998")
   })
 
   it("resolves names from a supplied map", () => {

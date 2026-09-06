@@ -301,16 +301,16 @@ export function parseNogiScheduleEventsJs(
       continue
     }
 
-    const members: string[] = []
-    for (const memberId of event.arti_code.flat()) {
-      const member = nogiMembers.find(_member => _member.uid === memberId)
-      if (member !== undefined) members.push(member.name)
-    }
-
     const url = URL.parse(event.link, SCHEDULE_PAGE_URL)
     if (url === null) {
       console.error(`Failed to parse URL for event ${event.code}. Skipping - ${event.link}`)
       continue
+    }
+
+    const members: string[] = []
+    for (const memberId of event.arti_code.flat()) {
+      const member = nogiMembers.find(_member => _member.uid === memberId)
+      if (member !== undefined) members.push(member.name)
     }
 
     events.push({

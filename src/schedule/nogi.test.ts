@@ -291,6 +291,14 @@ describe("parseNogiScheduleEventsJs()", () => {
     expect(events[2]?.categoryName).toBe("")
   })
 
+  it("drops an event whose link cannot be parsed as a URL, keeping the rest of the page", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {})
+    const badLinkJs = `res({"data":[${buildNogiEventJson("999", "https://[")},${buildNogiEventJson("998", "https://www.nogizaka46.com/s/n46/media/detail/998")}]});`
+    const events = parseNogiScheduleEventsJs(badLinkJs)
+    expect(events).toHaveLength(1)
+    expect(events[0]?.id).toBe("998")
+  })
+
   it("resolves names from a supplied map", () => {
     const events = parseNogiScheduleEventsJs(js, { special: "特別企画" })
     expect(events[2]?.categoryName).toBe("特別企画")
@@ -344,3 +352,8 @@ describe("parseNogiScheduleEventsJs()", () => {
     `)
   })
 })
+
+/** Build one entry of the schedule API payload, for cases the fixture does not cover */
+function buildNogiEventJson(code: string, link: string): string {
+  return `{"arti_code":[],"cate":"live","code":"${code}","date":"2026/08/01","end_time":"","link":"${link}","start_time":"","text":"<p>x</p>","title":"テスト"}`
+}
