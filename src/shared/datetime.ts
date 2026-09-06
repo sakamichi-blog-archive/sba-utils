@@ -38,5 +38,9 @@ export function parseDatetimeJst(str: string): Date {
 
   const [, year, month, day, hour = "0", minute = "0", second = "0"] = match
   const iso = `${year}-${month!.padStart(2, "0")}-${day!.padStart(2, "0")}T${hour.padStart(2, "0")}:${minute.padStart(2, "0")}:${second.padStart(2, "0")}+09:00`
-  return new Date(iso)
+  const datetime = new Date(iso)
+  // The regex passes months no calendar has, e.g. `2026/13/01`, which `Date` reports as `NaN` rather than throwing
+  if (Number.isNaN(datetime.getTime())) throw new ParseError(`Cannot parse datetime: ${str}`)
+
+  return datetime
 }

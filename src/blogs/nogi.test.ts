@@ -289,6 +289,20 @@ describe("parseNogiBlogsJs()", () => {
     expect(() => parseNogiBlogsJs("other({})")).toThrow(ParseError)
   })
 
+  it("drops a blog whose datetime cannot be read, keeping the rest of the page", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {})
+    const undatedJs = `res({"data":[{"code":"104998","date":"","link":"https://www.nogizaka46.com/s/n46/diary/detail/104998","name":"矢田 萌華","text":"","title":"日付が読めないブログ"},{"code":"104999","date":"2026/06/07 17:18:49","link":"https://www.nogizaka46.com/s/n46/diary/detail/104999","name":"鈴木 佑捺","text":"","title":"Test"}]})`
+    const blogs = parseNogiBlogsJs(undatedJs)
+    expect(blogs).toHaveLength(1)
+    expect(blogs[0]?.uid).toBe("104999")
+  })
+
+  it("keeps the chronological order of the survivors when one is dropped", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {})
+    const mixedJs = `res({"data":[${buildNogiBlogJson("104999", "2026/06/09 00:00:00")},${buildNogiBlogJson("104998", "")},${buildNogiBlogJson("104997", "2026/06/07 00:00:00")}]})`
+    expect(parseNogiBlogsJs(mixedJs).map(parsed => parsed.uid)).toEqual(["104997", "104999"])
+  })
+
   it("normalizes full-width numbers in member name", () => {
     const fullWidthJs = `res({"data":[{"code":"104999","date":"2026/06/07 17:18:49","link":"https://www.nogizaka46.com/s/n46/diary/detail/104999","name":"５期生","text":"","title":"Test"}]})`
     const [blog] = parseNogiBlogsJs(fullWidthJs)
@@ -399,6 +413,13 @@ describe("parseNogiBlogsByDateHtml()", () => {
     expect(blogs[1]?.uid).toBe("104700")
   })
 
+  it("drops a blog whose datetime cannot be read, keeping the rest of the page", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {})
+    const blogs = parseNogiBlogsByDateHtml(html.replace("2026.07.01 20:53", "　"))
+    expect(blogs).toHaveLength(1)
+    expect(blogs[0]?.uid).toBe("104698")
+  })
+
   it("parses blog fields correctly", () => {
     const [first, second] = parseNogiBlogsByDateHtml(html)
     expect(first).toMatchInlineSnapshot(`
@@ -419,3 +440,8 @@ describe("parseNogiBlogsByDateHtml()", () => {
     `)
   })
 })
+
+/** Build one entry of the blogs API payload, for cases the fixture does not cover */
+function buildNogiBlogJson(code: string, date: string): string {
+  return `{"code":"${code}","date":"${date}","link":"https://www.nogizaka46.com/s/n46/diary/detail/${code}","name":"矢田 萌華","text":"","title":"Test"}`
+}

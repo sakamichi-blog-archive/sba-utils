@@ -198,10 +198,18 @@ export function parseNogiBlogsByDateHtml(html: string): NogiBlogSummary[] {
     }
 
     /** `YYYY.MM.DD HH:mm` format */
-    const datetime = $(blogElement).find(".bl--card__date").text().trim()
+    const datetimeText = $(blogElement).find(".bl--card__date").text().trim()
+
+    let datetime: Date
+    try {
+      datetime = parseDatetimeJst(datetimeText)
+    } catch (error) {
+      console.error(`Failed to parse datetime for blog ${uid}. Skipping.`, error)
+      continue
+    }
 
     blogs.push({
-      datetime: parseDatetimeJst(datetime),
+      datetime,
       title: $(blogElement).find(".bl--card__ttl").text().trim(),
       uid,
       url: url.href
@@ -218,18 +226,27 @@ export function parseNogiBlogsJs(js: string): BlogWithHtml[] {
   }
 
   const { data } = getBlogsFunctionArgumentSchema.parse(functionArgument)
+  const blogs: BlogWithHtml[] = []
 
-  return data
-    .map<BlogWithHtml>(blog => {
-      return {
-        datetime: parseDatetimeJst(blog.date),
-        html: blog.text.trim(),
-        images: findImagesInHtml(blog.text, blog.link),
-        memberName: normalizeFullWidthNumbers(blog.name.trim()),
-        title: blog.title.trim(),
-        uid: blog.code,
-        url: blog.link
-      }
+  for (const blog of data) {
+    let datetime: Date
+    try {
+      datetime = parseDatetimeJst(blog.date)
+    } catch (error) {
+      console.error(`Failed to parse datetime for blog ${blog.code}. Skipping.`, error)
+      continue
+    }
+
+    blogs.push({
+      datetime,
+      html: blog.text.trim(),
+      images: findImagesInHtml(blog.text, blog.link),
+      memberName: normalizeFullWidthNumbers(blog.name.trim()),
+      title: blog.title.trim(),
+      uid: blog.code,
+      url: blog.link
     })
-    .reverse() // oxlint-disable-line unicorn/no-array-reverse
+  }
+
+  return blogs.reverse() // oxlint-disable-line unicorn/no-array-reverse
 }

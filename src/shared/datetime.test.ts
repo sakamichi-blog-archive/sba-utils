@@ -74,6 +74,10 @@ describe("parseDatetimeJst()", () => {
   it("throws ParseError for unexpected input", () => {
     expect(() => parseDatetimeJst("")).toThrow(ParseError)
   })
+
+  it("throws ParseError on a month no calendar has", () => {
+    expect(() => parseDatetimeJst("2026/13/01")).toThrow(ParseError)
+  })
 })
 
 describe("getDatePartsJst()", () => {

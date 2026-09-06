@@ -255,6 +255,13 @@ describe("parseSakuraBlogsHtml()", () => {
     expect(blogs[1]?.uid).toBe("69854")
   })
 
+  it("drops a blog whose date cannot be read, keeping the rest of the page", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {})
+    const blogs = parseSakuraBlogsHtml(html.replace("2026/6/19", "　"))
+    expect(blogs).toHaveLength(1)
+    expect(blogs[0]?.uid).toBe("69842")
+  })
+
   it("parses blog fields correctly", () => {
     const [first, second] = parseSakuraBlogsHtml(html)
     expect(first).toMatchInlineSnapshot(`

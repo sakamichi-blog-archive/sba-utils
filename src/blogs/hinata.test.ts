@@ -265,6 +265,13 @@ describe("parseHinataBlogsHtml()", () => {
     expect(blogs[1]?.uid).toBe("69855")
   })
 
+  it("drops a blog whose datetime cannot be read, keeping the rest of the page", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {})
+    const blogs = parseHinataBlogsHtml(html.replace("2026.6.19 22:19", "　"))
+    expect(blogs).toHaveLength(1)
+    expect(blogs[0]?.uid).toBe("69781")
+  })
+
   it("parses blog fields correctly", () => {
     const [first, second] = parseHinataBlogsHtml(html)
     expect(first).toMatchInlineSnapshot(`
