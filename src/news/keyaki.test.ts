@@ -107,6 +107,12 @@ describe("getKeyakiNewsUrl()", () => {
   })
 })
 
+describe("getKeyakiNewsUrl() validation", () => {
+  it("throws RangeError when month is given without year", () => {
+    expect(() => getKeyakiNewsUrl({ month: 10 })).toThrow(RangeError)
+  })
+})
+
 describe("getKeyakiNewsDetailUrl()", () => {
   beforeEach(() => vi.useFakeTimers())
   afterEach(() => vi.useRealTimers())
@@ -148,6 +154,10 @@ describe("parseKeyakiNewsHtml()", () => {
   it("keeps news whose displayed category label is empty, with an empty name", () => {
     const empty = parseKeyakiNewsHtml(html).find(news => news.categoryKey === "media")
     expect(empty?.categoryName).toBe("")
+  })
+
+  it("always exposes a category key", () => {
+    expect(parseKeyakiNewsHtml(html).map(news => news.categoryKey)).toEqual(["media", "shakehands"])
   })
 
   it("skips news with no href", () => {
