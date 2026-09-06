@@ -116,7 +116,7 @@ export function parseSakuraBlogsHtml(html: string): SakuraBlog[] {
     }
 
     /** `YYYY/M/DD` format */
-    const date = $(blogElement).find("a .wrap-bg .txt .date-title p.date").text().trim()
+    const dateText = $(blogElement).find("a .wrap-bg .txt .date-title p.date").text().trim()
     const url = new URL(href, BLOGS_PAGE_URL)
     const uid = getUidFromUrl(url)
     if (!uid) {
@@ -124,8 +124,16 @@ export function parseSakuraBlogsHtml(html: string): SakuraBlog[] {
       continue
     }
 
+    let date: Date
+    try {
+      date = parseDatetimeJst(dateText)
+    } catch (error) {
+      console.error(`Failed to parse date for blog ${uid}. Skipping.`, error)
+      continue
+    }
+
     blogs.push({
-      date: parseDatetimeJst(date),
+      date,
       memberName: $(blogElement).find("a .wrap-bg .txt .prof .prof-in p.name").text().trim(),
       title: $(blogElement).find("a .wrap-bg .txt .date-title h3.title").first().text().trim(),
       uid,

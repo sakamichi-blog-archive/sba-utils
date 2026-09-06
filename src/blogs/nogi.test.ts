@@ -289,6 +289,14 @@ describe("parseNogiBlogsJs()", () => {
     expect(() => parseNogiBlogsJs("other({})")).toThrow(ParseError)
   })
 
+  it("drops a blog whose datetime cannot be read, keeping the rest of the page", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {})
+    const undatedJs = `res({"data":[{"code":"104998","date":"","link":"https://www.nogizaka46.com/s/n46/diary/detail/104998","name":"矢田 萌華","text":"","title":"日付が読めないブログ"},{"code":"104999","date":"2026/06/07 17:18:49","link":"https://www.nogizaka46.com/s/n46/diary/detail/104999","name":"鈴木 佑捺","text":"","title":"Test"}]})`
+    const blogs = parseNogiBlogsJs(undatedJs)
+    expect(blogs).toHaveLength(1)
+    expect(blogs[0]?.uid).toBe("104999")
+  })
+
   it("normalizes full-width numbers in member name", () => {
     const fullWidthJs = `res({"data":[{"code":"104999","date":"2026/06/07 17:18:49","link":"https://www.nogizaka46.com/s/n46/diary/detail/104999","name":"５期生","text":"","title":"Test"}]})`
     const [blog] = parseNogiBlogsJs(fullWidthJs)
@@ -397,6 +405,13 @@ describe("parseNogiBlogsByDateHtml()", () => {
     expect(blogs).toHaveLength(2)
     expect(blogs[0]?.uid).toBe("104698")
     expect(blogs[1]?.uid).toBe("104700")
+  })
+
+  it("drops a blog whose datetime cannot be read, keeping the rest of the page", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {})
+    const blogs = parseNogiBlogsByDateHtml(html.replace("2026.07.01 20:53", "　"))
+    expect(blogs).toHaveLength(1)
+    expect(blogs[0]?.uid).toBe("104698")
   })
 
   it("parses blog fields correctly", () => {

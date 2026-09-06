@@ -114,7 +114,7 @@ export function parseHinataBlogsHtml(html: string): BlogWithHtml[] {
 
     const contentHtml = $(blogElement).find(".c-blog-article__text").first().html()?.trim() || ""
     /** `YYYY.M.D HH:mm` format */
-    const datetime = $(blogElement)
+    const datetimeText = $(blogElement)
       .find(".p-blog-article__info .c-blog-article__date")
       .text()
       .trim()
@@ -125,8 +125,16 @@ export function parseHinataBlogsHtml(html: string): BlogWithHtml[] {
       continue
     }
 
+    let datetime: Date
+    try {
+      datetime = parseDatetimeJst(datetimeText)
+    } catch (error) {
+      console.error(`Failed to parse datetime for blog ${uid}. Skipping.`, error)
+      continue
+    }
+
     blogs.push({
-      datetime: parseDatetimeJst(datetime),
+      datetime,
       html: contentHtml,
       images: findImagesInHtml(contentHtml, url),
       memberName: $(blogElement).find(".p-blog-article__info .c-blog-article__name").text().trim(),
