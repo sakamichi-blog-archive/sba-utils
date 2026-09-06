@@ -268,6 +268,12 @@ export function parseNogiNewsJs(js: string, categories: Record<string, string> =
       datetime = undefined
     }
 
+    const url = URL.parse(item.link_url, NEWS_PAGE_URL)
+    if (url === null) {
+      console.error(`Failed to parse URL for news ${item.code}. Skipping - ${item.link_url}`)
+      continue
+    }
+
     news.push({
       categoryKey: item.cate,
       categoryName: categories[item.cate] ?? "",
@@ -276,7 +282,7 @@ export function parseNogiNewsJs(js: string, categories: Record<string, string> =
       html: item.text.trim(),
       id: item.code,
       title: item.title.trim(),
-      url: new URL(item.link_url, NEWS_PAGE_URL).href
+      url: url.href
     })
   }
 

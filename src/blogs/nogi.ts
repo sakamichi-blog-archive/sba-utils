@@ -190,7 +190,11 @@ export function parseNogiBlogsByDateHtml(html: string): NogiBlogSummary[] {
       continue
     }
 
-    const url = new URL(href, BLOGS_LIST_URL)
+    const url = URL.parse(href, BLOGS_LIST_URL)
+    if (url === null) {
+      console.error(`Failed to parse URL for blog. Skipping - ${href}`)
+      continue
+    }
     const uid = getUidFromUrl(url)
     if (!uid) {
       console.error(`Failed to extract UID from URL. Skipping - ${url.href}`)

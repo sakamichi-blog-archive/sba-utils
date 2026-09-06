@@ -21,21 +21,29 @@ export function findImagesInHtml(html: string, blogUrl: string | URL): FindImage
       continue
     }
 
-    const srcUrl = new URL(src, blogUrl)
+    const srcUrl = URL.parse(src, blogUrl)
+    if (srcUrl === null) {
+      console.warn(
+        `<img> element index ${imgElementIndex} has unparseable \`src\` attribute - ${src}`
+      )
+      continue
+    }
     if (!srcUrl.protocol.startsWith("http")) {
       console.warn(`<img> element index ${imgElementIndex} has invalid protocol - ${srcUrl.href}`)
       continue
     }
 
     let anchorElementUrl: string | undefined
-    try {
-      const $parent = $(imgElement).parent().first()
-      const parentHref = $parent.attr("href")
-      if ($parent.get(0)?.tagName === "a" && parentHref !== undefined && parentHref.trim() !== "") {
-        anchorElementUrl = new URL(parentHref, blogUrl).href
+    const $parent = $(imgElement).parent().first()
+    const parentHref = $parent.attr("href")
+    if ($parent.get(0)?.tagName === "a" && parentHref !== undefined && parentHref.trim() !== "") {
+      const parentUrl = URL.parse(parentHref, blogUrl)
+      if (parentUrl === null) {
+        console.warn(
+          `<img> element index ${imgElementIndex} has an unparseable anchor \`href\` - ${parentHref}`
+        )
       }
-    } catch (e) {
-      console.warn(e)
+      anchorElementUrl = parentUrl?.href
     }
 
     images.push({

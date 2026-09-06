@@ -118,7 +118,11 @@ export function parseHinataBlogsHtml(html: string): BlogWithHtml[] {
       .find(".p-blog-article__info .c-blog-article__date")
       .text()
       .trim()
-    const url = new URL(href, BLOGS_PAGE_URL)
+    const url = URL.parse(href, BLOGS_PAGE_URL)
+    if (url === null) {
+      console.error(`Failed to parse URL for blog. Skipping - ${href}`)
+      continue
+    }
     const uid = getUidFromUrl(url)
     if (!uid) {
       console.error(`Failed to extract UID from URL. Skipping - ${url.href}`)

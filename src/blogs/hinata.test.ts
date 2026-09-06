@@ -272,6 +272,15 @@ describe("parseHinataBlogsHtml()", () => {
     expect(blogs[0]?.uid).toBe("69781")
   })
 
+  it("drops a blog whose href cannot be parsed as a URL, keeping the rest of the page", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {})
+    const blogs = parseHinataBlogsHtml(
+      html.replace("/s/official/diary/detail/69855?ima=0000&cd=member", "https://[")
+    )
+    expect(blogs).toHaveLength(1)
+    expect(blogs[0]?.uid).toBe("69781")
+  })
+
   it("parses blog fields correctly", () => {
     const [first, second] = parseHinataBlogsHtml(html)
     expect(first).toMatchInlineSnapshot(`

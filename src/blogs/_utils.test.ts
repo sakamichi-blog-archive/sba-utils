@@ -11,6 +11,12 @@ describe("findImagesInHtml()", () => {
     expect(img?.srcUrl).toBe("https://example.com/img/photo.jpg")
   })
 
+  it("skips an img whose src cannot be parsed as a URL", () => {
+    const images = findImagesInHtml('<img src="https://["><img src="/ok.jpg">', BASE)
+    expect(images).toHaveLength(1)
+    expect(images[0]?.srcUrl).toBe("https://example.com/ok.jpg")
+  })
+
   it("passes through absolute src unchanged", () => {
     const [img] = findImagesInHtml('<img src="https://cdn.example.com/photo.jpg">', BASE)
     expect(img?.srcUrl).toBe("https://cdn.example.com/photo.jpg")
