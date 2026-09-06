@@ -35,6 +35,9 @@ const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
 | Nogi   | `fetchNogiBlog(uid)`   | `fetchNogiBlogs(filter?)`   | `fetchNogiBlogsByDate(filter)`    |
 | Hinata | `fetchHinataBlog(uid)` | `fetchHinataBlogs(filter?)` | — (built into `fetchHinataBlogs`) |
 | Sakura | `fetchSakuraBlog(uid)` | `fetchSakuraBlogs(filter?)` | — (built into `fetchSakuraBlogs`) |
+| Keyaki | `fetchKeyakiBlog(uid)` | —                           | —                                 |
+
+Keyaki is disbanded and its site frozen, but its blog pages are still served, so past blogs remain readable. Only single blogs are supported, and a keyaki blog carries `date` (JST midnight) instead of `datetime` — the site shows no time of day.
 
 `filter` consists of the following properties. They may be used simultaneously.
 
@@ -44,7 +47,7 @@ const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
 
 Some functions do not accept some of the properties, due to the external API.
 
-`getNogiBlogUrl(uid)`, `getHinataBlogUrl(uid)` and `getSakuraBlogUrl(uid)` build a blog's URL from its `uid`, for callers that store blogs by `uid` rather than keeping the `url` returned by a fetch. The `ima` parameter in these URLs is a cache-buster: the Nogi and Sakura builders fill it with the current time, so they return a different string on every call and never match the `url` a fetch returned. Key on `uid`, not on the URL.
+`getNogiBlogUrl(uid)`, `getHinataBlogUrl(uid)`, `getSakuraBlogUrl(uid)` and `getKeyakiBlogUrl(uid)` build a blog's URL from its `uid`, for callers that store blogs by `uid` rather than keeping the `url` returned by a fetch. The `ima` parameter in these URLs is a cache-buster: the Nogi and Sakura builders fill it with the current time, so they return a different string on every call and never match the `url` a fetch returned. Key on `uid`, not on the URL.
 
 ### News
 

@@ -4,6 +4,8 @@ export {
   type BlogWithHtml,
   fetchHinataBlog,
   fetchHinataBlogs,
+  fetchKeyakiBlog,
+  fetchKeyakiBlogHtml,
   fetchNogiBlog,
   fetchNogiBlogs,
   fetchNogiBlogsByDate,
@@ -13,8 +15,11 @@ export {
   fetchSakuraBlog,
   fetchSakuraBlogs,
   getHinataBlogUrl,
+  getKeyakiBlogUrl,
   getNogiBlogUrl,
   getSakuraBlogUrl,
+  type KeyakiBlog,
+  parseKeyakiBlogHtml,
   type SakuraBlog
 } from "./blogs/index"
 export { FetchStatusError, ParseError } from "./shared/errors"
