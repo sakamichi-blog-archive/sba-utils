@@ -46,7 +46,7 @@ export async function fetchKeyakiBlogs(filter?: BlogListFilter): Promise<{
 export async function fetchKeyakiBlogsHtml(
   filter?: BlogListFilter
 ): Promise<{ html: string; url: string }> {
-  const params = new URLSearchParams({ ima: getMmss(), cd: "member" })
+  const params = new URLSearchParams({ ima: getMmss() })
   const dy = formatOptionalDy(filter)
   if (dy !== undefined) params.set("dy", dy)
   const page = filter?.page ?? 0

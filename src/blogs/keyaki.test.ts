@@ -85,9 +85,7 @@ describe("fetchKeyakiBlogs()", () => {
     )
     const { blogs, url } = await fetchKeyakiBlogs({ year: 2020, month: 10 })
     expect(blogs).toHaveLength(2)
-    expect(url).toBe(
-      "https://www.keyakizaka46.com/s/k46o/diary/member/list?ima=3456&cd=member&dy=202010"
-    )
+    expect(url).toBe("https://www.keyakizaka46.com/s/k46o/diary/member/list?ima=3456&dy=202010")
   })
 })
 
@@ -108,6 +106,24 @@ describe("fetchKeyakiBlogsHtml()", () => {
     await expect(fetchKeyakiBlogsHtml()).rejects.toBeInstanceOf(FetchStatusError)
   })
 
+  it("throws RangeError when filter has month without year", async () => {
+    await expect(fetchKeyakiBlogsHtml({ month: 10 })).rejects.toBeInstanceOf(RangeError)
+  })
+
+  it("omits the page param for the first page", async () => {
+    vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        status: 200,
+        text: vi.fn().mockResolvedValue("<html></html>"),
+        body: { cancel: vi.fn() }
+      })
+    )
+    const { url } = await fetchKeyakiBlogsHtml({ page: 0 })
+    expect(url).toBe("https://www.keyakizaka46.com/s/k46o/diary/member/list?ima=3456")
+  })
+
   it("applies the member and page params", async () => {
     vi.setSystemTime(new Date("2026-06-20T12:34:56+09:00"))
     vi.stubGlobal(
@@ -119,9 +135,7 @@ describe("fetchKeyakiBlogsHtml()", () => {
       })
     )
     const { url } = await fetchKeyakiBlogsHtml({ memberUid: "14", page: 1 })
-    expect(url).toBe(
-      "https://www.keyakizaka46.com/s/k46o/diary/member/list?ima=3456&cd=member&page=1&ct=14"
-    )
+    expect(url).toBe("https://www.keyakizaka46.com/s/k46o/diary/member/list?ima=3456&page=1&ct=14")
   })
 })
 
