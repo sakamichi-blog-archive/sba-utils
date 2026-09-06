@@ -20,7 +20,8 @@ export function getDatePartsJst(date: Date): { year: number; month: number; day:
 
 /**
  * Parse the date portion (`YYYY-MM-DD`, `YYYY/MM/DD`, or `YYYY.MM.DD`) of a string into a JST-midnight `Date`.
- * Full-width digits are normalized first.
+ * Full-width digits are normalized first. Throws `ParseError` when no date is present or the date is
+ * calendar-invalid, e.g. `2026-02-31`.
  */
 export function parseDateJst(text: string): Date {
   const match = normalizeFullWidthNumbers(text).match(/(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})/)
@@ -42,9 +43,12 @@ export function parseDatetimeJst(str: string): Date {
   // The regex passes values no calendar has: `Date` turns `2026/13/01` into `NaN` and rolls `2026/02/31` over
   // into March, so reject anything that does not come back as the day it went in as
   if (Number.isNaN(datetime.getTime())) throw new ParseError(`Cannot parse datetime: ${str}`)
-  const parts = getDatePartsJst(datetime)
-  if (parts.year !== Number(year) || parts.month !== Number(month) || parts.day !== Number(day)) {
-    throw new ParseError(`Cannot parse datetime: ${str}`)
+  // `24:00` is a legitimate way to write the next midnight, and the only hour that advances the day below
+  if (hour !== "24") {
+    const parts = getDatePartsJst(datetime)
+    if (parts.year !== Number(year) || parts.month !== Number(month) || parts.day !== Number(day)) {
+      throw new ParseError(`Cannot parse datetime: ${str}`)
+    }
   }
 
   return datetime

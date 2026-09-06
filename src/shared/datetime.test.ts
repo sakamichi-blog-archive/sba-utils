@@ -35,20 +35,16 @@ describe("parseDateJst()", () => {
     expect(() => parseDateJst("no date here")).toThrow(ParseError)
   })
 
+  it("throws ParseError on a calendar-invalid date", () => {
+    expect(() => parseDateJst("2026-02-31")).toThrow(ParseError)
+  })
+
   it("normalizes full-width digits", () => {
     expect(parseDateJst("２０２６.０８.０１").toISOString()).toBe("2026-07-31T15:00:00.000Z")
   })
 })
 
 describe("parseDatetimeJst()", () => {
-  it("throws ParseError on a month no calendar has", () => {
-    expect(() => parseDatetimeJst("2026/13/01")).toThrow(ParseError)
-  })
-
-  it("throws ParseError on a day the month does not have", () => {
-    expect(() => parseDatetimeJst("2026/02/31")).toThrow(ParseError)
-  })
-
   it("Parses Hinata blog/blogs datetime format", () => {
     expect(parseDatetimeJst("2019.6.5 00:39")).toEqual(new Date("2019-06-05T00:39:00+09:00")) // https://www.hinatazaka46.com/s/official/diary/detail/30542?ima=0000&cd=member
     expect(parseDatetimeJst("2025.8.11 09:00")).toEqual(new Date("2025-08-11T09:00:00+09:00")) // https://www.hinatazaka46.com/s/official/diary/detail/61433?ima=0000&cd=member
@@ -79,8 +75,28 @@ describe("parseDatetimeJst()", () => {
     expect(parseDatetimeJst("2025/12/31 21:39")).toEqual(new Date("2025-12-31T21:39:00+09:00")) // https://sakurazaka46.com/s/s46/diary/detail/67425?ima=0000&cd=blog
   })
 
+  it("parses a leap day", () => {
+    expect(parseDatetimeJst("2024/02/29")).toEqual(new Date("2024-02-29T00:00:00+09:00"))
+  })
+
+  it("parses `24:00` as the next midnight", () => {
+    expect(parseDatetimeJst("2026/01/01 24:00")).toEqual(new Date("2026-01-02T00:00:00+09:00"))
+  })
+
   it("throws ParseError for unexpected input", () => {
     expect(() => parseDatetimeJst("")).toThrow(ParseError)
+  })
+
+  it("throws ParseError on a month no calendar has", () => {
+    expect(() => parseDatetimeJst("2026/13/01")).toThrow(ParseError)
+  })
+
+  it("throws ParseError on a day the month does not have", () => {
+    expect(() => parseDatetimeJst("2026/02/31")).toThrow(ParseError)
+  })
+
+  it("throws ParseError on a leap day outside a leap year", () => {
+    expect(() => parseDatetimeJst("2026/02/29")).toThrow(ParseError)
   })
 })
 
