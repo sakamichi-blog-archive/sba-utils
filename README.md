@@ -77,6 +77,7 @@ const { newsDetail } = await fetchHinataNewsDetail("M02770")
 | Nogi   | `fetchNogiNews(filter?)`   | `fetchNogiNewsDetail(id)`   |
 | Hinata | `fetchHinataNews(filter?)` | `fetchHinataNewsDetail(id)` |
 | Sakura | `fetchSakuraNews(filter?)` | `fetchSakuraNewsDetail(id)` |
+| Keyaki | `fetchKeyakiNews(filter?)` | `fetchKeyakiNewsDetail(id)` |
 
 `filter` accepts `year`, `month` (January = 1), `day`, and `page`. Setting `month` requires `year`, and setting `day` requires `month`.
 
@@ -88,6 +89,7 @@ Every news item exposes `date` (JST midnight), `categoryKey`/`categoryName`, `id
 
 - **Nogi** news also include `datetime` (the API is the only one that exposes a time of day; absent on the rare item whose timestamp cannot be read) and the detail `html`, so the list alone is usually enough. They carry no member names, and `fetchNogiNewsDetail(id)` returns no `datetime` — the detail page shows a date only.
 - **Hinata** and **Sakura** list news omit `html` and `members` — fetch a single news to get those.
+- **Keyaki** news comes from a frozen site, so the listing ends in October 2020. `fetchKeyakiNewsDetail(id)` returns `html` but no `members`, since the detail page lists none.
 
 Nogi list `html` comes from the API verbatim, so it keeps the source's entities and self-closing tags (`&ldquo;`, `<br />`), while every other `html` in this package is normalised by the parser (`“`, `<br>`).
 
