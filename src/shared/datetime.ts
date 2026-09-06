@@ -29,7 +29,7 @@ export function parseDateJst(text: string): Date {
   return parseDatetimeJst(`${match[1]}/${match[2]}/${match[3]}`)
 }
 
-/** Parse JST datetime string into `Date` */
+/** Parse JST datetime string into `Date`. Throws `ParseError` on a calendar-invalid date, e.g. month 13 */
 export function parseDatetimeJst(str: string): Date {
   const match = str.match(
     /^(\d{4})[/.]\s*(\d{1,2})[/.]\s*(\d{1,2})(?:\s+(\d{2}):(\d{2})(?::(\d{2}))?)?$/
@@ -38,5 +38,14 @@ export function parseDatetimeJst(str: string): Date {
 
   const [, year, month, day, hour = "0", minute = "0", second = "0"] = match
   const iso = `${year}-${month!.padStart(2, "0")}-${day!.padStart(2, "0")}T${hour.padStart(2, "0")}:${minute.padStart(2, "0")}:${second.padStart(2, "0")}+09:00`
-  return new Date(iso)
+  const datetime = new Date(iso)
+  // The regex passes values no calendar has: `Date` turns `2026/13/01` into `NaN` and rolls `2026/02/31` over
+  // into March, so reject anything that does not come back as the day it went in as
+  if (Number.isNaN(datetime.getTime())) throw new ParseError(`Cannot parse datetime: ${str}`)
+  const parts = getDatePartsJst(datetime)
+  if (parts.year !== Number(year) || parts.month !== Number(month) || parts.day !== Number(day)) {
+    throw new ParseError(`Cannot parse datetime: ${str}`)
+  }
+
+  return datetime
 }

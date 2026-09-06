@@ -41,6 +41,14 @@ describe("parseDateJst()", () => {
 })
 
 describe("parseDatetimeJst()", () => {
+  it("throws ParseError on a month no calendar has", () => {
+    expect(() => parseDatetimeJst("2026/13/01")).toThrow(ParseError)
+  })
+
+  it("throws ParseError on a day the month does not have", () => {
+    expect(() => parseDatetimeJst("2026/02/31")).toThrow(ParseError)
+  })
+
   it("Parses Hinata blog/blogs datetime format", () => {
     expect(parseDatetimeJst("2019.6.5 00:39")).toEqual(new Date("2019-06-05T00:39:00+09:00")) // https://www.hinatazaka46.com/s/official/diary/detail/30542?ima=0000&cd=member
     expect(parseDatetimeJst("2025.8.11 09:00")).toEqual(new Date("2025-08-11T09:00:00+09:00")) // https://www.hinatazaka46.com/s/official/diary/detail/61433?ima=0000&cd=member
