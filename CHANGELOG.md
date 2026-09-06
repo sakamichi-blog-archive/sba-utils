@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.9.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.8.0...utils-v0.9.0) (2026-09-06)
+
+
+### Features
+
+* Add Keyaki blogs and news utils ([#96](https://github.com/sakamichi-blog-archive/sba-utils/issues/96)) ([d250670](https://github.com/sakamichi-blog-archive/sba-utils/commit/d250670db3a2b940c9291735d5429087e2d788c4))
+* **blogs:** Export blog URL builders ([#95](https://github.com/sakamichi-blog-archive/sba-utils/issues/95)) ([539fc53](https://github.com/sakamichi-blog-archive/sba-utils/commit/539fc53e7a2a600a972da7ef18e9d48195d4a0af))
+
+
+### Bug fixes
+
+* **blogs:** Skip blogs whose date cannot be parsed ([#94](https://github.com/sakamichi-blog-archive/sba-utils/issues/94)) ([000e217](https://github.com/sakamichi-blog-archive/sba-utils/commit/000e217ee7af03bccb7fbe84816b7d77922fe2a0))
+* **ci:** Merge Dependabot PRs as a GitHub App ([#93](https://github.com/sakamichi-blog-archive/sba-utils/issues/93)) ([cee6711](https://github.com/sakamichi-blog-archive/sba-utils/commit/cee6711aec47cc1747506e0f0e0c2a6761cc7ab8)), closes [#92](https://github.com/sakamichi-blog-archive/sba-utils/issues/92)
+* Skip list entries whose URL cannot be parsed ([#98](https://github.com/sakamichi-blog-archive/sba-utils/issues/98)) ([2116c78](https://github.com/sakamichi-blog-archive/sba-utils/commit/2116c78ea0a065dd32de839600a03f8649e920a9))
+
+
+### Dependencies
+
+* Bump zod in the prod-non-major group across 1 directory ([#86](https://github.com/sakamichi-blog-archive/sba-utils/issues/86)) ([8fbb66a](https://github.com/sakamichi-blog-archive/sba-utils/commit/8fbb66abb5fd0f972159330be4ec027f3921bb9b))
+* Bump zod in the prod-non-major group across 1 directory ([#90](https://github.com/sakamichi-blog-archive/sba-utils/issues/90)) ([b9e4ea9](https://github.com/sakamichi-blog-archive/sba-utils/commit/b9e4ea9fa38551153587f356433aab242a0f1a8d))
+
 ## [0.8.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.7.0...utils-v0.8.0) (2026-08-16)
 
 
