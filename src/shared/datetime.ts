@@ -19,11 +19,11 @@ export function getDatePartsJst(date: Date): { year: number; month: number; day:
 }
 
 /**
- * Parse the date portion (`YYYY-MM-DD`, `YYYY/MM/DD`, or `YYYY.MM.DD`) of a string into a JST-midnight `Date`.
- * Full-width digits are normalized first.
+ * Parse the date portion (`YYYY-MM-DD`, `YYYY/MM/DD`, `YYYY.MM.DD`, or `YYYY年M月D日`) of a string into a
+ * JST-midnight `Date`. Full-width digits are normalized first.
  */
 export function parseDateJst(text: string): Date {
-  const match = normalizeFullWidthNumbers(text).match(/(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})/)
+  const match = normalizeFullWidthNumbers(text).match(/(\d{4})[-/.年](\d{1,2})[-/.月](\d{1,2})/)
   if (match === null) throw new ParseError(`Cannot parse date: ${text}`)
 
   return parseDatetimeJst(`${match[1]}/${match[2]}/${match[3]}`)

@@ -4,6 +4,8 @@ export {
   type BlogWithHtml,
   fetchHinataBlog,
   fetchHinataBlogs,
+  fetchKeyakiBlog,
+  fetchKeyakiBlogs,
   fetchNogiBlog,
   fetchNogiBlogs,
   fetchNogiBlogsByDate,
@@ -13,6 +15,7 @@ export {
   fetchSakuraBlog,
   fetchSakuraBlogs,
   getHinataBlogUrl,
+  getKeyakiBlogUrl,
   getNogiBlogUrl,
   getSakuraBlogUrl,
   type SakuraBlog
