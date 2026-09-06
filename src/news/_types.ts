@@ -19,8 +19,8 @@ export interface NewsFilter {
 
 export interface News {
   /**
-   * Stable category key as used by the site, e.g. `"media"`. Taken from the `category_xxx`/`cate-xxx` class
-   * for `hinata`/`sakura` and from the API's `cate` field for `nogi`. Prefer this for storing and filtering:
+   * Stable category key as used by the site, e.g. `"media"`. Taken from the `category_xxx`/`cate-xxx`/`category xxx`
+   * class for `hinata`/`sakura`/`keyaki` and from the API's `cate` field for `nogi`. Prefer this for storing and filtering:
    * unlike {@link News.categoryName} it does not change when a category is relabelled. Empty string when
    * the site does not give one.
    */
@@ -51,7 +51,7 @@ export interface NewsWithHtml extends News {
 export interface NewsDetail extends NewsWithHtml {
   /**
    * Member names associated with the news, with whitespace removed (e.g. `"金村美玖"`). Empty when none
-   * are listed. Only `hinata` and `sakura` list members; `nogi` exposes none.
+   * are listed. Only `hinata` and `sakura` list members; `nogi` and `keyaki` expose none.
    */
   members: string[]
 }

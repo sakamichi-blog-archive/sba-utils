@@ -31,6 +31,10 @@ describe("parseDateJst()", () => {
     expect(parseDateJst("2026.08.02  22:00～23:30").toISOString()).toBe("2026-08-01T15:00:00.000Z")
   })
 
+  it("parses a Japanese-formatted date", () => {
+    expect(parseDateJst("2026年8月1日").toISOString()).toBe("2026-07-31T15:00:00.000Z")
+  })
+
   it("throws ParseError when no date is present", () => {
     expect(() => parseDateJst("no date here")).toThrow(ParseError)
   })

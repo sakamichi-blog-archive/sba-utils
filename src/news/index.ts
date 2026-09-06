@@ -10,6 +10,16 @@ export {
   parseHinataNewsHtml
 } from "./hinata"
 export {
+  fetchKeyakiNews,
+  fetchKeyakiNewsDetail,
+  fetchKeyakiNewsDetailHtml,
+  fetchKeyakiNewsHtml,
+  getKeyakiNewsDetailUrl,
+  getKeyakiNewsUrl,
+  parseKeyakiNewsDetailHtml,
+  parseKeyakiNewsHtml
+} from "./keyaki"
+export {
   fetchNogiNews,
   fetchNogiNewsCategories,
   fetchNogiNewsDetail,

@@ -35,6 +35,9 @@ const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
 | Nogi   | `fetchNogiBlog(uid)`   | `fetchNogiBlogs(filter?)`   | `fetchNogiBlogsByDate(filter)`    |
 | Hinata | `fetchHinataBlog(uid)` | `fetchHinataBlogs(filter?)` | — (built into `fetchHinataBlogs`) |
 | Sakura | `fetchSakuraBlog(uid)` | `fetchSakuraBlogs(filter?)` | — (built into `fetchSakuraBlogs`) |
+| Keyaki | `fetchKeyakiBlog(uid)` | `fetchKeyakiBlogs(filter?)` | — (built into `fetchKeyakiBlogs`) |
+
+The Keyaki site is frozen, so its blogs end on 2020-10-13.
 
 `filter` consists of the following properties. They may be used simultaneously.
 
@@ -44,7 +47,7 @@ const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
 
 Some functions do not accept some of the properties, due to the external API.
 
-`getNogiBlogUrl(uid)`, `getHinataBlogUrl(uid)` and `getSakuraBlogUrl(uid)` build a blog's URL from its `uid`, for callers that store blogs by `uid` rather than keeping the `url` returned by a fetch. The `ima` parameter in these URLs is a cache-buster: the Nogi and Sakura builders fill it with the current time, so they return a different string on every call and never match the `url` a fetch returned. Key on `uid`, not on the URL.
+`getNogiBlogUrl(uid)`, `getHinataBlogUrl(uid)`, `getSakuraBlogUrl(uid)` and `getKeyakiBlogUrl(uid)` build a blog's URL from its `uid`, for callers that store blogs by `uid` rather than keeping the `url` returned by a fetch. The `ima` parameter in these URLs is a cache-buster: the Nogi and Sakura builders fill it with the current time, so they return a different string on every call and never match the `url` a fetch returned. Key on `uid`, not on the URL.
 
 ### News
 
@@ -74,6 +77,7 @@ const { newsDetail } = await fetchHinataNewsDetail("M02770")
 | Nogi   | `fetchNogiNews(filter?)`   | `fetchNogiNewsDetail(id)`   |
 | Hinata | `fetchHinataNews(filter?)` | `fetchHinataNewsDetail(id)` |
 | Sakura | `fetchSakuraNews(filter?)` | `fetchSakuraNewsDetail(id)` |
+| Keyaki | `fetchKeyakiNews(filter?)` | `fetchKeyakiNewsDetail(id)` |
 
 `filter` accepts `year`, `month` (January = 1), `day`, and `page`. Setting `month` requires `year`, and setting `day` requires `month`.
 
@@ -85,6 +89,7 @@ Every news item exposes `date` (JST midnight), `categoryKey`/`categoryName`, `id
 
 - **Nogi** news also include `datetime` (the API is the only one that exposes a time of day; absent on the rare item whose timestamp cannot be read) and the detail `html`, so the list alone is usually enough. They carry no member names, and `fetchNogiNewsDetail(id)` returns no `datetime` — the detail page shows a date only.
 - **Hinata** and **Sakura** list news omit `html` and `members` — fetch a single news to get those.
+- **Keyaki** news comes from a frozen site, so the listing ends in October 2020. `fetchKeyakiNewsDetail(id)` returns `html` but no `members`, since the detail page lists none.
 
 Nogi list `html` comes from the API verbatim, so it keeps the source's entities and self-closing tags (`&ldquo;`, `<br />`), while every other `html` in this package is normalised by the parser (`“`, `<br>`).
 

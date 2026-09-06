@@ -1,5 +1,6 @@
 export type { Blog, BlogListFilter, BlogWithHtml } from "./_types"
 export { fetchHinataBlog, fetchHinataBlogs, getHinataBlogUrl } from "./hinata"
+export { fetchKeyakiBlog, fetchKeyakiBlogs, getKeyakiBlogUrl } from "./keyaki"
 export {
   fetchNogiBlog,
   fetchNogiBlogs,
