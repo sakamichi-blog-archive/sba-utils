@@ -10,10 +10,7 @@ import { findImagesInHtml, getUidFromUrl } from "./_utils"
 const BLOG_DETAIL_URL = "https://www.keyakizaka46.com/s/k46o/diary/detail"
 const BLOGS_PAGE_URL = "https://www.keyakizaka46.com/s/k46o/diary/member/list"
 
-/**
- * Fetch a single keyaki blog. The group is disbanded and its site frozen, but the blog pages are
- * still served, so past blogs remain readable.
- */
+/** Fetch a single Keyaki blog. The site is frozen, so its blogs end on 2020-10-13 */
 export async function fetchKeyakiBlog(
   uid: string
 ): Promise<{ blog: BlogWithHtml; html: string; url: string }> {
@@ -36,10 +33,7 @@ export async function fetchKeyakiBlogHtml(uid: string): Promise<{ html: string; 
   return { html: await response.text(), url }
 }
 
-/**
- * Fetch a page of keyaki blogs, oldest first. The listing carries each blog's content, so unlike the
- * other groups there is nothing extra to fetch per blog.
- */
+/** Fetch a page of Keyaki blogs, oldest first. The site is frozen, so its blogs end on 2020-10-13 */
 export async function fetchKeyakiBlogs(filter?: BlogListFilter): Promise<{
   blogs: BlogWithHtml[]
   html: string
