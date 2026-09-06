@@ -37,7 +37,7 @@ const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
 | Sakura | `fetchSakuraBlog(uid)` | `fetchSakuraBlogs(filter?)` | — (built into `fetchSakuraBlogs`) |
 | Keyaki | `fetchKeyakiBlog(uid)` | `fetchKeyakiBlogs(filter?)` | — (built into `fetchKeyakiBlogs`) |
 
-The keyaki site is frozen: its blogs end on 2020-10-13 and the listing never changes, so there is nothing to poll for.
+The keyaki site is frozen, so its blogs end on 2020-10-13.
 
 `filter` consists of the following properties. They may be used simultaneously.
 
