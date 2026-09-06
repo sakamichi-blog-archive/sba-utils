@@ -44,7 +44,7 @@ const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
 
 Some functions do not accept some of the properties, due to the external API.
 
-`getNogiBlogUrl(uid)`, `getHinataBlogUrl(uid)` and `getSakuraBlogUrl(uid)` build a blog's URL from its `uid`, for callers that store blogs by `uid` rather than keeping the `url` returned by a fetch.
+`getNogiBlogUrl(uid)`, `getHinataBlogUrl(uid)` and `getSakuraBlogUrl(uid)` build a blog's URL from its `uid`, for callers that store blogs by `uid` rather than keeping the `url` returned by a fetch. The `ima` parameter in these URLs is a cache-buster: the Nogi and Sakura builders fill it with the current time, so they return a different string on every call and never match the `url` a fetch returned. Key on `uid`, not on the URL.
 
 ### News
 
