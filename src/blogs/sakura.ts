@@ -117,7 +117,11 @@ export function parseSakuraBlogsHtml(html: string): SakuraBlog[] {
 
     /** `YYYY/M/DD` format */
     const dateText = $(blogElement).find("a .wrap-bg .txt .date-title p.date").text().trim()
-    const url = new URL(href, BLOGS_PAGE_URL)
+    const url = URL.parse(href, BLOGS_PAGE_URL)
+    if (url === null) {
+      console.error(`Failed to parse URL for blog. Skipping - ${href}`)
+      continue
+    }
     const uid = getUidFromUrl(url)
     if (!uid) {
       console.error(`Failed to extract UID from URL. Skipping - ${url.href}`)

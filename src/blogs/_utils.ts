@@ -21,7 +21,13 @@ export function findImagesInHtml(html: string, blogUrl: string | URL): FindImage
       continue
     }
 
-    const srcUrl = new URL(src, blogUrl)
+    const srcUrl = URL.parse(src, blogUrl)
+    if (srcUrl === null) {
+      console.warn(
+        `<img> element index ${imgElementIndex} has unparseable \`src\` attribute - ${src}`
+      )
+      continue
+    }
     if (!srcUrl.protocol.startsWith("http")) {
       console.warn(`<img> element index ${imgElementIndex} has invalid protocol - ${srcUrl.href}`)
       continue

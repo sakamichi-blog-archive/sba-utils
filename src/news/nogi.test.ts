@@ -343,6 +343,12 @@ describe("parseNogiNewsJs()", () => {
     expect(parseNogiNewsJs(undatedJs)).toEqual([])
   })
 
+  it("drops a news whose link cannot be parsed as a URL", () => {
+    vi.spyOn(console, "error").mockImplementation(() => {})
+    const badLinkJs = `res({"count":"1","data":[{"arti_code":"","cate":"tv","code":"999","date":"2026/06/30","link_url":"https://[","text":"<p>x</p>","title":"リンクが壊れたお知らせ"}]});`
+    expect(parseNogiNewsJs(badLinkJs)).toEqual([])
+  })
+
   it("resolves names from a supplied map", () => {
     const categories = parseNogiNewsCategoriesHtml(readFixture("nogi-news-categories.html"))
     expect(parseNogiNewsJs(js, categories)[1]?.categoryName).toBe("新カテゴリー")

@@ -121,7 +121,11 @@ export function parseHinataScheduleEventsHtml(html: string): HinataScheduleEvent
         continue
       }
 
-      const url = new URL(href, SCHEDULE_PAGE_URL)
+      const url = URL.parse(href, SCHEDULE_PAGE_URL)
+      if (url === null) {
+        console.error(`Failed to parse URL for event. Skipping - ${href}`)
+        continue
+      }
       const categoryElement = $(element).find(".p-schedule__head .c-schedule__category").first()
       const { timeStart, timeEnd } = parseScheduleTimeRange(
         $(element).find("div.p-schedule__head div.c-schedule__time--list").first().text().trim()

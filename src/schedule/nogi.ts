@@ -307,6 +307,12 @@ export function parseNogiScheduleEventsJs(
       if (member !== undefined) members.push(member.name)
     }
 
+    const url = URL.parse(event.link, SCHEDULE_PAGE_URL)
+    if (url === null) {
+      console.error(`Failed to parse URL for event ${event.code}. Skipping - ${event.link}`)
+      continue
+    }
+
     events.push({
       categoryKey: event.cate,
       categoryName: categories[event.cate] ?? "",
@@ -317,7 +323,7 @@ export function parseNogiScheduleEventsJs(
       timeEnd: normalizeTime(event.end_time),
       timeStart: normalizeTime(event.start_time),
       title: event.title.trim(),
-      url: new URL(event.link, SCHEDULE_PAGE_URL).href
+      url: url.href
     })
   }
 

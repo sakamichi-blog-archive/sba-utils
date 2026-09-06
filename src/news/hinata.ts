@@ -99,7 +99,11 @@ export function parseHinataNewsHtml(html: string): News[] {
       continue
     }
 
-    const url = new URL(href, NEWS_PAGE_URL)
+    const url = URL.parse(href, NEWS_PAGE_URL)
+    if (url === null) {
+      console.error(`Failed to parse URL for news. Skipping - ${href}`)
+      continue
+    }
     const id = getIdFromUrl(url)
     if (id === undefined) {
       console.error(`Failed to extract id from URL. Skipping - ${url.href}`)
