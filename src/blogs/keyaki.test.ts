@@ -86,7 +86,7 @@ describe("parseKeyakiBlogHtml()", () => {
   it("parses single blog fields correctly", () => {
     expect(parseKeyakiBlogHtml(html, url)).toMatchInlineSnapshot(`
       {
-        "date": 2020-10-12T15:00:00.000Z,
+        "datetime": 2020-10-13T14:57:00.000Z,
         "html": "<div dir="ltr">
                         <span>ダミー本文です。</span><br><span>ぜひご確認ください。</span>
                       </div>

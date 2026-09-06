@@ -37,7 +37,7 @@ const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
 | Sakura | `fetchSakuraBlog(uid)` | `fetchSakuraBlogs(filter?)` | — (built into `fetchSakuraBlogs`) |
 | Keyaki | `fetchKeyakiBlog(uid)` | —                           | —                                 |
 
-Keyaki is disbanded and its site frozen, but its blog pages are still served, so past blogs remain readable. Only single blogs are supported, and a keyaki blog carries `date` (JST midnight) instead of `datetime` — the site shows no time of day.
+Keyaki is disbanded and its site frozen, but its blog pages are still served, so past blogs remain readable. Only single blogs are supported.
 
 `filter` consists of the following properties. They may be used simultaneously.
 

@@ -6,12 +6,6 @@ import { FetchStatusError, ParseError } from "../shared/errors"
 import type { BlogWithHtml } from "./_types"
 import { findImagesInHtml, getUidFromUrl } from "./_utils"
 
-/** Unlike {@link BlogWithHtml}, carries no time of day — the frozen keyaki site shows a date only */
-export interface KeyakiBlog extends Omit<BlogWithHtml, "datetime"> {
-  /** Publish date, without time info */
-  date: Date
-}
-
 const BLOG_DETAIL_URL = "https://www.keyakizaka46.com/s/k46o/diary/detail"
 
 /**
@@ -20,7 +14,7 @@ const BLOG_DETAIL_URL = "https://www.keyakizaka46.com/s/k46o/diary/detail"
  */
 export async function fetchKeyakiBlog(
   uid: string
-): Promise<{ blog: KeyakiBlog; html: string; url: string }> {
+): Promise<{ blog: BlogWithHtml; html: string; url: string }> {
   const { html, url } = await fetchKeyakiBlogHtml(uid)
   return { blog: parseKeyakiBlogHtml(html, url), html, url }
 }
@@ -44,7 +38,7 @@ export function getKeyakiBlogUrl(uid: string): string {
   return `${BLOG_DETAIL_URL}/${uid}?ima=0000&cd=member`
 }
 
-export function parseKeyakiBlogHtml(html: string, url: string): KeyakiBlog {
+export function parseKeyakiBlogHtml(html: string, url: string): BlogWithHtml {
   const uid = getUidFromUrl(url)
   if (uid === undefined) throw new ParseError(`Cannot extract uid from URL: ${url}`)
 
@@ -54,16 +48,12 @@ export function parseKeyakiBlogHtml(html: string, url: string): KeyakiBlog {
 
   const headerElement = $(articleElement).find(".innerHead")
 
-  /** Split across two `<time>` elements, as `YYYY.MM` and `DD` */
-  const dateText = $(headerElement)
-    .find(".box-date time")
-    .map((_, timeElement) => $(timeElement).text().trim())
-    .get()
-    .join(".")
+  /** `YYYY/MM/DD HH:mm` format. The `.innerHead` heading shows the date alone, without the time of day */
+  const datetime = $(articleElement).find(".box-bottom ul li").first().text().trim()
   const contentHtml = $(articleElement).find(".box-article").html()?.trim() ?? ""
 
   return {
-    date: parseDatetimeJst(dateText),
+    datetime: parseDatetimeJst(datetime),
     html: contentHtml,
     images: findImagesInHtml(contentHtml, url),
     memberName: $(headerElement).find(".box-ttl p.name").text().trim(),

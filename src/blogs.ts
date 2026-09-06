@@ -17,7 +17,6 @@ export {
   getKeyakiBlogUrl,
   getNogiBlogUrl,
   getSakuraBlogUrl,
-  type KeyakiBlog,
   type SakuraBlog
 } from "./blogs/index"
 export { FetchStatusError, ParseError } from "./shared/errors"
