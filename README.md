@@ -35,9 +35,9 @@ const { blogs } = await fetchHinataBlogs({ memberUid: "25" })
 | Nogi   | `fetchNogiBlog(uid)`   | `fetchNogiBlogs(filter?)`   | `fetchNogiBlogsByDate(filter)`    |
 | Hinata | `fetchHinataBlog(uid)` | `fetchHinataBlogs(filter?)` | — (built into `fetchHinataBlogs`) |
 | Sakura | `fetchSakuraBlog(uid)` | `fetchSakuraBlogs(filter?)` | — (built into `fetchSakuraBlogs`) |
-| Keyaki | `fetchKeyakiBlog(uid)` | —                           | —                                 |
+| Keyaki | `fetchKeyakiBlog(uid)` | `fetchKeyakiBlogs(filter?)` | — (built into `fetchKeyakiBlogs`) |
 
-Keyaki is disbanded and its site frozen, but its blog pages are still served, so past blogs remain readable. Only single blogs are supported.
+Keyaki is disbanded and its site frozen, but its blog pages are still served, so past blogs remain readable. Its listing carries each blog's content, so `fetchKeyakiBlogs` alone is usually enough.
 
 `filter` consists of the following properties. They may be used simultaneously.
 

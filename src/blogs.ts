@@ -5,6 +5,7 @@ export {
   fetchHinataBlog,
   fetchHinataBlogs,
   fetchKeyakiBlog,
+  fetchKeyakiBlogs,
   fetchNogiBlog,
   fetchNogiBlogs,
   fetchNogiBlogsByDate,
