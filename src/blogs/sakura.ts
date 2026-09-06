@@ -1,7 +1,7 @@
 import * as cheerio from "cheerio"
 
 import { USER_AGENT_DESKTOP } from "../shared/constants"
-import { getMmss, parseDatetimeJst } from "../shared/datetime"
+import { getMmss, parseDateJst, parseDatetimeJst } from "../shared/datetime"
 import { formatOptionalDy } from "../shared/dy"
 import { FetchStatusError, ParseError } from "../shared/errors"
 import type { BlogListFilter, BlogWithHtml } from "./_types"
@@ -126,7 +126,7 @@ export function parseSakuraBlogsHtml(html: string): SakuraBlog[] {
 
     let date: Date
     try {
-      date = parseDatetimeJst(dateText)
+      date = parseDateJst(dateText)
     } catch (error) {
       console.error(`Failed to parse date for blog ${uid}. Skipping.`, error)
       continue
