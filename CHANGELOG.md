@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.9.1](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.9.0...utils-v0.9.1) (2026-09-15)
+
+
+### Bug fixes
+
+* Correct Sakura 1st generation birthdates ([#105](https://github.com/sakamichi-blog-archive/sba-utils/issues/105)) ([ca584ba](https://github.com/sakamichi-blog-archive/sba-utils/commit/ca584ba580dbb2ef4f46fa293dc2cdf6b874b6f8))
+
+
+### Dependencies
+
+* Bump zod from 4.5.4 to 4.6.2 in the prod-non-major group ([#102](https://github.com/sakamichi-blog-archive/sba-utils/issues/102)) ([1f654a9](https://github.com/sakamichi-blog-archive/sba-utils/commit/1f654a986634267e242ac270d83af8183d218dea))
+
 ## [0.9.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.8.0...utils-v0.9.0) (2026-09-06)
 
 
