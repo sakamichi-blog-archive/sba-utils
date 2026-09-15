@@ -8,7 +8,7 @@ const generation4: Generation = { key: "sakura-4", seq: 4, name: "4期生" }
 const memberList: Member[] = [
   // 1st generation
   {
-    birthdate: "1997-01-05",
+    birthdate: "1997-01-04",
     generation: generation1,
     graduatedAt: "2025-02-28T03:00:00Z",
     name: "上村莉菜",
@@ -17,7 +17,7 @@ const memberList: Member[] = [
     uid: "03"
   },
   {
-    birthdate: "1997-10-08",
+    birthdate: "1997-10-07",
     generation: generation1,
     graduatedAt: "2022-10-31T03:00:00Z",
     name: "尾関梨香",
@@ -26,7 +26,7 @@ const memberList: Member[] = [
     uid: "04"
   },
   {
-    birthdate: "1998-11-15",
+    birthdate: "1998-11-14",
     generation: generation1,
     graduatedAt: "2025-05-31T03:00:00Z",
     name: "小池美波",
@@ -35,7 +35,7 @@ const memberList: Member[] = [
     uid: "06"
   },
   {
-    birthdate: "1999-10-24",
+    birthdate: "1999-10-23",
     generation: generation1,
     graduatedAt: "2024-02-29T03:00:00Z",
     name: "小林由依",
@@ -44,7 +44,7 @@ const memberList: Member[] = [
     uid: "07"
   },
   {
-    birthdate: "1998-02-16",
+    birthdate: "1998-02-15",
     generation: generation1,
     graduatedAt: "2025-02-14T03:00:00Z",
     name: "齋藤冬優花",
@@ -53,7 +53,7 @@ const memberList: Member[] = [
     uid: "08"
   },
   {
-    birthdate: "1995-11-30",
+    birthdate: "1995-11-29",
     generation: generation1,
     graduatedAt: "2022-12-31T03:00:00Z",
     name: "菅井友香",
@@ -62,7 +62,7 @@ const memberList: Member[] = [
     uid: "11"
   },
   {
-    birthdate: "1997-07-08",
+    birthdate: "1997-07-07",
     generation: generation1,
     graduatedAt: "2023-12-31T03:00:00Z",
     name: "土生瑞穂",
@@ -71,7 +71,7 @@ const memberList: Member[] = [
     uid: "14"
   },
   {
-    birthdate: "2000-05-08",
+    birthdate: "2000-05-07",
     generation: generation1,
     graduatedAt: "2022-08-31T03:00:00Z",
     name: "原田葵",
@@ -80,7 +80,7 @@ const memberList: Member[] = [
     uid: "15"
   },
   {
-    birthdate: "1997-11-13",
+    birthdate: "1997-11-12",
     generation: generation1,
     graduatedAt: "2021-12-31T03:00:00Z",
     name: "守屋茜",
@@ -98,7 +98,7 @@ const memberList: Member[] = [
     uid: "20"
   },
   {
-    birthdate: "1998-07-28",
+    birthdate: "1998-07-27",
     generation: generation1,
     graduatedAt: "2022-06-30T14:59:00Z",
     name: "渡邉理佐",
