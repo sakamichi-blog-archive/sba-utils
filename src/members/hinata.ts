@@ -261,7 +261,7 @@ const memberList: Member[] = [
     birthdate: "2007-02-14",
     generation: generation4,
     name: "正源司陽子",
-    nameEnglish: "Youko Shougenji",
+    nameEnglish: "Yoko Shogenji",
     nameSpaced: "正源司 陽子",
     uid: "29"
   },
@@ -327,7 +327,7 @@ const memberList: Member[] = [
     birthdate: "2006-12-07",
     generation: generation5,
     name: "大田美月",
-    nameEnglish: "Mizuki Oota",
+    nameEnglish: "Mizuki Ota",
     nameSpaced: "大田 美月",
     uid: "37"
   },
@@ -335,7 +335,7 @@ const memberList: Member[] = [
     birthdate: "2007-05-05",
     generation: generation5,
     name: "大野愛実",
-    nameEnglish: "Manami Oono",
+    nameEnglish: "Manami Ono",
     nameSpaced: "大野 愛実",
     uid: "38"
   },
@@ -359,7 +359,7 @@ const memberList: Member[] = [
     birthdate: "2009-03-14",
     generation: generation5,
     name: "坂井新奈",
-    nameEnglish: "Niina Sakai",
+    nameEnglish: "Nina Sakai",
     nameSpaced: "坂井 新奈",
     uid: "41"
   },
@@ -367,7 +367,7 @@ const memberList: Member[] = [
     birthdate: "2006-09-10",
     generation: generation5,
     name: "佐藤優羽",
-    nameEnglish: "Yuu Satou",
+    nameEnglish: "Yu Sato",
     nameSpaced: "佐藤 優羽",
     uid: "42"
   },

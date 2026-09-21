@@ -428,7 +428,7 @@ const memberList: Member[] = [
     birthdate: "1999-04-17",
     generation: generation2,
     name: "遠藤光莉",
-    nameEnglish: "Hikari Endou",
+    nameEnglish: "Hikari Endo",
     nameSpaced: "遠藤 光莉",
     uid: "53"
   },
@@ -436,7 +436,7 @@ const memberList: Member[] = [
     birthdate: "2000-04-18",
     generation: generation2,
     name: "大園玲",
-    nameEnglish: "Rei Oozono",
+    nameEnglish: "Rei Ozono",
     nameSpaced: "大園 玲",
     uid: "54"
   },
@@ -444,7 +444,7 @@ const memberList: Member[] = [
     birthdate: "1999-10-12",
     generation: generation2,
     name: "大沼晶保",
-    nameEnglish: "Akiho Oonuma",
+    nameEnglish: "Akiho Onuma",
     nameSpaced: "大沼 晶保",
     uid: "55"
   },

@@ -121,7 +121,7 @@ const memberList: Member[] = [
     birthdate: "1999-04-17",
     generation: generation2,
     name: "遠藤光莉",
-    nameEnglish: "Hikari Endou",
+    nameEnglish: "Hikari Endo",
     nameSpaced: "遠藤 光莉",
     uid: "53"
   },
@@ -129,7 +129,7 @@ const memberList: Member[] = [
     birthdate: "2000-04-18",
     generation: generation2,
     name: "大園玲",
-    nameEnglish: "Rei Oozono",
+    nameEnglish: "Rei Ozono",
     nameSpaced: "大園 玲",
     uid: "54"
   },
@@ -137,7 +137,7 @@ const memberList: Member[] = [
     birthdate: "1999-10-12",
     generation: generation2,
     name: "大沼晶保",
-    nameEnglish: "Akiho Oonuma",
+    nameEnglish: "Akiho Onuma",
     nameSpaced: "大沼 晶保",
     uid: "55"
   },
@@ -245,7 +245,7 @@ const memberList: Member[] = [
     birthdate: "2006-01-09",
     generation: generation3,
     name: "遠藤理子",
-    nameEnglish: "Riko Endou",
+    nameEnglish: "Riko Endo",
     nameSpaced: "遠藤 理子",
     uid: "60"
   },
@@ -301,7 +301,7 @@ const memberList: Member[] = [
     birthdate: "2004-08-18",
     generation: generation3,
     name: "村井優",
-    nameEnglish: "Yuu Murai",
+    nameEnglish: "Yu Murai",
     nameSpaced: "村井 優",
     uid: "67"
   },
@@ -351,7 +351,7 @@ const memberList: Member[] = [
     birthdate: "2006-12-01",
     generation: generation4,
     name: "佐藤愛桜",
-    nameEnglish: "Neo Satou",
+    nameEnglish: "Neo Sato",
     nameSpaced: "佐藤 愛桜",
     uid: "73"
   },

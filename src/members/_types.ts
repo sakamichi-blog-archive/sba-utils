@@ -14,7 +14,10 @@ export interface Member {
   /** Graduation datetime in ISO 8601 format. `undefined` if not graduated. */
   graduatedAt?: string
   name: string
-  /** English representation of the member's name, in Western order (given name first). Opinionated. */
+  /**
+   * English representation of the member's name, in Western order (given name first).
+   * Spelled as the official website does, where the member is still listed there. Otherwise opinionated.
+   */
   nameEnglish: string
   nameSpaced: string
   /** Member ID used by official website */

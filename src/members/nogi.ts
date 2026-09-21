@@ -122,7 +122,7 @@ const memberList: Member[] = [
     generation: generation1,
     graduatedAt: "2023-06-30T03:00:00Z",
     name: "齋藤飛鳥",
-    nameEnglish: "Asuka Saitou",
+    nameEnglish: "Asuka Saito",
     nameSpaced: "齋藤 飛鳥",
     uid: "264"
   },
@@ -358,7 +358,7 @@ const memberList: Member[] = [
     generation: generation2,
     graduatedAt: "2022-03-31T03:00:00Z",
     name: "新内眞衣",
-    nameEnglish: "Mai Shinnuchi",
+    nameEnglish: "Mai Shinuchi",
     nameSpaced: "新内 眞衣",
     uid: "17068"
   },
@@ -412,7 +412,7 @@ const memberList: Member[] = [
     generation: generation2,
     graduatedAt: "2014-10-31T14:59:00Z",
     name: "米徳京花",
-    nameEnglish: "Kyouka Yonetoku",
+    nameEnglish: "Kyoka Yonetoku",
     nameSpaced: "米徳 京花",
     uid: "17382"
   },
@@ -431,7 +431,7 @@ const memberList: Member[] = [
     birthdate: "2002-10-08",
     generation: generation3,
     name: "伊藤理々杏",
-    nameEnglish: "Riria Itou",
+    nameEnglish: "Riria Ito",
     nameSpaced: "伊藤 理々杏",
     uid: "36749"
   },
@@ -483,7 +483,7 @@ const memberList: Member[] = [
     generation: generation3,
     graduatedAt: "2025-05-30T03:00:00Z",
     name: "佐藤楓",
-    nameEnglish: "Kaede Satou",
+    nameEnglish: "Kaede Sato",
     nameSpaced: "佐藤 楓",
     uid: "36755"
   },
@@ -518,7 +518,7 @@ const memberList: Member[] = [
     birthdate: "1995-09-06",
     generation: generation3,
     name: "吉田綾乃クリスティー",
-    nameEnglish: "Ayano Christie Yoshida",
+    nameEnglish: "Ayanochristie Yoshida",
     nameSpaced: "吉田 綾乃クリスティー",
     uid: "36759"
   },
@@ -537,7 +537,7 @@ const memberList: Member[] = [
     birthdate: "2001-10-03",
     generation: generation4,
     name: "遠藤さくら",
-    nameEnglish: "Sakura Endou",
+    nameEnglish: "Sakura Endo",
     nameSpaced: "遠藤 さくら",
     uid: "48006"
   },
@@ -588,7 +588,7 @@ const memberList: Member[] = [
     generation: generation4,
     graduatedAt: "2026-06-12T03:00:00Z",
     name: "佐藤璃果",
-    nameEnglish: "Rika Satou",
+    nameEnglish: "Rika Sato",
     nameSpaced: "佐藤 璃果",
     uid: "55384"
   },
@@ -772,7 +772,7 @@ const memberList: Member[] = [
     birthdate: "2004-12-01",
     generation: generation6,
     name: "大越ひなの",
-    nameEnglish: "Hinano Ookoshi",
+    nameEnglish: "Hinano Okoshi",
     nameSpaced: "大越 ひなの",
     uid: "63102"
   },
