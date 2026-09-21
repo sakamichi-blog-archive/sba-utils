@@ -14,6 +14,7 @@ const memberList: Member[] = [
     graduatedAt: "2020-03-31T03:00:00Z",
     name: "井口眞緒",
     nameEnglish: "Mao Iguchi",
+    nameKana: "いぐち まお",
     nameSpaced: "井口 眞緒",
     uid: "1"
   },
@@ -23,6 +24,7 @@ const memberList: Member[] = [
     graduatedAt: "2024-01-31T03:00:00Z",
     name: "潮紗理菜",
     nameEnglish: "Sarina Ushio",
+    nameKana: "うしお さりな",
     nameSpaced: "潮 紗理菜",
     uid: "2"
   },
@@ -32,6 +34,7 @@ const memberList: Member[] = [
     graduatedAt: "2019-08-31T03:00:00Z",
     name: "柿崎芽実",
     nameEnglish: "Memi Kakizaki",
+    nameKana: "かきざき めぐみ",
     nameSpaced: "柿崎 芽実",
     uid: "3"
   },
@@ -41,6 +44,7 @@ const memberList: Member[] = [
     graduatedAt: "2023-08-31T03:00:00Z",
     name: "影山優佳",
     nameEnglish: "Yuuka Kageyama",
+    nameKana: "かげやま ゆうか",
     nameSpaced: "影山 優佳",
     uid: "4"
   },
@@ -50,6 +54,7 @@ const memberList: Member[] = [
     graduatedAt: "2025-01-31T03:00:00Z",
     name: "加藤史帆",
     nameEnglish: "Shiho Katou",
+    nameKana: "かとう しほ",
     nameSpaced: "加藤 史帆",
     uid: "5"
   },
@@ -59,6 +64,7 @@ const memberList: Member[] = [
     graduatedAt: "2024-04-30T03:00:00Z",
     name: "齊藤京子",
     nameEnglish: "Kyouko Saitou",
+    nameKana: "さいとう きょうこ",
     nameSpaced: "齊藤 京子",
     uid: "6"
   },
@@ -68,6 +74,7 @@ const memberList: Member[] = [
     graduatedAt: "2025-05-31T03:00:00Z",
     name: "佐々木久美",
     nameEnglish: "Kumi Sasaki",
+    nameKana: "ささき くみ",
     nameSpaced: "佐々木 久美",
     uid: "7"
   },
@@ -77,6 +84,7 @@ const memberList: Member[] = [
     graduatedAt: "2025-05-31T03:00:00Z",
     name: "佐々木美玲",
     nameEnglish: "Mirei Sasaki",
+    nameKana: "ささき みれい",
     nameSpaced: "佐々木 美玲",
     uid: "8"
   },
@@ -86,6 +94,7 @@ const memberList: Member[] = [
     graduatedAt: "2025-05-31T03:00:00Z",
     name: "高瀬愛奈",
     nameEnglish: "Mana Takase",
+    nameKana: "たかせ まな",
     nameSpaced: "高瀬 愛奈",
     uid: "9"
   },
@@ -95,6 +104,7 @@ const memberList: Member[] = [
     graduatedAt: "2024-08-31T03:00:00Z",
     name: "高本彩花",
     nameEnglish: "Ayaka Takamoto",
+    nameKana: "たかもと あやか",
     nameSpaced: "高本 彩花",
     uid: "10"
   },
@@ -104,6 +114,7 @@ const memberList: Member[] = [
     graduatedAt: "2025-02-28T03:00:00Z",
     name: "東村芽依",
     nameEnglish: "Mei Higashimura",
+    nameKana: "ひがしむら めい",
     nameSpaced: "東村 芽依",
     uid: "11"
   },
@@ -114,6 +125,7 @@ const memberList: Member[] = [
     generation: generation2,
     name: "金村美玖",
     nameEnglish: "Miku Kanemura",
+    nameKana: "かねむら みく",
     nameSpaced: "金村 美玖",
     uid: "12"
   },
@@ -123,6 +135,7 @@ const memberList: Member[] = [
     graduatedAt: "2026-01-31T03:00:00Z",
     name: "河田陽菜",
     nameEnglish: "Hina Kawata",
+    nameKana: "かわた ひな",
     nameSpaced: "河田 陽菜",
     uid: "13"
   },
@@ -131,6 +144,7 @@ const memberList: Member[] = [
     generation: generation2,
     name: "小坂菜緒",
     nameEnglish: "Nao Kosaka",
+    nameKana: "こさか なお",
     nameSpaced: "小坂 菜緒",
     uid: "14"
   },
@@ -140,6 +154,7 @@ const memberList: Member[] = [
     graduatedAt: "2025-09-30T03:00:00Z",
     name: "富田鈴花",
     nameEnglish: "Suzuka Tomita",
+    nameKana: "とみた すずか",
     nameSpaced: "富田 鈴花",
     uid: "15"
   },
@@ -149,6 +164,7 @@ const memberList: Member[] = [
     graduatedAt: "2025-02-28T03:00:00Z",
     name: "丹生明里",
     nameEnglish: "Akari Nibu",
+    nameKana: "にぶ あかり",
     nameSpaced: "丹生 明里",
     uid: "16"
   },
@@ -158,6 +174,7 @@ const memberList: Member[] = [
     graduatedAt: "2025-01-31T03:00:00Z",
     name: "濱岸ひより",
     nameEnglish: "Hiyori Hamagishi",
+    nameKana: "はまぎし ひより",
     nameSpaced: "濱岸 ひより",
     uid: "17"
   },
@@ -167,6 +184,7 @@ const memberList: Member[] = [
     graduatedAt: "2026-03-31T03:00:00Z",
     name: "松田好花",
     nameEnglish: "Konoka Matsuda",
+    nameKana: "まつだ このか",
     nameSpaced: "松田 好花",
     uid: "18"
   },
@@ -176,6 +194,7 @@ const memberList: Member[] = [
     graduatedAt: "2023-01-31T03:00:00Z",
     name: "宮田愛萌",
     nameEnglish: "Manamo Miyata",
+    nameKana: "みやた まなも",
     nameSpaced: "宮田 愛萌",
     uid: "19"
   },
@@ -185,6 +204,7 @@ const memberList: Member[] = [
     graduatedAt: "2022-08-31T03:00:00Z",
     name: "渡邉美穂",
     nameEnglish: "Miho Watanabe",
+    nameKana: "わたなべ みほ",
     nameSpaced: "渡邉 美穂",
     uid: "20"
   },
@@ -195,6 +215,7 @@ const memberList: Member[] = [
     generation: generation3,
     name: "上村ひなの",
     nameEnglish: "Hinano Kamimura",
+    nameKana: "かみむら ひなの",
     nameSpaced: "上村 ひなの",
     uid: "21"
   },
@@ -203,6 +224,7 @@ const memberList: Member[] = [
     generation: generation3,
     name: "髙橋未来虹",
     nameEnglish: "Mikuni Takahashi",
+    nameKana: "たかはし みくに",
     nameSpaced: "髙橋 未来虹",
     uid: "22"
   },
@@ -211,6 +233,7 @@ const memberList: Member[] = [
     generation: generation3,
     name: "森本茉莉",
     nameEnglish: "Marie Morimoto",
+    nameKana: "もりもと まりぃ",
     nameSpaced: "森本 茉莉",
     uid: "23"
   },
@@ -219,6 +242,7 @@ const memberList: Member[] = [
     generation: generation3,
     name: "山口陽世",
     nameEnglish: "Haruyo Yamaguchi",
+    nameKana: "やまぐち はるよ",
     nameSpaced: "山口 陽世",
     uid: "24"
   },
@@ -229,6 +253,7 @@ const memberList: Member[] = [
     generation: generation4,
     name: "石塚瑶季",
     nameEnglish: "Tamaki Ishizuka",
+    nameKana: "いしづか たまき",
     nameSpaced: "石塚 瑶季",
     uid: "25"
   },
@@ -238,6 +263,7 @@ const memberList: Member[] = [
     graduatedAt: "2024-02-29T03:00:00Z",
     name: "岸帆夏",
     nameEnglish: "Honoka Kishi",
+    nameKana: "きし ほのか",
     nameSpaced: "岸 帆夏",
     uid: "26"
   },
@@ -246,6 +272,7 @@ const memberList: Member[] = [
     generation: generation4,
     name: "小西夏菜実",
     nameEnglish: "Nanami Konishi",
+    nameKana: "こにし ななみ",
     nameSpaced: "小西 夏菜実",
     uid: "27"
   },
@@ -254,6 +281,7 @@ const memberList: Member[] = [
     generation: generation4,
     name: "清水理央",
     nameEnglish: "Rio Shimizu",
+    nameKana: "しみず りお",
     nameSpaced: "清水 理央",
     uid: "28"
   },
@@ -262,6 +290,7 @@ const memberList: Member[] = [
     generation: generation4,
     name: "正源司陽子",
     nameEnglish: "Yoko Shogenji",
+    nameKana: "しょうげんじ ようこ",
     nameSpaced: "正源司 陽子",
     uid: "29"
   },
@@ -270,6 +299,7 @@ const memberList: Member[] = [
     generation: generation4,
     name: "竹内希来里",
     nameEnglish: "Kirari Takeuchi",
+    nameKana: "たけうち きらり",
     nameSpaced: "竹内 希来里",
     uid: "30"
   },
@@ -278,6 +308,7 @@ const memberList: Member[] = [
     generation: generation4,
     name: "平尾帆夏",
     nameEnglish: "Honoka Hirao",
+    nameKana: "ひらお ほのか",
     nameSpaced: "平尾 帆夏",
     uid: "31"
   },
@@ -286,6 +317,7 @@ const memberList: Member[] = [
     generation: generation4,
     name: "平岡海月",
     nameEnglish: "Mitsuki Hiraoka",
+    nameKana: "ひらおか みつき",
     nameSpaced: "平岡 海月",
     uid: "32"
   },
@@ -294,6 +326,7 @@ const memberList: Member[] = [
     generation: generation4,
     name: "藤嶌果歩",
     nameEnglish: "Kaho Fujishima",
+    nameKana: "ふじしま かほ",
     nameSpaced: "藤嶌 果歩",
     uid: "33"
   },
@@ -302,6 +335,7 @@ const memberList: Member[] = [
     generation: generation4,
     name: "宮地すみれ",
     nameEnglish: "Sumire Miyachi",
+    nameKana: "みやち すみれ",
     nameSpaced: "宮地 すみれ",
     uid: "34"
   },
@@ -310,6 +344,7 @@ const memberList: Member[] = [
     generation: generation4,
     name: "山下葉留花",
     nameEnglish: "Haruka Yamashita",
+    nameKana: "やました はるか",
     nameSpaced: "山下 葉留花",
     uid: "35"
   },
@@ -318,6 +353,7 @@ const memberList: Member[] = [
     generation: generation4,
     name: "渡辺莉奈",
     nameEnglish: "Rina Watanabe",
+    nameKana: "わたなべ りな",
     nameSpaced: "渡辺 莉奈",
     uid: "36"
   },
@@ -328,6 +364,7 @@ const memberList: Member[] = [
     generation: generation5,
     name: "大田美月",
     nameEnglish: "Mizuki Ota",
+    nameKana: "おおた みづき",
     nameSpaced: "大田 美月",
     uid: "37"
   },
@@ -336,6 +373,7 @@ const memberList: Member[] = [
     generation: generation5,
     name: "大野愛実",
     nameEnglish: "Manami Ono",
+    nameKana: "おおの まなみ",
     nameSpaced: "大野 愛実",
     uid: "38"
   },
@@ -344,6 +382,7 @@ const memberList: Member[] = [
     generation: generation5,
     name: "片山紗希",
     nameEnglish: "Saki Katayama",
+    nameKana: "かたやま さき",
     nameSpaced: "片山 紗希",
     uid: "39"
   },
@@ -352,6 +391,7 @@ const memberList: Member[] = [
     generation: generation5,
     name: "蔵盛妃那乃",
     nameEnglish: "Hinano Kuramori",
+    nameKana: "くらもり ひなの",
     nameSpaced: "蔵盛 妃那乃",
     uid: "40"
   },
@@ -360,6 +400,7 @@ const memberList: Member[] = [
     generation: generation5,
     name: "坂井新奈",
     nameEnglish: "Nina Sakai",
+    nameKana: "さかい にいな",
     nameSpaced: "坂井 新奈",
     uid: "41"
   },
@@ -368,6 +409,7 @@ const memberList: Member[] = [
     generation: generation5,
     name: "佐藤優羽",
     nameEnglish: "Yu Sato",
+    nameKana: "さとう ゆう",
     nameSpaced: "佐藤 優羽",
     uid: "42"
   },
@@ -376,6 +418,7 @@ const memberList: Member[] = [
     generation: generation5,
     name: "下田衣珠季",
     nameEnglish: "Izuki Shimoda",
+    nameKana: "しもだ いずき",
     nameSpaced: "下田 衣珠季",
     uid: "43"
   },
@@ -384,6 +427,7 @@ const memberList: Member[] = [
     generation: generation5,
     name: "高井俐香",
     nameEnglish: "Rika Takai",
+    nameKana: "たかい りか",
     nameSpaced: "高井 俐香",
     uid: "44"
   },
@@ -392,6 +436,7 @@ const memberList: Member[] = [
     generation: generation5,
     name: "鶴崎仁香",
     nameEnglish: "Niko Tsurusaki",
+    nameKana: "つるさき にこ",
     nameSpaced: "鶴崎 仁香",
     uid: "45"
   },
@@ -400,21 +445,35 @@ const memberList: Member[] = [
     generation: generation5,
     name: "松尾桜",
     nameEnglish: "Sakura Matsuo",
+    nameKana: "まつお さくら",
     nameSpaced: "松尾 桜",
     uid: "46"
   }
 ]
 
 const nonMemberList: Member[] = [
-  { name: "ポカ", nameEnglish: "Poka", nameSpaced: "ポカ", uid: "000" },
+  { name: "ポカ", nameEnglish: "Poka", nameKana: "ぽか", nameSpaced: "ポカ", uid: "000" },
   {
     name: "日向坂46新三期生",
     nameEnglish: "New 3rd Generation",
+    nameKana: "ひなたざか46 しんさんきせい",
     nameSpaced: "日向坂46 新三期生",
     uid: "1000"
   },
-  { name: "四期生リレー", nameEnglish: "4th Generation", nameSpaced: "四期生リレー", uid: "2000" },
-  { name: "五期生リレー", nameEnglish: "5th Generation", nameSpaced: "五期生リレー", uid: "3000" }
+  {
+    name: "四期生リレー",
+    nameEnglish: "4th Generation",
+    nameKana: "よんきせいりれー",
+    nameSpaced: "四期生リレー",
+    uid: "2000"
+  },
+  {
+    name: "五期生リレー",
+    nameEnglish: "5th Generation",
+    nameKana: "ごきせいりれー",
+    nameSpaced: "五期生リレー",
+    uid: "3000"
+  }
 ]
 
 export const members: Member[] = [...memberList, ...nonMemberList]

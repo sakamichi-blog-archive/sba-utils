@@ -19,6 +19,11 @@ export interface Member {
    * Spelled as the official website does, where the member is still listed there. Otherwise opinionated.
    */
   nameEnglish: string
+  /**
+   * Hiragana reading of the member's name, family name first, separated by a space.
+   * Taken from the official website where the member is still listed there. Otherwise derived.
+   */
+  nameKana: string
   nameSpaced: string
   /** Member ID used by official website */
   uid: string
