@@ -87,7 +87,7 @@ const memberList: Member[] = [
     nameEnglish: "Yumiko Iwase",
     nameKana: "いわせ ゆみこ",
     nameSpaced: "岩瀬 佑美子",
-    uid: "53388"
+    uid: "55388"
   },
   {
     birthdate: "1993-01-04",
