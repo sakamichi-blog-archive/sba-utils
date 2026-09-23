@@ -16,7 +16,8 @@ export interface Member {
   name: string
   /**
    * English representation of the member's name, in Western order (given name first).
-   * Spelled as the official website does, where the member is still listed there. Otherwise opinionated.
+   * Spelled as the official website does, where the member is still listed there. Otherwise
+   * opinionated, and marked as unverified.
    */
   nameEnglish: string
   /**
