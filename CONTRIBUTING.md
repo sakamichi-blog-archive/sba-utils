@@ -129,7 +129,7 @@ doSomething()
 
 Nogi's endpoint includes graduated members.
 
-The other three site-scraped groups serve a 404 for members who have left, which is the only gap in coverage. Keyaki is doubly affected: its site lists only the members who stayed through the Sakurazaka rename, and everyone who moved to Hinatazaka redirects to the Hinatazaka site instead.
+The other three site-scraped groups serve a 404 for members who have left. Keyaki is doubly affected: its site lists only the members who stayed through the Sakurazaka rename, and everyone who moved to Hinatazaka redirects to the Hinatazaka site instead. For those members, read the same selector off a [Wayback Machine](https://web.archive.org/) snapshot of their page — every member's values have been confirmed that way, so none are invented.
 
 ### Normalization
 
@@ -139,8 +139,6 @@ The sites disagree on presentation, so only the spelling is taken from them, not
 - `nameKana`: hiragana, family name first, one space between the two parts
 
 ### Values with no source
-
-Members whose pages are gone keep whatever this repository already had. A member's `nameEnglish` already encodes the reading, so a hand-written `nameKana` should agree with it.
 
 The non-member blog accounts (`運営スタッフ`, the generation relay accounts) are on no site's member list at all — the blog APIs give them a Japanese `name` and nothing else — so both properties are left `undefined` rather than invented. `ポカ` is the exception: its reading is unambiguous, so it keeps `Poka` and `ぽか`.
 

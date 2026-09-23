@@ -174,6 +174,6 @@ Without `date` the page reports the date the event was **first listed**, and a b
 import { hinataMembers } from "@sakamichi-blog-archive/utils/members"
 ```
 
-Each array covers every member the group has had, graduates included, ordered by generation with the group blog accounts last. `nameEnglish` and `nameKana` follow the official website's spelling for members still listed there; for everyone else they are this package's own romanization and reading.
+Each array covers every member the group has had, graduates included, ordered by generation with the group blog accounts last. `nameEnglish` and `nameKana` follow the official website's spelling, taken from an archived snapshot of the page for members the sites no longer list.
 
 The arrays also hold the blog accounts that post as a group rather than as a person — `運営スタッフ`, the generation relay accounts. Those have no `generation`, and no `nameEnglish` or `nameKana` either, since no official website names them. `ポカ` is the one exception, being unambiguous.
