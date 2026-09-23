@@ -26,6 +26,22 @@ Scopes are wrapped in parentheses.
 - With scope, no breaking changes: `<type>(<scope>): <description>`
 - With scope with breaking changes: `<type>(<scope>)!: <description>`
 
+### Breaking changes
+
+A commit that breaks the public API needs `!` in its type _and_ a `BREAKING CHANGE:` footer — its own paragraph at the end of the body, before any `Co-Authored-By`:
+
+```
+feat!: Make nameEnglish and nameKana optional
+
+<why>
+
+BREAKING CHANGE: `Member.nameEnglish` and `Member.nameKana` are now optional.
+```
+
+The footer is what Release Please renders under ⚠ BREAKING CHANGES, so write it for a consumer: what changed, and what they have to do. It reaches Release Please because GitHub composes the squash commit body from these messages — the individual commits are otherwise invisible after a squash merge.
+
+The PR title needs the `!` as well, since it becomes the squash commit's subject and is what readers of `main` see first. Release Please does not depend on it — the footer alone marks the commit as breaking — so this one is convention, not mechanism.
+
 ### Commit message scopes
 
 - `claude`: `.claude/` and `CLAUDE.md` changes
@@ -95,6 +111,36 @@ doSomething()
 if (uid === undefined) throw new ParseError("...")
 doSomething()
 ```
+
+---
+
+## Member data
+
+`src/members/*.ts` is maintained by hand, but `nameEnglish` and `nameKana` are sourced from the official websites wherever the member is still listed there. Both are optional: the non-member blog accounts have no source for either.
+
+### Where each field comes from
+
+| Group  | Source                                                                  | `nameEnglish`  | `nameKana`           |
+| ------ | ----------------------------------------------------------------------- | -------------- | -------------------- |
+| Nogi   | `https://www.nogizaka46.com/s/n46/api/list/member?callback=res` (JSONP) | `english_name` | `kana`               |
+| Hinata | `https://www.hinatazaka46.com/s/official/artist/<uid>?ima=0000`         | `span.name_en` | `div.c-member__kana` |
+| Sakura | `https://sakurazaka46.com/s/s46/artist/<uid>?ima=0000`                  | `p.eigo`       | `p.kana`             |
+| Keyaki | `https://www.keyakizaka46.com/s/k46o/artist/<uid>?ima=0000`             | `span.en`      | `p.furigana`         |
+
+Nogi's endpoint includes graduated members.
+
+The other three site-scraped groups serve a 404 for members who have left. Keyaki is doubly affected: its site lists only the members who stayed through the Sakurazaka rename, and everyone who moved to Hinatazaka redirects to the Hinatazaka site instead. For those members, read the same selector off a [Wayback Machine](https://web.archive.org/) snapshot of their page — every member's values have been confirmed that way, so none are invented.
+
+### Normalization
+
+The sites disagree on presentation, so only the spelling is taken from them, not the casing or the name order:
+
+- `nameEnglish`: Title Case, Western order (given name first) — Nogi serves lowercase and the others uppercase, and Nogi's own data mixes both name orders
+- `nameKana`: hiragana, family name first, one space between the two parts
+
+### Values with no source
+
+The non-member blog accounts (`運営スタッフ`, the generation relay accounts) are on no site's member list at all — the blog APIs give them a Japanese `name` and nothing else — so both properties are left `undefined` rather than invented. `ポカ` is the exception: its reading is unambiguous, so it keeps `Poka` and `ぽか`.
 
 ---
 
