@@ -111,9 +111,9 @@ doSomething()
 | Sakura | `https://sakurazaka46.com/s/s46/artist/<uid>?ima=0000`                  | `p.eigo`       | `p.kana`             |
 | Keyaki | `https://www.keyakizaka46.com/s/k46o/artist/<uid>?ima=0000`             | `span.en`      | `p.furigana`         |
 
-The Nogi endpoint also accepts `so=AB`, which only changes the sort order (50音 instead of by generation). Both forms return the same records — graduated members included — so either works.
+Nogi's endpoint includes graduated members.
 
-The three site-scraped groups serve a 404 for members who have left, which is the only gap in coverage. Keyaki is doubly affected: its site lists only the members who stayed through the Sakurazaka rename, and everyone who moved to Hinatazaka redirects to the Hinatazaka site instead.
+The other three site-scraped groups serve a 404 for members who have left, which is the only gap in coverage. Keyaki is doubly affected: its site lists only the members who stayed through the Sakurazaka rename, and everyone who moved to Hinatazaka redirects to the Hinatazaka site instead.
 
 ### Normalization
 
