@@ -26,6 +26,22 @@ Scopes are wrapped in parentheses.
 - With scope, no breaking changes: `<type>(<scope>): <description>`
 - With scope with breaking changes: `<type>(<scope>)!: <description>`
 
+### Breaking changes
+
+A commit that breaks the public API needs `!` in its type _and_ a `BREAKING CHANGE:` footer — its own paragraph at the end of the body, before any `Co-Authored-By`:
+
+```
+feat!: Make nameEnglish and nameKana optional
+
+<why>
+
+BREAKING CHANGE: `Member.nameEnglish` and `Member.nameKana` are now optional.
+```
+
+The footer is what Release Please renders under ⚠ BREAKING CHANGES, so write it for a consumer: what changed, and what they have to do. It reaches Release Please because GitHub composes the squash commit body from these messages — the individual commits are otherwise invisible after a squash merge.
+
+The PR title needs the `!` as well. It becomes the squash commit's subject, and without it there is no breaking-changes section at all, however the body reads.
+
 ### Commit message scopes
 
 - `claude`: `.claude/` and `CLAUDE.md` changes
