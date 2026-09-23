@@ -85,7 +85,7 @@ const memberList: Member[] = [
     graduatedAt: "2012-11-18T14:59:00Z",
     name: "岩瀬佑美子",
     nameEnglish: "Yumiko Iwase",
-    nameKana: "いわせ ゆみこ",
+    nameKana: "いわせ ゆみこ", // Unverified: not listed on the official website
     nameSpaced: "岩瀬 佑美子",
     uid: "53388"
   },
