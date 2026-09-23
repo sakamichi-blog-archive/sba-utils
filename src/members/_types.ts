@@ -16,10 +16,7 @@ export interface Member {
   name: string
   /** English representation of member's name, given name first. `undefined` for non-members */
   nameEnglish?: string
-  /**
-   * Hiragana reading of member's name, family name first, separated by space.
-   * `undefined` for non-members
-   */
+  /** Hiragana reading of member's name, family name first, separated by space. `undefined` for non-members */
   nameKana?: string
   nameSpaced: string
   /** Member ID used by official website */
