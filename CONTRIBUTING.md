@@ -100,7 +100,7 @@ doSomething()
 
 ## Member data
 
-`src/members/*.ts` is maintained by hand, but `nameEnglish` and `nameKana` are sourced from the official websites wherever the member is still listed there.
+`src/members/*.ts` is maintained by hand, but `nameEnglish` and `nameKana` are sourced from the official websites wherever the member is still listed there. Both are optional: the non-member blog accounts have no source for either.
 
 ### Where each field comes from
 
@@ -122,15 +122,11 @@ The sites disagree on presentation, so only the spelling is taken from them, not
 - `nameEnglish`: Title Case, Western order (given name first) — Nogi serves lowercase and the others uppercase, and Nogi's own data mixes both name orders
 - `nameKana`: hiragana, family name first, one space between the two parts
 
-### Unverified values
+### Values with no source
 
-Members whose pages are gone, and the non-member blog accounts, keep whatever this repository already had. Where a value cannot be checked against a site, mark it:
+Members whose pages are gone keep whatever this repository already had. A member's `nameEnglish` already encodes the reading, so a hand-written `nameKana` should agree with it.
 
-```ts
-nameKana: "けんきゅうせい", // Unverified: not listed on the official website
-```
-
-A member's `nameEnglish` already encodes the reading, so a hand-written `nameKana` should agree with it. Drop the comment once a value is confirmed against a site.
+The non-member blog accounts (`運営スタッフ`, the generation relay accounts) are on no site's member list at all — the blog APIs give them a Japanese `name` and nothing else — so both properties are left `undefined` rather than invented. `ポカ` is the exception: its reading is unambiguous, so it keeps `Poka` and `ぽか`.
 
 ---
 

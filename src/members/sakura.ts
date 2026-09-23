@@ -446,15 +446,11 @@ const memberList: Member[] = [
 const nonMemberList: Member[] = [
   {
     name: "三期生リレー",
-    nameEnglish: "3rd Generation", // Unverified: not listed on the official website
-    nameKana: "さんきせいりれー", // Unverified: not listed on the official website
     nameSpaced: "三期生リレー",
     uid: "2000"
   },
   {
     name: "四期生リレー",
-    nameEnglish: "4th Generation", // Unverified: not listed on the official website
-    nameKana: "よんきせいりれー", // Unverified: not listed on the official website
     nameSpaced: "四期生リレー",
     uid: "2001"
   }

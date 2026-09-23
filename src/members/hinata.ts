@@ -461,22 +461,16 @@ const nonMemberList: Member[] = [
   },
   {
     name: "日向坂46新三期生",
-    nameEnglish: "New 3rd Generation", // Unverified: not listed on the official website
-    nameKana: "ひなたざかふぉーてぃーしっくす しんさんきせい", // Unverified: not listed on the official website
     nameSpaced: "日向坂46 新三期生",
     uid: "1000"
   },
   {
     name: "四期生リレー",
-    nameEnglish: "4th Generation", // Unverified: not listed on the official website
-    nameKana: "よんきせいりれー", // Unverified: not listed on the official website
     nameSpaced: "四期生リレー",
     uid: "2000"
   },
   {
     name: "五期生リレー",
-    nameEnglish: "5th Generation", // Unverified: not listed on the official website
-    nameKana: "ごきせいりれー", // Unverified: not listed on the official website
     nameSpaced: "五期生リレー",
     uid: "3000"
   }

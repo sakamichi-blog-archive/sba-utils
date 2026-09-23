@@ -17,15 +17,17 @@ export interface Member {
   /**
    * English representation of the member's name, in Western order (given name first).
    * Spelled as the official website does, where the member is still listed there. Otherwise
-   * opinionated, and marked as unverified. See "Member data" in CONTRIBUTING.
+   * opinionated. `undefined` for the non-member blog accounts, which no site gives a name for.
+   * See "Member data" in CONTRIBUTING.
    */
-  nameEnglish: string
+  nameEnglish?: string
   /**
    * Hiragana reading of the member's name, family name first, separated by a space.
-   * Taken from the official website where the member is still listed there. Otherwise derived, and
-   * marked as unverified. See "Member data" in CONTRIBUTING.
+   * Taken from the official website where the member is still listed there. Otherwise derived.
+   * `undefined` for the non-member blog accounts, which no site gives a reading for.
+   * See "Member data" in CONTRIBUTING.
    */
-  nameKana: string
+  nameKana?: string
   nameSpaced: string
   /** Member ID used by official website */
   uid: string
