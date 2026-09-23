@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.10.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.9.1...utils-v0.10.0) (2026-09-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* `Member.nameEnglish` and `Member.nameKana` are now optional. The non-member blog accounts omit both, since no official website lists them.
+
+### Features
+
+* Add member kana and use official English names ([#114](https://github.com/sakamichi-blog-archive/sba-utils/issues/114)) ([177d7ef](https://github.com/sakamichi-blog-archive/sba-utils/commit/177d7ef2eab4b1358fe2c3e3581e2bf69bfa8e8d))
+
+
+### Dependencies
+
+* Bump zod from 4.6.2 to 4.6.3 in the prod-non-major group ([#106](https://github.com/sakamichi-blog-archive/sba-utils/issues/106)) ([26b6032](https://github.com/sakamichi-blog-archive/sba-utils/commit/26b6032cee4c25f8cd96b95a2c163ba38292c0fd))
+* Bump zod from 4.6.3 to 4.6.4 in the prod-non-major group ([#109](https://github.com/sakamichi-blog-archive/sba-utils/issues/109)) ([5ad0f1c](https://github.com/sakamichi-blog-archive/sba-utils/commit/5ad0f1c8b45ed8e12b1922a252f663acb0113abb))
+* Bump zod from 4.6.4 to 4.6.5 in the prod-non-major group ([#110](https://github.com/sakamichi-blog-archive/sba-utils/issues/110)) ([a18d54a](https://github.com/sakamichi-blog-archive/sba-utils/commit/a18d54a0d338e3b612c4d5b77ef5a9fd97ef999a))
+
 ## [0.9.1](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.9.0...utils-v0.9.1) (2026-09-15)
 
 
