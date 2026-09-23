@@ -17,12 +17,13 @@ export interface Member {
   /**
    * English representation of the member's name, in Western order (given name first).
    * Spelled as the official website does, where the member is still listed there. Otherwise
-   * opinionated, and marked as unverified.
+   * opinionated, and marked as unverified. See "Member data" in CONTRIBUTING.
    */
   nameEnglish: string
   /**
    * Hiragana reading of the member's name, family name first, separated by a space.
-   * Taken from the official website where the member is still listed there. Otherwise derived.
+   * Taken from the official website where the member is still listed there. Otherwise derived, and
+   * marked as unverified. See "Member data" in CONTRIBUTING.
    */
   nameKana: string
   nameSpaced: string

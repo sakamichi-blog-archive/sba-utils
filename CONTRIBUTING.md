@@ -98,6 +98,42 @@ doSomething()
 
 ---
 
+## Member data
+
+`src/members/*.ts` is maintained by hand, but `nameEnglish` and `nameKana` are sourced from the official websites wherever the member is still listed there.
+
+### Where each field comes from
+
+| Group  | Source                                                                  | `nameEnglish`  | `nameKana`           |
+| ------ | ----------------------------------------------------------------------- | -------------- | -------------------- |
+| Nogi   | `https://www.nogizaka46.com/s/n46/api/list/member?callback=res` (JSONP) | `english_name` | `kana`               |
+| Hinata | `https://www.hinatazaka46.com/s/official/artist/<uid>?ima=0000`         | `span.name_en` | `div.c-member__kana` |
+| Sakura | `https://sakurazaka46.com/s/s46/artist/<uid>?ima=0000`                  | `p.eigo`       | `p.kana`             |
+| Keyaki | `https://www.keyakizaka46.com/s/k46o/artist/<uid>?ima=0000`             | `span.en`      | `p.furigana`         |
+
+The Nogi endpoint also accepts `so=AB`, which only changes the sort order (50音 instead of by generation). Both forms return the same records — graduated members included — so either works.
+
+The three site-scraped groups serve a 404 for members who have left, which is the only gap in coverage. Keyaki is doubly affected: its site lists only the members who stayed through the Sakurazaka rename, and everyone who moved to Hinatazaka redirects to the Hinatazaka site instead.
+
+### Normalization
+
+The sites disagree on presentation, so only the spelling is taken from them, not the casing or the name order:
+
+- `nameEnglish`: Title Case, Western order (given name first) — Nogi serves lowercase and the others uppercase, and Nogi's own data mixes both name orders
+- `nameKana`: hiragana, family name first, one space between the two parts
+
+### Unverified values
+
+Members whose pages are gone, and the non-member blog accounts, keep whatever this repository already had. Where a value cannot be checked against a site, mark it:
+
+```ts
+nameKana: "けんきゅうせい", // Unverified: not listed on the official website
+```
+
+A member's `nameEnglish` already encodes the reading, so a hand-written `nameKana` should agree with it. Drop the comment once a value is confirmed against a site.
+
+---
+
 ## Testing
 
 ### Fixtures
