@@ -14,7 +14,7 @@ const memberList: Member[] = [
     graduatedAt: "2020-10-13T14:59:00Z",
     name: "石森虹花",
     nameEnglish: "Nijika Ishimori",
-    nameKana: "いしもり にじか",
+    nameKana: "いしもり にじか", // Unverified: not listed on the official website
     nameSpaced: "石森 虹花",
     uid: "01"
   },
@@ -24,7 +24,7 @@ const memberList: Member[] = [
     graduatedAt: "2018-12-31T03:00:00Z",
     name: "今泉佑唯",
     nameEnglish: "Yui Imaizumi",
-    nameKana: "いまいずみ ゆい",
+    nameKana: "いまいずみ ゆい", // Unverified: not listed on the official website
     nameSpaced: "今泉 佑唯",
     uid: "02"
   },
@@ -33,7 +33,7 @@ const memberList: Member[] = [
     generation: generation1,
     name: "上村莉菜",
     nameEnglish: "Rina Uemura",
-    nameKana: "うえむら りな",
+    nameKana: "うえむら りな", // Unverified: not listed on the official website
     nameSpaced: "上村 莉菜",
     uid: "03"
   },
@@ -42,7 +42,7 @@ const memberList: Member[] = [
     generation: generation1,
     name: "尾関梨香",
     nameEnglish: "Rika Ozeki",
-    nameKana: "おぜき りか",
+    nameKana: "おぜき りか", // Unverified: not listed on the official website
     nameSpaced: "尾関 梨香",
     uid: "04"
   },
@@ -52,7 +52,7 @@ const memberList: Member[] = [
     graduatedAt: "2020-03-31T03:00:00Z",
     name: "織田奈那",
     nameEnglish: "Nana Oda",
-    nameKana: "おだ なな",
+    nameKana: "おだ なな", // Unverified: not listed on the official website
     nameSpaced: "織田 奈那",
     uid: "05"
   },
@@ -70,7 +70,7 @@ const memberList: Member[] = [
     generation: generation1,
     name: "小林由依",
     nameEnglish: "Yui Kobayashi",
-    nameKana: "こばやし ゆい",
+    nameKana: "こばやし ゆい", // Unverified: not listed on the official website
     nameSpaced: "小林 由依",
     uid: "07"
   },
@@ -79,7 +79,7 @@ const memberList: Member[] = [
     generation: generation1,
     name: "齋藤冬優花",
     nameEnglish: "Fuyuka Saitou",
-    nameKana: "さいとう ふゆか",
+    nameKana: "さいとう ふゆか", // Unverified: not listed on the official website
     nameSpaced: "齋藤 冬優花",
     uid: "08"
   },
@@ -89,7 +89,7 @@ const memberList: Member[] = [
     graduatedAt: "2020-10-31T14:59:00Z",
     name: "佐藤詩織",
     nameEnglish: "Shiori Satou",
-    nameKana: "さとう しおり",
+    nameKana: "さとう しおり", // Unverified: not listed on the official website
     nameSpaced: "佐藤 詩織",
     uid: "09"
   },
@@ -99,7 +99,7 @@ const memberList: Member[] = [
     graduatedAt: "2018-12-31T03:00:00Z",
     name: "志田愛佳",
     nameEnglish: "Manaka Shida",
-    nameKana: "しだ まなか",
+    nameKana: "しだ まなか", // Unverified: not listed on the official website
     nameSpaced: "志田 愛佳",
     uid: "10"
   },
@@ -108,7 +108,7 @@ const memberList: Member[] = [
     generation: generation1,
     name: "菅井友香",
     nameEnglish: "Yuuka Sugai",
-    nameKana: "すがい ゆうか",
+    nameKana: "すがい ゆうか", // Unverified: not listed on the official website
     nameSpaced: "菅井 友香",
     uid: "11"
   },
@@ -118,7 +118,7 @@ const memberList: Member[] = [
     graduatedAt: "2020-03-31T03:00:00Z",
     name: "鈴本美愉",
     nameEnglish: "Miyu Suzumoto",
-    nameKana: "すずもと あや",
+    nameKana: "すずもと あや", // Unverified: not listed on the official website
     nameSpaced: "鈴本 美愉",
     uid: "12"
   },
@@ -128,7 +128,7 @@ const memberList: Member[] = [
     graduatedAt: "2020-05-31T03:00:00Z",
     name: "長沢菜々香",
     nameEnglish: "Nanako Nagasawa",
-    nameKana: "ながさわ ななこ",
+    nameKana: "ながさわ ななこ", // Unverified: not listed on the official website
     nameSpaced: "長沢 菜々香",
     uid: "13"
   },
@@ -137,7 +137,7 @@ const memberList: Member[] = [
     generation: generation1,
     name: "土生瑞穂",
     nameEnglish: "Mizuho Habu",
-    nameKana: "はぶ みずほ",
+    nameKana: "はぶ みずほ", // Unverified: not listed on the official website
     nameSpaced: "土生 瑞穂",
     uid: "14"
   },
@@ -146,7 +146,7 @@ const memberList: Member[] = [
     generation: generation1,
     name: "原田葵",
     nameEnglish: "Aoi Harada",
-    nameKana: "はらだ あおい",
+    nameKana: "はらだ あおい", // Unverified: not listed on the official website
     nameSpaced: "原田 葵",
     uid: "15"
   },
@@ -156,7 +156,7 @@ const memberList: Member[] = [
     graduatedAt: "2020-03-31T03:00:00Z",
     name: "平手友梨奈",
     nameEnglish: "Yurina Hirate",
-    nameKana: "ひらて ゆりな",
+    nameKana: "ひらて ゆりな", // Unverified: not listed on the official website
     nameSpaced: "平手 友梨奈",
     uid: "17"
   },
@@ -165,7 +165,7 @@ const memberList: Member[] = [
     generation: generation1,
     name: "守屋茜",
     nameEnglish: "Akane Moriya",
-    nameKana: "もりや あかね",
+    nameKana: "もりや あかね", // Unverified: not listed on the official website
     nameSpaced: "守屋 茜",
     uid: "18"
   },
@@ -175,7 +175,7 @@ const memberList: Member[] = [
     graduatedAt: "2018-12-31T03:00:00Z",
     name: "米谷奈々未",
     nameEnglish: "Nanami Yonetani",
-    nameKana: "よねたに ななみ",
+    nameKana: "よねたに ななみ", // Unverified: not listed on the official website
     nameSpaced: "米谷 奈々未",
     uid: "19"
   },
@@ -184,7 +184,7 @@ const memberList: Member[] = [
     generation: generation1,
     name: "渡辺梨加",
     nameEnglish: "Rika Watanabe",
-    nameKana: "わたなべ りか",
+    nameKana: "わたなべ りか", // Unverified: not listed on the official website
     nameSpaced: "渡辺 梨加",
     uid: "20"
   },
@@ -193,7 +193,7 @@ const memberList: Member[] = [
     generation: generation1,
     name: "渡邉理佐",
     nameEnglish: "Risa Watanabe",
-    nameKana: "わたなべ りさ",
+    nameKana: "わたなべ りさ", // Unverified: not listed on the official website
     nameSpaced: "渡邉 理佐",
     uid: "21"
   },
@@ -203,7 +203,7 @@ const memberList: Member[] = [
     graduatedAt: "2019-08-31T03:00:00Z",
     name: "長濱ねる",
     nameEnglish: "Neru Nagahama",
-    nameKana: "ながはま ねる",
+    nameKana: "ながはま ねる", // Unverified: not listed on the official website
     nameSpaced: "長濱 ねる",
     uid: "22"
   },
@@ -214,7 +214,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration1,
     name: "井口眞緒",
     nameEnglish: "Mao Iguchi",
-    nameKana: "いぐち まお",
+    nameKana: "いぐち まお", // Unverified: not listed on the official website
     nameSpaced: "井口 眞緒",
     uid: "23"
   },
@@ -223,7 +223,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration1,
     name: "潮紗理菜",
     nameEnglish: "Sarina Ushio",
-    nameKana: "うしお さりな",
+    nameKana: "うしお さりな", // Unverified: not listed on the official website
     nameSpaced: "潮 紗理菜",
     uid: "24"
   },
@@ -232,7 +232,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration1,
     name: "柿崎芽実",
     nameEnglish: "Memi Kakizaki",
-    nameKana: "かきざき めぐみ",
+    nameKana: "かきざき めぐみ", // Unverified: not listed on the official website
     nameSpaced: "柿崎 芽実",
     uid: "25"
   },
@@ -241,7 +241,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration1,
     name: "影山優佳",
     nameEnglish: "Yuuka Kageyama",
-    nameKana: "かげやま ゆうか",
+    nameKana: "かげやま ゆうか", // Unverified: not listed on the official website
     nameSpaced: "影山 優佳",
     uid: "26"
   },
@@ -250,7 +250,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration1,
     name: "加藤史帆",
     nameEnglish: "Shiho Katou",
-    nameKana: "かとう しほ",
+    nameKana: "かとう しほ", // Unverified: not listed on the official website
     nameSpaced: "加藤 史帆",
     uid: "27"
   },
@@ -259,7 +259,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration1,
     name: "齊藤京子",
     nameEnglish: "Kyouko Saitou",
-    nameKana: "さいとう きょうこ",
+    nameKana: "さいとう きょうこ", // Unverified: not listed on the official website
     nameSpaced: "齊藤 京子",
     uid: "28"
   },
@@ -268,7 +268,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration1,
     name: "佐々木久美",
     nameEnglish: "Kumi Sasaki",
-    nameKana: "ささき くみ",
+    nameKana: "ささき くみ", // Unverified: not listed on the official website
     nameSpaced: "佐々木 久美",
     uid: "29"
   },
@@ -277,7 +277,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration1,
     name: "佐々木美玲",
     nameEnglish: "Mirei Sasaki",
-    nameKana: "ささき みれい",
+    nameKana: "ささき みれい", // Unverified: not listed on the official website
     nameSpaced: "佐々木 美玲",
     uid: "30"
   },
@@ -286,7 +286,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration1,
     name: "高瀬愛奈",
     nameEnglish: "Mana Takase",
-    nameKana: "たかせ まな",
+    nameKana: "たかせ まな", // Unverified: not listed on the official website
     nameSpaced: "高瀬 愛奈",
     uid: "31"
   },
@@ -295,7 +295,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration1,
     name: "高本彩花",
     nameEnglish: "Ayaka Takamoto",
-    nameKana: "たかもと あやか",
+    nameKana: "たかもと あやか", // Unverified: not listed on the official website
     nameSpaced: "高本 彩花",
     uid: "32"
   },
@@ -304,7 +304,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration1,
     name: "東村芽依",
     nameEnglish: "Mei Higashimura",
-    nameKana: "ひがしむら めい",
+    nameKana: "ひがしむら めい", // Unverified: not listed on the official website
     nameSpaced: "東村 芽依",
     uid: "33"
   },
@@ -324,7 +324,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration2,
     name: "河田陽菜",
     nameEnglish: "Hina Kawata",
-    nameKana: "かわた ひな",
+    nameKana: "かわた ひな", // Unverified: not listed on the official website
     nameSpaced: "河田 陽菜",
     uid: "35"
   },
@@ -342,7 +342,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration2,
     name: "富田鈴花",
     nameEnglish: "Suzuka Tomita",
-    nameKana: "とみた すずか",
+    nameKana: "とみた すずか", // Unverified: not listed on the official website
     nameSpaced: "富田 鈴花",
     uid: "37"
   },
@@ -351,7 +351,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration2,
     name: "丹生明里",
     nameEnglish: "Akari Nibu",
-    nameKana: "にぶ あかり",
+    nameKana: "にぶ あかり", // Unverified: not listed on the official website
     nameSpaced: "丹生 明里",
     uid: "38"
   },
@@ -360,7 +360,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration2,
     name: "濱岸ひより",
     nameEnglish: "Hiyori Hamagishi",
-    nameKana: "はまぎし ひより",
+    nameKana: "はまぎし ひより", // Unverified: not listed on the official website
     nameSpaced: "濱岸 ひより",
     uid: "39"
   },
@@ -369,7 +369,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration2,
     name: "松田好花",
     nameEnglish: "Konoka Matsuda",
-    nameKana: "まつだ このか",
+    nameKana: "まつだ このか", // Unverified: not listed on the official website
     nameSpaced: "松田 好花",
     uid: "40"
   },
@@ -378,7 +378,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration2,
     name: "宮田愛萌",
     nameEnglish: "Manamo Miyata",
-    nameKana: "みやた まなも",
+    nameKana: "みやた まなも", // Unverified: not listed on the official website
     nameSpaced: "宮田 愛萌",
     uid: "41"
   },
@@ -387,7 +387,7 @@ const memberList: Member[] = [
     generation: hiraganaGeneration2,
     name: "渡邉美穂",
     nameEnglish: "Miho Watanabe",
-    nameKana: "わたなべ みほ",
+    nameKana: "わたなべ みほ", // Unverified: not listed on the official website
     nameSpaced: "渡邉 美穂",
     uid: "42"
   },
@@ -398,7 +398,7 @@ const memberList: Member[] = [
     generation: generation2,
     name: "井上梨名",
     nameEnglish: "Rina Inoue",
-    nameKana: "いのうえ りな",
+    nameKana: "いのうえ りな", // Unverified: not listed on the official website
     nameSpaced: "井上 梨名",
     uid: "43"
   },
@@ -407,7 +407,7 @@ const memberList: Member[] = [
     generation: generation2,
     name: "関有美子",
     nameEnglish: "Yumiko Seki",
-    nameKana: "せき ゆみこ",
+    nameKana: "せき ゆみこ", // Unverified: not listed on the official website
     nameSpaced: "関 有美子",
     uid: "44"
   },
@@ -416,7 +416,7 @@ const memberList: Member[] = [
     generation: generation2,
     name: "武元唯衣",
     nameEnglish: "Yui Takemoto",
-    nameKana: "たけもと ゆい",
+    nameKana: "たけもと ゆい", // Unverified: not listed on the official website
     nameSpaced: "武元 唯衣",
     uid: "45"
   },
@@ -452,7 +452,7 @@ const memberList: Member[] = [
     generation: generation2,
     name: "松平璃子",
     nameEnglish: "Riko Matsudaira",
-    nameKana: "まつだいら りこ",
+    nameKana: "まつだいら りこ", // Unverified: not listed on the official website
     nameSpaced: "松平 璃子",
     uid: "49"
   },
@@ -545,21 +545,21 @@ const nonMemberList: Member[] = [
   {
     name: "けやき坂462期生",
     nameEnglish: "Hiragana Keyaki 2nd Generation",
-    nameKana: "けやきざか46 にきせい",
+    nameKana: "けやきざか46 にきせい", // Unverified: not listed on the official website
     nameSpaced: "けやき坂46 2期生",
     uid: "1000"
   },
   {
     name: "欅坂46二期生",
     nameEnglish: "2nd Generation",
-    nameKana: "けやきざか46 にきせい",
+    nameKana: "けやきざか46 にきせい", // Unverified: not listed on the official website
     nameSpaced: "欅坂46 二期生",
     uid: "1001"
   },
   {
     name: "欅坂46新二期生",
     nameEnglish: "New 2nd Generation",
-    nameKana: "けやきざか46 しんにきせい",
+    nameKana: "けやきざか46 しんにきせい", // Unverified: not listed on the official website
     nameSpaced: "欅坂46 新二期生",
     uid: "1002"
   }

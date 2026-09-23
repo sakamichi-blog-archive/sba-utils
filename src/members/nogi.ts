@@ -85,7 +85,7 @@ const memberList: Member[] = [
     graduatedAt: "2012-11-18T14:59:00Z",
     name: "岩瀬佑美子",
     nameEnglish: "Yumiko Iwase",
-    nameKana: "いわせ ゆみこ",
+    nameKana: "いわせ ゆみこ", // Unverified: not listed on the official website
     nameSpaced: "岩瀬 佑美子",
     uid: "53388"
   },
@@ -950,49 +950,49 @@ const nonMemberList: Member[] = [
   {
     name: "運営スタッフ",
     nameEnglish: "Management Blog",
-    nameKana: "うんえいすたっふ",
+    nameKana: "うんえいすたっふ", // Unverified: not listed on the official website
     nameSpaced: "運営スタッフ",
     uid: "40003"
   },
   {
     name: "研究生",
     nameEnglish: "Kennkyuusei",
-    nameKana: "けんきゅうせい",
+    nameKana: "けんきゅうせい", // Unverified: not listed on the official website
     nameSpaced: "研究生",
     uid: "40006"
   },
   {
     name: "3期生",
     nameEnglish: "3rd Generation",
-    nameKana: "さんきせい",
+    nameKana: "さんきせい", // Unverified: not listed on the official website
     nameSpaced: "3期生",
     uid: "40004"
   },
   {
     name: "4期生",
     nameEnglish: "4th Generation",
-    nameKana: "よんきせい",
+    nameKana: "よんきせい", // Unverified: not listed on the official website
     nameSpaced: "4期生",
     uid: "40005"
   },
   {
     name: "新4期生",
     nameEnglish: "New 4th Generation",
-    nameKana: "しんよんきせい",
+    nameKana: "しんよんきせい", // Unverified: not listed on the official website
     nameSpaced: "新4期生",
     uid: "40001"
   },
   {
     name: "5期生",
     nameEnglish: "5th Generation",
-    nameKana: "ごきせい",
+    nameKana: "ごきせい", // Unverified: not listed on the official website
     nameSpaced: "5期生",
     uid: "40007"
   },
   {
     name: "6期生",
     nameEnglish: "6th Generation",
-    nameKana: "ろくきせい",
+    nameKana: "ろくきせい", // Unverified: not listed on the official website
     nameSpaced: "6期生",
     uid: "40008"
   }
