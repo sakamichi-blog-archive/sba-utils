@@ -14,9 +14,12 @@ export interface Member {
   /** Graduation datetime in ISO 8601 format. `undefined` if not graduated. */
   graduatedAt?: string
   name: string
-  /** English representation of member's name, given name first */
+  /** English representation of member's name, given name first. `undefined` for non-members */
   nameEnglish?: string
-  /** Hiragana reading of member's name, family name first, separated by space */
+  /**
+   * Hiragana reading of member's name, family name first, separated by space.
+   * `undefined` for non-members
+   */
   nameKana?: string
   nameSpaced: string
   /** Member ID used by official website */
