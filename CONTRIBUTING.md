@@ -40,7 +40,7 @@ BREAKING CHANGE: `Member.nameEnglish` and `Member.nameKana` are now optional.
 
 The footer is what Release Please renders under ⚠ BREAKING CHANGES, so write it for a consumer: what changed, and what they have to do. It reaches Release Please because GitHub composes the squash commit body from these messages — the individual commits are otherwise invisible after a squash merge.
 
-The PR title needs the `!` as well. It becomes the squash commit's subject, and without it there is no breaking-changes section at all, however the body reads.
+The PR title needs the `!` as well, since it becomes the squash commit's subject and is what readers of `main` see first. Release Please does not depend on it — the footer alone marks the commit as breaking — so this one is convention, not mechanism.
 
 ### Commit message scopes
 
