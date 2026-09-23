@@ -21,7 +21,8 @@ export interface Member {
   nameEnglish: string
   /**
    * Hiragana reading of the member's name, family name first, separated by a space.
-   * Taken from the official website where the member is still listed there. Otherwise derived.
+   * Taken from the official website where the member is still listed there. Otherwise derived from
+   * `nameEnglish`, except for the non-member blog accounts, whose readings are marked as unverified.
    */
   nameKana: string
   nameSpaced: string
