@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.10.1](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.10.0...utils-v0.10.1) (2026-10-24)
+
+
+### Dependencies
+
+* Bump zod from 4.6.5 to 4.6.6 in the prod-non-major group ([#126](https://github.com/sakamichi-blog-archive/sba-utils/issues/126)) ([dd87d4c](https://github.com/sakamichi-blog-archive/sba-utils/commit/dd87d4cc8a863017538c77724d9359a6cddfaffc))
+* Bump zod from 4.6.6 to 4.6.7 in the prod-non-major group ([#129](https://github.com/sakamichi-blog-archive/sba-utils/issues/129)) ([fa6f82a](https://github.com/sakamichi-blog-archive/sba-utils/commit/fa6f82a19cbab6a13189fe13fdb22757faacae6c))
+
 ## [0.10.0](https://github.com/sakamichi-blog-archive/sba-utils/compare/utils-v0.9.1...utils-v0.10.0) (2026-09-23)
 
 
