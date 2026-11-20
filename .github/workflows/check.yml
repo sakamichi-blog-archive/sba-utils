@@ -21,10 +21,6 @@ jobs:
           persist-credentials: false
       - uses: pnpm/setup@731dfb6463bbd11c11fd0ee11fe00ed0e36d48a1 # v3.2.0
         with:
-          # The store cache key does not include the runtime version, so every
-          # matrix job shares one entry and races to write it on a miss — the
-          # losers emit a "Failed to save" warning annotation. Cache on the
-          # latest LTS only, which keeps a single writer. Bump when 27 goes LTS.
-          cache: ${{ matrix.node-version == '26' }}
+          cache: true
           runtime: node@${{ matrix.node-version }}
       - run: pnpm run check
