@@ -41,5 +41,5 @@ jobs:
         with:
           # Publish from the newest runtime in `engines.node`; devEngines.runtime
           # would resolve to Current, which the package does not support.
-          runtime: node@24
+          runtime: node@26
       - run: pnpm publish --no-git-checks
